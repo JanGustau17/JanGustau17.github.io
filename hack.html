@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cybersecurity Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a "cyber" look */
+        body {
+            background-color: #0f172a; /* Dark background (slate-900) */
+            color: #e2e8f0; /* Light text (gray-200) */
+            font-family: 'Inter', sans-serif;
+        }
+        .container {
+            max-width: 80%; /* Increased max-width for larger screens */
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        #hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 80vh; /* Full viewport height */
+            text-align: center;
+            background-image: url('cybersecurity-background.jpg'); /* Replace with a relevant image */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.9;
+        }
+        #hero h1 {
+            font-size: 3rem; /* Larger heading */
+            font-weight: 700; /* Use 700 for bold */
+            margin-bottom: 1rem;
+            color: #6ee7b7; /* A brighter accent color (teal-300) */
+        }
+        #hero p {
+            font-size: 1.25rem; /* Increased font size */
+            color: #cbd5e0;
+            margin-bottom: 2rem;
+            max-width: 70%;
+        }
+        .cta-button {
+            background-color: #6ee7b7; /* Teal button */
+            color: #0f172a; /* Dark text on button */
+            padding: 0.75rem 1.5rem; /* Slightly increased padding */
+            border-radius: 0.5rem; /* Rounded corners */
+            font-size: 1.1rem;
+            font-weight: 600; /* Medium font weight */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+            box-shadow: 0 0 10px rgba(110, 231, 183, 0.7);
+        }
+        .cta-button:hover {
+            background-color: #14b8a6; /* Darker teal on hover (teal-500) */
+            color: #fff;
+            box-shadow: 0 0 15px rgba(110, 231, 183, 0.9);
+        }
+        .section-heading {
+            font-size: 2.25rem; /* Larger heading */
+            font-weight: 700;
+            color: #6ee7b7; /* Teal heading */
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .section-content {
+            margin-bottom: 2rem;
+            color: #e2e8f0;
+            font-size: 1.1rem;
+        }
+        #demonstrations {
+            background-color: #1e293b; /* Slightly darker section (slate-800) */
+            padding: 2rem 0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .demo-block {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #2d3748; /* Darker demo block (slate-700) */
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Added transition */
+        }
+        .demo-block:hover {
+            transform: translateY(-0.5rem); /* Slight lift on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Increased shadow on hover */
+        }
+
+        .demo-block h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f5f5f5; /* Off-white heading */
+            margin-bottom: 1rem;
+        }
+        .demo-block p {
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            margin-bottom: 1rem;
+        }
+        .demo-block img, .demo-block video {
+            width: 100%;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+        .demo-block .flowchart {
+            /*width: 80%; !* Make flowchart smaller *!*/
+            /*margin: 0 auto; !* Center the flowchart *!*/
+            /*border: 2px solid #4a5568; !* Style the border *!*/
+        }
+        #footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #4a5568; /* Darker text (gray-600) */
+            border-top: 1px solid #4a5568;
+            margin-top: 2rem;
+        }
+
+        /* Animation Keyframes (Optional, for more advanced) */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-200 font-inter">
+    <header>
+        <div class="container">
+            <nav class="flex justify-between items-center py-4">
+                <h1 class="text-2xl font-bold text-teal-300">AI Cybersecurity</h1>
+                <ul class="flex space-x-4">
+                    <li><a href="#hero" class="hover:text-teal-200 transition duration-300">Home</a></li>
+                    <li><a href="#demonstrations" class="hover:text-teal-200 transition duration-300">Demonstrations</a></li>
+                    </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-cover bg-center">
+            <div class="container">
+                <h1 class="text-4xl font-bold text-teal-300 fade-in">AI in Cybersecurity: A New Era</h1>
+                <p class="text-lg text-gray-300 fade-in">Explore the cutting-edge applications of artificial intelligence in securing our digital world.</p>
+                <a href="#demonstrations" class="cta-button fade-in">See Demonstrations</a>
+            </div>
+        </section>
+
+        <section id="demonstrations" class="container py-8">
+            <h2 class="section-heading">Project Demonstrations</h2>
+            <div class="section-content">
+                <p>Here are some demonstrations showcasing the use of AI in cybersecurity.  Each demonstration illustrates a key concept or application.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                <div class="demo-block fade-in">
+                    <h3 class="text-xl font-semibold text-white">AI-Powered Threat Detection</h3>
+                    <p class="text-gray-300">
+                        Visualization of an AI system identifying and neutralizing a cyberattack in real-time.
+                    </p>
+                    <video controls>
+                        <source src="threat-detection-demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    </div>
+                <div class="demo-block fade-in">
+                    <h3 class="text-xl font-semibold text-white">Virtualization for Security Analysis</h3>
+                    <p class="text-gray-300">
+                        Demonstration of a virtualized environment used to safely analyze malware behavior.
+                    </p>
+                    <video controls>
+                        <source src="virtualization-demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    </div>
+                <div class="demo-block fade-in">
+                    <h3 class="text-xl font-semibold text-white">Network Flowchart Analysis</h3>
+                    <p class="text-gray-300">
+                        Interactive flowchart illustrating network traffic patterns and anomaly detection using AI.
+                    </p>
+                    <img src="network-flowchart.png" alt="Network Flowchart" class="demo-image flowchart">
+                </div>
+                <div class="demo-block fade-in">
+                    <h3 class="text-xl font-semibold text-white">AI in Penetration Testing</h3>
+                    <p class="text-gray-300">
+                       A dynamic animation showing how AI can be used to automate and enhance penetration testing.
+                    </p>
+                    <video controls>
+                        <source src="penetration-testing-demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer" class="text-center text-gray-600 py-4 border-t border-gray-700">
+        <p>© 2025 AI Cybersecurity Project. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // You can add JavaScript for more interactivity here, if needed.
+        // For example, to make the navigation links scroll smoothly:
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
