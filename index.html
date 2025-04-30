@@ -1,4 +1,212 @@
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Cybersecurity Simulation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+    }
+    .glass {
+      backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glow {
+      box-shadow: 0 0 15px #22c55e;
+    }
+    .alert-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: rgba(0, 0, 0, 0.9);
+      color: red;
+      font-size: 2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      flex-direction: column;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid grid-cols-1 md:grid-cols-2 h-screen">
+    <!-- User Interface -->
+    <div class="p-8 glass">
+      <h2 class="text-3xl text-green-400 mb-4 font-semibold">User Panel</h2>
+      <form id="userForm" class="space-y-4">
+        <input type="text" id="username" placeholder="Username" class="w-full p-2 rounded bg-slate-800 text-white" required />
+        <input type="email" id="email" placeholder="Email" class="w-full p-2 rounded bg-slate-800 text-white" required />
+        <input type="password" id="password" placeholder="Password" class="w-full p-2 rounded bg-slate-800 text-white" required />
+        <input type="text" id="code" placeholder="6-digit code" class="w-full p-2 rounded bg-slate-800 text-white" required />
+        <button type="submit" class="bg-green-400 text-slate-900 font-bold py-2 px-4 rounded glow hover:bg-green-600">Verify</button>
+      </form>
+    </div>
+
+    <!-- Hacker Interface -->
+    <div class="p-8 bg-black text-green-300 font-mono overflow-auto">
+      <h2 class="text-3xl mb-4 font-semibold">Hacker Terminal</h2>
+      <pre id="hackerFeed">Waiting for input...</pre>
+    </div>
+  </div>
+
+  <!-- Fake Hacked Alert -->
+  <div id="alertOverlay" class="alert-overlay">
+    <p>⚠️ YOU HAVE BEEN HACKED ⚠️</p>
+    <p class="text-white text-xl mt-4">We now own your data. Countdown: <span id="countdown">30</span>s</p>
+  </div>
+
+  <script>
+    const form = document.getElementById("userForm");
+    const hackerFeed = document.getElementById("hackerFeed");
+    const overlay = document.getElementById("alertOverlay");
+    const countdownEl = document.getElementById("countdown");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const code = document.getElementById("code").value;
+
+      hackerFeed.textContent = `Intercepted Credentials:\nUsername: ${username}\nEmail: ${email}\nPassword: ${password}\nCode: ${code}`;
+
+      // Trigger fake hacked screen
+      overlay.style.display = "flex";
+      let seconds = 30;
+      const countdown = setInterval(() => {
+        seconds--;
+        countdownEl.textContent = seconds;
+        if (seconds === 0) {
+          clearInterval(countdown);
+          overlay.innerHTML = '<p class="text-white text-2xl">💀 Data has been sold on the dark web.</p>';
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -216,3 +424,4 @@
     </script>
 </body>
 </html>
+ -->
