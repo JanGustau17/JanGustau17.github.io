@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  // Replace this with your actual EmailJS public key
+  emailjs.init("JciTkwglEWktHYwv2");
+</script>
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -91,6 +98,49 @@
       }, 1000);
     });
   </script>
+
+  <script>
+  function generateCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  function sendVerificationCode(email) {
+    const code = generateCode();
+    document.getElementById("code").dataset.generated = code; // Store for later matching
+
+    const templateParams = {
+      to_email: email,
+      to_name: email.split("@")[0],
+      code: code
+    };
+
+    emailjs.send("service_t1ag15j", "template_zjsyk8r", templateParams)
+      .then(() => {
+        alert("✅ Verification code sent to " + email);
+      }, (error) => {
+        alert("❌ Failed to send verification code: " + error.text);
+      });
+  }
+
+  // When user finishes typing email
+  document.getElementById("email").addEventListener("blur", function () {
+    const email = this.value;
+    if (email.includes("@")) {
+      sendVerificationCode(email);
+    }
+  });
+
+  // Optional: Check code match on form submit
+  document.getElementById("userForm").addEventListener("submit", function (e) {
+    const enteredCode = document.getElementById("code").value;
+    const correctCode = document.getElementById("code").dataset.generated;
+    if (enteredCode !== correctCode) {
+      e.preventDefault();
+      alert("❌ Incorrect verification code.");
+    }
+  });
+</script>
+
 </body>
 </html>
 
