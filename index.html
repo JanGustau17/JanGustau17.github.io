@@ -4,172 +4,232 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeuroShield - Welcome</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base styles and font */
         body {
             font-family: 'Orbitron', sans-serif;
             background-color: #000000;
-            color: #00ffcc; /* Neon Teal */
-            overflow-x: hidden;
+            color: #00ffcc; /* Neon Teal as default text color */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            min-height: 100vh; /* Ensure body takes full viewport height */
         }
 
+        /* Matrix Background Styling */
         .matrix-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -1; /* Place it behind everything */
             overflow: hidden;
         }
 
         .matrix-canvas {
-            display: block;
-            /* Minimalist pulsing glow effect added via canvas drawing */
+            display: block; /* Remove default canvas margin */
+            /* Pulsing glow effect will be handled by canvas drawing logic in JS */
         }
 
+        /* AI Face Canvas Positioning */
         .ai-face-canvas {
-            position: absolute;
-            top: 50%;
+            position: absolute; /* Allows positioning relative to nearest positioned ancestor or viewport */
+            top: 45%; /* Adjust vertical position */
             left: 50%;
-            transform: translate(-50%, -60%); /* Adjust positioning */
-            width: 300px; /* Adjust size */
-            height: 300px;
-            z-index: 10;
-            /* border: 1px solid #00ffcc; */ /* For debugging */
+            transform: translate(-50%, -50%); /* Center the canvas */
+            width: 280px; /* Fixed size for the face */
+            height: 280px;
+            z-index: 10; /* Ensure face is above background but below modals if any */
+            /* border: 1px dashed #0ff; */ /* Uncomment for debugging position */
         }
 
-        /* Neon Glow Effects */
+        /* Neon Effect Classes */
         .neon-text {
-            text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc, 0 0 20px #0ff;
+            color: #ffffff; /* Brighter base for text */
+            text-shadow:
+                0 0 5px rgba(0, 255, 204, 0.8),
+                0 0 10px rgba(0, 255, 204, 0.8),
+                0 0 20px rgba(0, 255, 204, 0.7),
+                0 0 30px rgba(0, 255, 0, 0.6), /* Add a hint of green */
+                0 0 40px rgba(0, 255, 0, 0.5);
         }
+
         .neon-button {
+            background-color: transparent;
             border: 2px solid #00ffcc;
-            box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc inset;
-            transition: all 0.3s ease;
             color: #00ffcc;
+            padding: 0.75rem 1.5rem; /* Adjust padding */
+            font-weight: bold;
+            border-radius: 4px;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.7);
+            box-shadow: 0 0 8px rgba(0, 255, 204, 0.5), inset 0 0 8px rgba(0, 255, 204, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth transition */
+            cursor: pointer;
         }
+
         .neon-button:hover {
-            background-color: #00ffcc;
-            color: #000;
-            box-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc;
+            background-color: rgba(0, 255, 204, 0.2); /* Subtle background on hover */
+            color: #ffffff; /* Brighter text on hover */
+            border-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.8), inset 0 0 10px rgba(0, 255, 204, 0.4);
+            transform: translateY(-2px) scale(1.02); /* Slight lift effect */
         }
+        .neon-button:active {
+             transform: translateY(0px) scale(1); /* Press effect */
+             box-shadow: 0 0 5px rgba(0, 255, 204, 0.5), inset 0 0 5px rgba(0, 255, 204, 0.3);
+        }
+
+        /* Form Styling */
+        .form-container {
+            background-color: rgba(0, 15, 15, 0.85); /* Darker, slightly transparent background */
+            border: 1px solid #005050; /* Dark cyan border */
+            backdrop-filter: blur(6px); /* Blur effect for underlying content */
+            padding: 2rem; /* More padding */
+            border-radius: 8px;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.15); /* Softer glow */
+            width: 100%;
+            max-width: 420px; /* Limit form width */
+            z-index: 20; /* Ensure forms are above face/background */
+        }
+
         .neon-input {
-            background-color: rgba(0, 50, 50, 0.3);
-            border: 1px solid #00ffcc;
-            color: #00ffcc;
-            caret-color: #00ffcc;
-            box-shadow: 0 0 5px #00ffcc inset;
+            background-color: rgba(0, 30, 30, 0.5); /* Darker input background */
+            border: 1px solid #007a7a; /* Input border */
+            color: #99ffff; /* Lighter input text */
+            caret-color: #00ffcc; /* Cursor color */
+            box-shadow: inset 0 0 6px rgba(0, 255, 204, 0.2);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
         }
+
+        .neon-input::placeholder {
+            color: #007a7a; /* Placeholder color */
+            opacity: 0.8;
+        }
+
         .neon-input:focus {
             outline: none;
-            border-color: #0ff;
-            box-shadow: 0 0 10px #00ffcc, 0 0 5px #0ff inset;
+            border-color: #00ffcc; /* Highlight border on focus */
+            background-color: rgba(0, 40, 40, 0.6);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4), inset 0 0 8px rgba(0, 255, 204, 0.3);
+            color: #ffffff; /* Brighter text on focus */
         }
-        .form-container {
-            background-color: rgba(0, 10, 10, 0.8);
-            border: 1px solid #005050;
-            backdrop-filter: blur(5px);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
-        }
-        /* Hide elements initially */
+
+        /* Utility to hide sections */
         .hidden-section {
             display: none;
         }
+
+        /* Link-like button for switching forms */
+        .form-switch-button {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            color: #00ffcc;
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .form-switch-button:hover {
+            color: #ffffff;
+        }
+
     </style>
 </head>
-<body class="relative min-h-screen flex items-center justify-center">
+<body class="relative flex items-center justify-center min-h-screen">
 
     <div class="matrix-bg">
         <canvas id="matrixCanvas" class="matrix-canvas"></canvas>
     </div>
 
-    <div id="welcomeScreen" class="text-center z-20 p-8">
+    <div id="welcomeScreen" class="text-center z-20 p-6 flex flex-col items-center relative">
         <canvas id="aiFaceCanvas" class="ai-face-canvas"></canvas>
 
-        <h1 class="text-5xl md:text-7xl font-bold neon-text mb-6 mt-40 md:mt-60">NeuroShield</h1>
-        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-cyan-300">
+        <div class="h-[200px] md:h-[250px]"></div>
+
+        <h1 class="text-5xl md:text-7xl font-bold neon-text mb-5">
+            NeuroShield
+        </h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-cyan-300 px-4">
             AI-optimized cybersecurity defends in real-time against evolving threats powered by deep learning, phishing networks, and voice/video deepfakes.
         </p>
-        <button id="enterButton" class="neon-button text-xl font-bold py-3 px-8 rounded transition duration-300 ease-in-out transform hover:scale-105">
-            Enter NeuroShield →
+        <button id="enterButton" class="neon-button text-xl transform hover:scale-105">
+            Enter NeuroShield &rarr;
         </button>
     </div>
 
-    <div id="signupScreen" class="hidden-section z-20 w-full max-w-md">
+    <div id="signupScreen" class="hidden-section z-20 w-full max-w-md px-4">
         <div class="form-container">
             <h2 class="text-3xl font-bold neon-text mb-6 text-center">Create Account</h2>
-            <form id="signupForm">
-                <div class="mb-4">
-                    <label for="signupFullName" class="block text-cyan-400 mb-2">Full Name</label>
-                    <input type="text" id="signupFullName" name="fullName" required class="w-full px-4 py-2 neon-input rounded">
+            <form id="signupForm" novalidate> <div class="mb-4">
+                    <label for="signupFullName" class="block text-cyan-400 mb-2 text-sm font-medium">Full Name</label>
+                    <input type="text" id="signupFullName" name="fullName" required class="neon-input" placeholder="John Doe">
                 </div>
                 <div class="mb-4">
-                    <label for="signupUsername" class="block text-cyan-400 mb-2">Username</label>
-                    <input type="text" id="signupUsername" name="username" required class="w-full px-4 py-2 neon-input rounded">
+                    <label for="signupUsername" class="block text-cyan-400 mb-2 text-sm font-medium">Username</label>
+                    <input type="text" id="signupUsername" name="username" required class="neon-input" placeholder="johndoe_sec">
                 </div>
                 <div class="mb-4">
-                    <label for="signupEmail" class="block text-cyan-400 mb-2">Email</label>
-                    <input type="email" id="signupEmail" name="email" required class="w-full px-4 py-2 neon-input rounded">
+                    <label for="signupEmail" class="block text-cyan-400 mb-2 text-sm font-medium">Email</label>
+                    <input type="email" id="signupEmail" name="email" required class="neon-input" placeholder="user@domain.com">
                 </div>
                 <div class="mb-6">
-                    <label for="signupPassword" class="block text-cyan-400 mb-2">Password</label>
-                    <input type="password" id="signupPassword" name="password" required class="w-full px-4 py-2 neon-input rounded">
+                    <label for="signupPassword" class="block text-cyan-400 mb-2 text-sm font-medium">Password</label>
+                    <input type="password" id="signupPassword" name="password" required class="neon-input" placeholder="••••••••">
                 </div>
-                 <p id="signupError" class="text-red-500 text-sm mb-4 hidden"></p>
-                <button type="submit" class="w-full neon-button font-bold py-3 px-6 rounded transition duration-300 ease-in-out">
+                 <p id="signupError" class="text-red-500 text-sm mb-4 h-5 text-center"></p> <button type="submit" class="w-full neon-button font-bold py-3">
                     Sign Up
                 </button>
             </form>
-            <p class="mt-6 text-center text-cyan-500">
-                Already have an account? <button id="showSignInButton" class="font-bold text-cyan-300 hover:text-cyan-100 underline">Sign In</button>
+            <p class="mt-6 text-center text-sm text-cyan-500">
+                Already have an account?
+                <button id="showSignInButton" class="form-switch-button ml-1">Sign In</button>
             </p>
         </div>
     </div>
 
-    <div id="signInScreen" class="hidden-section z-20 w-full max-w-md">
+    <div id="signInScreen" class="hidden-section z-20 w-full max-w-md px-4">
          <div class="form-container">
             <h2 class="text-3xl font-bold neon-text mb-6 text-center">Sign In</h2>
-            <form id="signInForm">
+            <form id="signInForm" novalidate>
                 <div class="mb-4">
-                    <label for="signInUser" class="block text-cyan-400 mb-2">Username or Email</label>
-                    <input type="text" id="signInUser" name="usernameOrEmail" required class="w-full px-4 py-2 neon-input rounded">
+                    <label for="signInUser" class="block text-cyan-400 mb-2 text-sm font-medium">Username or Email</label>
+                    <input type="text" id="signInUser" name="usernameOrEmail" required class="neon-input" placeholder="Username or Email">
                 </div>
                 <div class="mb-6">
-                    <label for="signInPassword" class="block text-cyan-400 mb-2">Password</label>
-                    <input type="password" id="signInPassword" name="password" required class="w-full px-4 py-2 neon-input rounded">
+                    <label for="signInPassword" class="block text-cyan-400 mb-2 text-sm font-medium">Password</label>
+                    <input type="password" id="signInPassword" name="password" required class="neon-input" placeholder="••••••••">
                 </div>
-                 <p id="signInError" class="text-red-500 text-sm mb-4 hidden"></p>
-                <button type="submit" class="w-full neon-button font-bold py-3 px-6 rounded transition duration-300 ease-in-out">
+                 <p id="signInError" class="text-red-500 text-sm mb-4 h-5 text-center"></p> <button type="submit" class="w-full neon-button font-bold py-3">
                     Sign In
                 </button>
             </form>
-            <p class="mt-6 text-center text-cyan-500">
-                Need an account? <button id="showSignUpButton" class="font-bold text-cyan-300 hover:text-cyan-100 underline">Sign Up</button>
+            <p class="mt-6 text-center text-sm text-cyan-500">
+                Need an account?
+                <button id="showSignUpButton" class="form-switch-button ml-1">Sign Up</button>
             </p>
         </div>
     </div>
 
-    <script src="js/data.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/face.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/data.js" defer></script>
+    <script src="js/auth.js" defer></script>
+    <script src="js/face.js" defer></script>
+    <script src="js/script.js" defer></script>
+
     <script>
-        // Initial setup specific to index.html
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Matrix Background
-            initMatrixBackground('matrixCanvas');
+            console.log("DOM fully loaded and parsed for index.html");
 
-            // Initialize AI Face only on welcome screen
-            if (document.getElementById('welcomeScreen').style.display !== 'none') {
-                 initAIFace('aiFaceCanvas');
-            }
-
-             // --- Screen Switching Logic ---
+            // --- Get References to Elements ---
             const welcomeScreen = document.getElementById('welcomeScreen');
             const signupScreen = document.getElementById('signupScreen');
             const signInScreen = document.getElementById('signInScreen');
@@ -179,33 +239,107 @@
             const showSignInButton = document.getElementById('showSignInButton');
             const showSignUpButton = document.getElementById('showSignUpButton');
 
-            enterButton.addEventListener('click', () => {
-                welcomeScreen.style.display = 'none';
-                aiFaceCanvas.style.display = 'none'; // Hide face when leaving welcome
-                stopAIFaceAnimation(); // Stop face animation loop
-                signupScreen.style.display = 'block';
-                signInScreen.style.display = 'none';
-            });
+            // --- Initialize Background and AI Face ---
+            // Check if functions exist before calling (good practice)
+            if (typeof initMatrixBackground === 'function') {
+                initMatrixBackground('matrixCanvas');
+            } else {
+                console.error("initMatrixBackground function not found. Is script.js loaded?");
+            }
 
-            showSignInButton.addEventListener('click', () => {
+            if (typeof initAIFace === 'function') {
+                initAIFace('aiFaceCanvas');
+            } else {
+                 console.error("initAIFace function not found. Is face.js loaded?");
+            }
+
+             // --- Screen Switching Logic ---
+             function showScreen(screenToShow) {
+                // Hide all screens first
                 welcomeScreen.style.display = 'none';
                 signupScreen.style.display = 'none';
-                signInScreen.style.display = 'block';
-                 stopAIFaceAnimation(); // Ensure face is stopped if somehow active
-                 aiFaceCanvas.style.display = 'none';
-            });
-
-            showSignUpButton.addEventListener('click', () => {
-                welcomeScreen.style.display = 'none';
                 signInScreen.style.display = 'none';
-                signupScreen.style.display = 'block';
-                 stopAIFaceAnimation(); // Ensure face is stopped
-                 aiFaceCanvas.style.display = 'none';
-            });
+                aiFaceCanvas.style.display = 'none'; // Hide face by default unless it's the welcome screen
 
-            // --- Form Handling ---
-            handleAuthForms(); // Initialize form listeners from auth.js
+                 // Stop face animation if not on welcome screen
+                 if (screenToShow !== welcomeScreen && typeof stopAIFaceAnimation === 'function') {
+                    stopAIFaceAnimation();
+                 }
+
+                // Show the target screen
+                screenToShow.style.display = screenToShow === welcomeScreen ? 'flex' : 'block'; // welcome uses flex layout
+
+                 // Special handling for welcome screen face
+                 if (screenToShow === welcomeScreen) {
+                    aiFaceCanvas.style.display = 'block'; // Show the face canvas
+                    // Re-initialize or restart face animation if needed (might be handled by initAIFace checks)
+                    if (typeof initAIFace === 'function') {
+                       // initAIFace('aiFaceCanvas'); // Re-init might be too heavy, check if stop/start exists
+                       // Assuming initAIFace handles not re-adding listeners and just starts animation
+                       // Or add a dedicated startAIFaceAnimation() function if needed.
+                       // For now, let's assume initAIFace is safe to call again or handles it internally.
+                        initAIFace('aiFaceCanvas'); // Call init again to ensure it's running
+                    }
+                 }
+
+                 // Clear any previous form errors when switching screens
+                 const signupErrorEl = document.getElementById('signupError');
+                 const signInErrorEl = document.getElementById('signInError');
+                 if(signupErrorEl) signupErrorEl.textContent = '';
+                 if(signInErrorEl) signInErrorEl.textContent = '';
+                 if(signupErrorEl) signupErrorEl.classList.add('hidden'); // Ensure hidden visually
+                 if(signInErrorEl) signInErrorEl.classList.add('hidden'); // Ensure hidden visually
+             }
+
+            if (enterButton) {
+                enterButton.addEventListener('click', () => {
+                    console.log("Enter NeuroShield clicked");
+                    showScreen(signupScreen); // Go to Sign Up first
+                });
+            } else {
+                console.error("Enter button not found");
+            }
+
+            if (showSignInButton) {
+                showSignInButton.addEventListener('click', () => {
+                    console.log("Show Sign In clicked");
+                    showScreen(signInScreen);
+                });
+            } else {
+                 console.error("Show Sign In button not found");
+            }
+
+            if (showSignUpButton) {
+                showSignUpButton.addEventListener('click', () => {
+                     console.log("Show Sign Up clicked");
+                    showScreen(signupScreen);
+                });
+            } else {
+                console.error("Show Sign Up button not found");
+            }
+
+            // --- Initialize Form Handlers ---
+            if (typeof handleAuthForms === 'function') {
+                handleAuthForms(); // Set up submit listeners for sign-up and sign-in forms
+            } else {
+                console.error("handleAuthForms function not found. Is auth.js loaded?");
+            }
+
+            // --- Initial State ---
+            // Ensure only the welcome screen is visible initially (should be default, but good to be explicit)
+            // The `showScreen` function isn't called initially, relying on CSS `hidden-section`
+            // But let's double-check the face logic on load.
+            if (welcomeScreen.style.display !== 'none') {
+                 aiFaceCanvas.style.display = 'block';
+            } else {
+                 aiFaceCanvas.style.display = 'none';
+                 if (typeof stopAIFaceAnimation === 'function') {
+                     stopAIFaceAnimation();
+                 }
+            }
+
         });
     </script>
+
 </body>
 </html>
