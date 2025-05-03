@@ -376,19 +376,26 @@
 
              // --- Mobile Menu Toggle (Basic Placeholder) ---
              // A full implementation requires more robust state management
-             const menuButton = document.querySelector('button[aria-controls="mobile-menu"]');
-             const mobileMenu = document.getElementById('mobile-menu');
-             if(menuButton && mobileMenu) {
+             // --- Mobile Menu Toggle ---
+            const menuButton = document.querySelector('button[aria-controls="mobile-menu"]');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuIcons = menuButton ? menuButton.querySelectorAll('svg') : []; // Get both icons
+
+            if (menuButton && mobileMenu && mobileMenuIcons.length === 2) {
                 menuButton.addEventListener('click', () => {
                     const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+            // Toggle aria-expanded attribute
                     menuButton.setAttribute('aria-expanded', !isExpanded);
+            // Toggle menu visibility
                     mobileMenu.classList.toggle('hidden');
-                     // Toggle icons (optional)
-                     menuButton.querySelectorAll('svg').forEach(icon => icon.classList.toggle('hidden'));
+            // Toggle which icon (hamburger/close) is shown
+                    mobileMenuIcons[0].classList.toggle('hidden'); // Toggle first icon (e.g., hamburger)
+                    mobileMenuIcons[1].classList.toggle('hidden'); // Toggle second icon (e.g., close)
+                    console.log(`Mobile menu toggled: ${!isExpanded ? 'Open' : 'Closed'}`);
                 });
-             }
-
-        });
+            } else {
+                console.warn("Mobile menu button, menu panel, or icons not found. Toggle will not work.");
+            }
     </script>
 
 </body>
