@@ -1,136 +1,362 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GustauShield – AI Cybersecurity</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN -->
+  <title>GustauShield – AI-Optimized Cybersecurity</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN for styling -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
-    /* Base & Background */
-    body { font-family: 'Poppins', sans-serif; background: #0d0d2b; margin:0; overflow:hidden; }
-    body::before { content:''; position: fixed; inset:0;
-      background:
-        linear-gradient(to right, rgba(0,255,255,0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0,255,255,0.05) 1px, transparent 1px),
-        radial-gradient(circle at top right, rgba(192,38,211,0.4), transparent 50%),
-        radial-gradient(circle at bottom left, rgba(79,70,229,0.4), transparent 60%);
-      background-size:20px 20px,20px 20px,cover,cover; z-index:-1; }
-
-    /* Neon Window Style */
-    .window {
-      background: rgba(20,20,50,0.9); backdrop-filter: blur(8px);
-      border: 1px solid rgba(0,255,255,0.4); border-radius:4px;
-      box-shadow: 0 0 10px rgba(0,255,255,0.4);
-      position: absolute; overflow:hidden;
-      transition: transform 0.3s;
+    /* Custom Tailwind config (if needed) could go here */
+  </style>
+  <!-- Additional custom styles for neon/glassmorphism and animations -->
+  <style>
+    /* Neon text glow */
+    .neon-text {
+      text-shadow: 0 0 8px #0ff, 0 0 16px #0ff;
     }
-    .window:hover { transform: translateY(-5px) scale(1.02); }
-    .window-header {
-      background: rgba(0,255,255,0.2); padding:0.5rem;
-      display:flex; align-items:center;
-      border-bottom:1px solid rgba(0,255,255,0.4);
+    /* Neon border and glassmorphism for panels */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
     }
-    .window-title { flex:1; color:#e0e0e0; font-family:'Orbitron'; font-weight:600; }
-    .window-body { padding:1rem; color:#ddd; }
-
-    /* Window positions */
-    #win-home { top:4rem; left:4rem; width:360px; height:280px; }
-    #win-stats { top:4rem; left:420px; width:360px; height:280px; }
-    #win-sim { top:320px; left:4rem; width:360px; height:280px; }
-    #win-about { top:320px; left:420px; width:360px; height:280px; }
-
-    /* Chart container */
-    .chart-box { width:100%; height:180px; }
+    /* Glowing button */
+    .glow-btn {
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+      transition: box-shadow 0.3s ease;
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.6);
+    }
+    /* Audio player disc and bars */
+    .music-widget .disc {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #555 10%, #333 70%, #111 100%);
+      border: 2px solid #777;
+      position: relative;
+      margin: 0 auto;
+    }
+    .music-widget .disc::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 16px; height: 16px;
+      background: #111;
+      border: 2px solid #444;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .music-widget .bars {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5rem;
+      height: 20px;
+    }
+    .music-widget .bar {
+      width: 4px;
+      background: #0ff;
+      margin: 0 2px;
+      opacity: 0.8;
+      animation: equalize 1s ease-in-out infinite alternate;
+    }
+    .music-widget.playing .disc {
+      animation: spin 5s linear infinite;
+    }
+    .music-widget.playing .bar {
+      /* When playing, bars animate (already animating by default) */
+      opacity: 1;
+    }
+    .music-widget:not(.playing) .bar {
+      /* Pause bars when not playing by freezing animation */
+      animation-play-state: paused;
+      opacity: 0.4;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes equalize {
+      0% { height: 4px; }
+      100% { height: 16px; }
+    }
+    /* Ticker scroll animation */
+    @keyframes scroll-text {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .ticker-content {
+      display: inline-block;
+      white-space: nowrap;
+      animation: scroll-text 20s linear infinite;
+    }
+    /* Neon flicker effect for main title */
+    @keyframes flicker {
+      0%, 80%, 100% { opacity: 1; text-shadow: 0 0 8px #0ff, 0 0 12px #0ff; }
+      82%, 85% { opacity: 0.8; text-shadow: none; }
+      90% { opacity: 0.6; }
+    }
+    .flicker {
+      animation: flicker 5s infinite;
+    }
   </style>
 </head>
-<body>
-  <!-- Home Window -->
-  <div class="window" id="win-home">
-    <div class="window-header">
-      <div class="window-title">Home</div>
+<body class="bg-black text-gray-200 font-[Poppins]">
+  <!-- Fixed Navigation Bar -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-black bg-opacity-60 backdrop-blur-sm border-b border-cyan-800 text-gray-300">
+    <div class="flex justify-between items-center px-4 py-2">
+      <!-- Brand/Logo in nav -->
+      <a href="#home" class="text-cyan-400 font-orbitron font-bold text-xl">GustauShield</a>
+      <!-- Hamburger (mobile) -->
+      <button id="burger" class="md:hidden text-gray-300 text-2xl focus:outline-none" aria-label="Menu">☰</button>
+      <!-- Nav Menu Links -->
+      <ul id="nav-menu" class="hidden md:flex flex-col md:flex-row md:items-center bg-black md:bg-transparent bg-opacity-80 md:bg-opacity-0 absolute md:static top-full left-0 w-full md:w-auto space-y-4 md:space-y-0 md:space-x-8 px-4 py-4 md:p-0">
+        <li><a href="#home" class="hover:text-cyan-300">Home</a></li>
+        <li><a href="#dashboard" class="hover:text-cyan-300">Dashboard</a></li>
+        <li><a href="#simulations" class="hover:text-cyan-300">Simulations</a></li>
+        <li><a href="#research" class="hover:text-cyan-300">Research</a></li>
+        <li><a href="#about" class="hover:text-cyan-300">About</a></li>
+        <li><a href="#signup" class="hover:text-cyan-300">Log Out</a></li>
+      </ul>
     </div>
-    <div class="window-body">
-      <h2 class="text-2xl mb-2 font-semibold">Welcome to GustauShield</h2>
-      <p class="text-sm mb-4">
-        AI‑optimized cybersecurity defending in real‑time against evolving deep-learning threats,
-        phishing networks, and deepfakes.
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="relative flex flex-col items-center justify-center min-h-screen text-center px-4">
+    <!-- Matrix code canvas background -->
+    <canvas id="matrix-canvas" class="absolute inset-0 z-0"></canvas>
+    <!-- Hero Content -->
+    <div class="relative z-10">
+      <h1 class="text-4xl md:text-6xl font-orbitron font-bold text-cyan-300 neon-text flicker">GustauShield</h1>
+      <p class="mt-4 text-gray-300 max-w-2xl">
+        AI-optimized cybersecurity defends in real-time against evolving threats powered by deep learning, phishing networks, and voice/video deepfakes.
       </p>
-      <button onclick="document.getElementById('win-stats').scrollIntoView({behavior:'smooth'})"
-        class="px-4 py-2 bg-gradient-to-r from-cyan-400 to-purple-600 rounded text-white">
-        View Stats
+      <button id="enter-btn" class="mt-8 px-6 py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold rounded-full glow-btn hover:from-cyan-300 hover:to-purple-400">
+        Enter GustauShield →
       </button>
     </div>
+  </section>
+
+  <!-- Dashboard Section -->
+  <section id="dashboard" class="max-w-6xl mx-auto py-16 px-4">
+    <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Dashboard Preview</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <!-- Panel: Realtime Threat Feed -->
+      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100">
+        <h3 class="mb-2 font-semibold text-cyan-200">Realtime Threat Feed</h3>
+        <ul>
+          <li>[12:01:05] <span class="text-red-500 font-bold">ALERT:</span> Phishing attempt <em>blocked</em> (User: jdoe, IP: 192.168.10.5)</li>
+          <li>[12:05:47] <span class="text-yellow-300 font-bold">WARNING:</span> Unusual login pattern detected (Account: admin)</li>
+          <li>[12:15:12] <span class="text-red-500 font-bold">ALERT:</span> Deepfake voice call <em>quarantined</em></li>
+          <li>[12:20:30] <span class="text-green-400 font-bold">INFO:</span> AI model updated with 2 new threat signatures</li>
+        </ul>
+      </div>
+      <!-- Panel: Command Console -->
+      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100">
+        <h3 class="mb-2 font-semibold text-cyan-200">AI Command Console</h3>
+        <pre>
+GustauShield> <span class="text-green-300">scan network --mode=deep</span>
+Scanning network...
+Host 10.0.0.34 – status: SECURE
+Host 10.0.0.58 – status: <span class="text-yellow-300">ANOMALY</span> (suspicious traffic)
+Host 10.0.0.87 – status: SECURE
+Scan complete: <span class="text-red-500">1 threat isolated</span>
+<span class="text-green-300">_</span>
+        </pre>
+      </div>
+      <!-- Panel: System Status -->
+      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100">
+        <h3 class="mb-2 font-semibold text-cyan-200">System Status</h3>
+        <p>Active Threats: <span class="text-green-400 font-bold">0</span></p>
+        <p>Threats Blocked Today: <span class="text-green-400 font-bold">18</span></p>
+        <p>AI Model Accuracy: <span class="text-green-400 font-bold">99.8%</span></p>
+        <p>System Uptime: 36 days 04:12:09</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simulations Section -->
+  <section id="simulations" class="max-w-6xl mx-auto py-16 px-4">
+    <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Simulations</h2>
+    <div class="flex flex-col md:flex-row items-center md:space-x-8">
+      <div class="md:w-1/2 mb-6 md:mb-0">
+        <h3 class="text-2xl text-cyan-200 font-semibold mb-4">Cyber Attack Simulations</h3>
+        <p class="text-gray-300 mb-4">
+          GustauShield runs realistic attack simulations for phishing emails, malware infiltration, and deepfake scams. Our AI continuously learns from these scenarios, improving defenses before real threats strike.
+        </p>
+        <p class="text-gray-400">
+          Each simulation is sandboxed, allowing safe observation of attack behavior. Users can explore interactive scenarios to see how GustauShield intelligently detects and neutralizes threats in real-time.
+        </p>
+      </div>
+      <div class="md:w-1/2 flex justify-center">
+        <!-- Example image representing deepfake simulation -->
+        <img src="deepfake_simulation.jpg" alt="AI detecting deepfake voice waveform" class="max-w-full rounded shadow-lg" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Research Section -->
+  <section id="research" class="max-w-6xl mx-auto py-16 px-4">
+    <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Research & Insights</h2>
+    <p class="text-gray-300 mb-6">
+      Stay informed with the latest advances in AI-driven cybersecurity. Explore how machine learning and adaptive defense systems are shaping the future of threat prevention.
+    </p>
+    <!-- Embedded YouTube Videos -->
+    <div class="flex flex-col md:flex-row gap-8">
+      <div class="video-frame-container glass-card rounded-md p-2">
+        <iframe class="w-full" style="aspect-ratio: 16/9;" src="https://www.youtube.com/embed/S3QNDSax2IA" title="AI Cybersecurity Future" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="video-frame-container glass-card rounded-md p-2">
+        <iframe class="w-full" style="aspect-ratio: 16/9;" src="https://www.youtube.com/embed/OJxRruHrSow" title="Future of AI in Cybersecurity" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Me Section -->
+  <section id="about" class="max-w-4xl mx-auto py-16 px-4 text-center">
+    <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">About Me</h2>
+    <!-- User Photo -->
+    <img src="profile.jpg" alt="Profile photo" class="mx-auto mb-6 rounded-full w-40 h-40 object-cover shadow-xl">
+    <!-- About Text -->
+    <p class="text-gray-300 mb-6">
+      I am a cybersecurity student currently studying at NYC College of Technology (CIS major) and preparing to transfer to John Jay College. I'm fascinated by new technologies like AI and enjoy applying them to cybersecurity to understand and counter emerging threats. Passionate about leveraging digital tools to protect users and systems, my long-term goal is to build a career in advanced cybersecurity defense and AI-driven threat response.
+    </p>
+    <!-- Social Links -->
+    <div class="flex justify-center space-x-4">
+      <a href="https://www.linkedin.com/in/mukhammadali-yuldoshev" class="px-4 py-2 border border-cyan-500 text-cyan-300 rounded hover:bg-cyan-500 hover:text-black transition">LinkedIn</a>
+      <a href="https://github.com/JanGustau17" class="px-4 py-2 border border-cyan-500 text-cyan-300 rounded hover:bg-cyan-500 hover:text-black transition">GitHub</a>
+    </div>
+  </section>
+
+  <!-- Sign Up Section -->
+  <section id="signup" class="max-w-md mx-auto py-16 px-4">
+    <h2 class="text-2xl font-orbitron text-cyan-300 mb-6 text-center">Get Started with GustauShield</h2>
+    <form action="#" method="POST" class="space-y-4">
+      <div>
+        <label class="block text-left text-gray-300 mb-1" for="name">Name</label>
+        <input id="name" name="name" type="text" required class="form-field w-full" placeholder="Your Name">
+      </div>
+      <div>
+        <label class="block text-left text-gray-300 mb-1" for="email">Email</label>
+        <input id="email" name="email" type="email" required class="form-field w-full" placeholder="you@example.com">
+      </div>
+      <div>
+        <label class="block text-left text-gray-300 mb-1" for="password">Password</label>
+        <input id="password" name="password" type="password" required class="form-field w-full" placeholder="Create a password">
+      </div>
+      <button type="submit" class="w-full mt-4 py-2 bg-cyan-500 text-black font-semibold rounded hover:bg-cyan-400 transition">Sign Up</button>
+    </form>
+  </section>
+
+  <!-- Ticker / Footer Alerts -->
+  <div class="ticker-container bg-black bg-opacity-70 border-t border-b border-cyan-800 py-2 overflow-hidden text-cyan-300 text-sm">
+    <div class="ticker-content px-4">
+      [SECURITY NEWS] Zero-day exploit detected and patched in under 30s ★ 
+      AI stops sophisticated spear phishing attempt ★ 
+      All systems normal – no active threats ★ 
+      New malware strain caught by AI sandbox ★ 
+      Voice deepfake scam foiled in real-time ★ 
+      [END]
+    </div>
   </div>
 
-  <!-- Stats Window -->
-  <div class="window" id="win-stats">
-    <div class="window-header">
-      <div class="window-title">Quick Stats</div>
+  <!-- Music Player Widget (background music toggle) -->
+  <div id="music-player" class="music-widget fixed bottom-16 right-4 text-center text-gray-100">
+    <div class="disc"></div>
+    <div class="bars">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
     </div>
-    <div class="window-body flex flex-col items-center">
-      <canvas id="welcomeChart" class="chart-box"></canvas>
-    </div>
+    <button id="music-toggle" class="mt-2 text-sm text-cyan-300 hover:text-cyan-400 focus:outline-none">Background Music</button>
   </div>
 
-  <!-- Simulation Window -->
-  <div class="window" id="win-sim">
-    <div class="window-header">
-      <div class="window-title">Phishing Sim</div>
-    </div>
-    <div class="window-body">
-      <p class="text-sm mb-4">
-        Simulate a fake login and learn to spot phishing attacks.
-      </p>
-      <button onclick="location.href='simulations.html'"
-        class="px-4 py-2 bg-gradient-to-r from-cyan-400 to-purple-600 rounded text-white">
-        Launch
-      </button>
-    </div>
-  </div>
-
-  <!-- About Window -->
-  <div class="window" id="win-about">
-    <div class="window-header">
-      <div class="window-title">About Me</div>
-    </div>
-    <div class="window-body">
-      <p class="text-sm mb-2">
-        Hi, I'm [Your Name], a cybersecurity enthusiast with a passion for AI-driven defense.
-      </p>
-      <p class="text-sm mb-4">
-        Connect with me:
-      </p>
-      <a href="https://linkedin.com/in/yourprofile" class="block text-cyan-400 mb-2" target="_blank">
-        LinkedIn
-      </a>
-      <a href="https://github.com/yourusername" class="block text-cyan-400" target="_blank">
-        GitHub
-      </a>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- JavaScript for interactivity -->
   <script>
-    // Initialize doughnut chart in stats window
-    const ctx = document.getElementById('welcomeChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Phishing','Ransomware','Malware','Social','Other'],
-        datasets: [{ data:[45,15,20,10,10], backgroundColor:['#00f0ff','#6e00ff','#4ade80','#facc15','#f87171'] }]
-      },
-      options:{
-        responsive:true,
-        plugins:{ legend:{display:false} }
+    // Smooth scroll behavior for anchor links
+    document.documentElement.style.scrollBehavior = 'smooth';
+
+    // Mobile nav toggle
+    const burger = document.getElementById('burger');
+    const navMenu = document.getElementById('nav-menu');
+    burger.addEventListener('click', () => {
+      navMenu.classList.toggle('hidden');
+    });
+    // Close menu on link click (mobile)
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 768) {
+          navMenu.classList.add('hidden');
+        }
+      });
+    });
+
+    // "Enter GustauShield" button scroll to sign-up section
+    document.getElementById('enter-btn').addEventListener('click', () => {
+      document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Background matrix code animation
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    let matrixColumns;
+    let drops = [];
+    const fontSize = 14;
+    const matrixChars = "01\u0301\u0300";  // mix of 0,1 and combining accent (for effect)
+    function resetMatrix() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      matrixColumns = Math.floor(canvas.width / fontSize);
+      drops = Array(matrixColumns).fill(0);
+    }
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";  // clear slight trail
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0f0"; 
+      ctx.font = fontSize + "px monospace";
+      for (let i = 0; i < drops.length; i++) {
+        const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    window.addEventListener('resize', resetMatrix);
+    resetMatrix();
+    setInterval(drawMatrix, 50);
+
+    // Background music toggle functionality
+    let musicPlaying = false;
+    const musicPlayer = document.getElementById('music-player');
+    const musicToggleBtn = document.getElementById('music-toggle');
+    // Hidden iframe for music (YouTube embed)
+    let musicIframe = null;
+    musicToggleBtn.addEventListener('click', () => {
+      if (!musicPlaying) {
+        // Start music
+        if (!musicIframe) {
+          musicIframe = document.createElement('iframe');
+          musicIframe.style.display = 'none';
+          musicIframe.src = "https://www.youtube.com/embed/32XsfeIX_rM?autoplay=1&loop=1&playlist=32XsfeIX_rM";
+          musicIframe.allow = "autoplay";
+          document.body.appendChild(musicIframe);
+        } else {
+          musicIframe.src = "https://www.youtube.com/embed/32XsfeIX_rM?autoplay=1&loop=1&playlist=32XsfeIX_rM";
+        }
+        musicPlayer.classList.add('playing');
+        musicPlaying = true;
+      } else {
+        // Stop music
+        if (musicIframe) {
+          musicIframe.src = "";  // effectively stop the video
+        }
+        musicPlayer.classList.remove('playing');
+        musicPlaying = false;
       }
     });
   </script>
