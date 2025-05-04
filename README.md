@@ -1,1 +1,0 @@
-# tryhackme.github.io
