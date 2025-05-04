@@ -1,1 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GustauShield – Attack Simulations</title>
+  <!-- Import Orbitron and Poppins fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;600&display=swap" />
+  <!-- Tailwind CSS CDN with custom config for fonts -->
+  <script>
+    tailwind = {
+      theme: {
+        extend: {
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Additional styling for animations -->
+  <style>
+    /* Ensure body and html take full height for background */
+    html, body { height: 100%; margin: 0; padding: 0; }
+    /* Custom blink animation (for intense alerts) */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .blink {
+      animation: blink 0.8s steps(2, start) infinite;
+    }
+  </style>
+</head>
+<body class="bg-black text-gray-200 font-poppins relative">
+  <!-- Matrix background canvas -->
+  <canvas id="matrix" class="fixed top-0 left-0 w-screen h-screen z-0"></canvas>
 
+  <!-- Main content wrapper with slight transparency to show background effect -->
+  <div class="relative z-10 bg-black/80 min-h-screen flex flex-col">
+    <!-- Navigation bar -->
+    <nav class="w-full flex items-center justify-between px-4 py-3 bg-black bg-opacity-90">
+      <div class="text-xl font-orbitron text-cyan-400">GustauShield</div>
+      <div class="space-x-6 text-sm">
+        <a href="#" class="text-gray-400 hover:text-gray-200">Live Threats</a>
+        <a href="#" class="text-gray-400 hover:text-gray-200 underline text-white font-semibold">Simulations</a>
+        <a href="#" class="text-gray-400 hover:text-gray-200">Research</a>
+      </div>
+    </nav>
+
+    <!-- Page heading -->
+    <main class="flex-1 p-4 md:p-8">
+      <h1 class="text-3xl md:text-4xl font-orbitron font-bold mb-6 text-transparent bg-gradient-to-r from-teal-400 to-purple-600 bg-clip-text">
+        Interactive Attack Simulations
+      </h1>
+      <p class="mb-8 text-gray-300 max-w-prose">
+        Explore various AI-powered cyberattacks and see how <span class="font-semibold text-purple-400">GustauShield</span> detects &amp; stops them in real-time. Select a scenario and step through the animated simulation.
+      </p>
+
+      <!-- Scenario selection buttons -->
+      <div class="mb-6">
+        <button class="scenario-btn text-white underline font-semibold mr-4" data-scenario="phishing" onclick="showScenario('phishing')">Phishing Login</button>
+        <button class="scenario-btn text-gray-400 hover:text-white font-semibold mr-4" data-scenario="voice" onclick="showScenario('voice')">Deepfake Voice</button>
+        <button class="scenario-btn text-gray-400 hover:text-white font-semibold mr-4" data-scenario="image" onclick="showScenario('image')">Image Spoof</button>
+        <button class="scenario-btn text-gray-400 hover:text-white font-semibold" data-scenario="cred" onclick="showScenario('cred')">Credential Theft</button>
+      </div>
+
+      <!-- Phishing scenario section -->
+      <section id="scenario-phishing" class="scenario-section">
+        <!-- Step 1: Phishing email -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="1" data-threat="20">
+          <h2 class="font-semibold text-lg mb-2">Step 1: Suspicious Email Received</h2>
+          <p>You receive an <span class="text-yellow-300 font-medium">urgent email</span> claiming your account is at risk. It urges you to log in immediately to verify your identity.</p>
+          <p class="mt-2 text-sm text-gray-400">[The email looks legitimate, but the sender's address is slightly off, and there's a link inside.]</p>
+          <div class="mt-3 flex justify-between">
+            <span class="text-gray-500 text-sm self-center">Targeted by phishing</span>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('phishing')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 2: User clicks link to phishing site -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="2" data-threat="50" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 2: Fake Login Page</h2>
+          <p>You click the link and are taken to a <span class="text-yellow-300 font-medium">login page</span> that looks just like your bank's website. You begin entering your credentials.</p>
+          <p class="mt-2 text-sm text-gray-400">[The URL is <span class="italic text-red-400">not</span> the official one, but you didn't notice. Everything else looks convincing.]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('phishing')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('phishing')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 3: Credentials stolen by attacker -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="3" data-threat="90" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 3: Credentials Compromised</h2>
+          <p>You submit your username and password. Unbeknownst to you, these credentials have been <span class="text-red-500 font-medium">sent to an attacker</span> instead of your bank.</p>
+          <p class="mt-2 text-sm text-gray-400">[On the attacker’s screen, your login info just appeared. They now have your password!]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('phishing')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('phishing')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 4: GustauShield detects phishing -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="4" data-threat="100" data-alert="true" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 4: GustauShield Intervenes</h2>
+          <p><span class="text-green-400 font-bold">GustauShield AI</span> detects that the website is fraudulent (based on its URL and behavior). It immediately <span class="text-green-400 font-bold">blocks the connection</span> and prevents the login.</p>
+          <p class="mt-2 text-sm text-gray-400 blink">[ALERT: "Phishing site detected and blocked!"]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('phishing')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('phishing')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 5: Phishing takeaway -->
+        <div class="step mb-4 p-4 bg-gray-900 bg-opacity-60 rounded" data-step="5" data-threat="0" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 5: Attack Thwarted – What We Learned</h2>
+          <ul class="list-disc list-inside text-gray-300">
+            <li>Always verify the sender’s email and website URL before entering credentials.</li>
+            <li>Be cautious with urgent, scare-tactic messages – they’re a common phishing ploy.</li>
+            <li>GustauShield monitors for known phishing pages and will block them to protect you.</li>
+          </ul>
+          <div class="mt-3 text-green-400 font-medium">Result: Your account stays safe, despite the attempted phishing.</div>
+          <div class="mt-4 flex justify-start">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('phishing')">« Prev</button>
+          </div>
+        </div>
+        <!-- Threat level bar for phishing -->
+        <div class="threat-bar w-full bg-gray-700 rounded h-2 overflow-hidden mb-8">
+          <div class="fill bg-red-500 h-full w-0"></div>
+        </div>
+      </section>
+
+      <!-- Voice Deepfake scenario section -->
+      <section id="scenario-voice" class="scenario-section" style="display:none;">
+        <!-- Step 1: Incoming deepfake call -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="1" data-threat="0">
+          <h2 class="font-semibold text-lg mb-2">Step 1: Unusual Phone Call</h2>
+          <p>Your phone rings. The caller ID shows it's your <span class="text-yellow-300 font-medium">CEO</span>. Surprised, you answer the call.</p>
+          <p class="mt-2 text-sm text-gray-400">["Hi, it's John. I need a quick favor..." <em>(the voice sounds just like your CEO)</em>]</p>
+          <div class="mt-3 flex justify-between">
+            <span class="text-gray-500 text-sm self-center">Possible vishing attempt</span>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('voice')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 2: Deepfake voice asks for info -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="2" data-threat="40" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 2: Urgent Request</h2>
+          <p>The caller (who sounds exactly like your CEO) urgently asks you to share a sensitive access code to help with a finance emergency.</p>
+          <p class="mt-2 text-sm text-gray-400">[The voice is calm but pressing. You start feeling something is odd, yet it is their voice...]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('voice')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('voice')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 3: Attacker using voice AI -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="3" data-threat="80" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 3: Behind the Scenes</h2>
+          <p>(Unseen by you) The <span class="text-red-500 font-medium">attacker is using an AI voice clone</span> of your CEO. They have a sample of his voice and are speaking through the deepfake system to trick you.</p>
+          <p class="mt-2 text-sm text-gray-400">[On the attacker's computer: "Deepfake Voice Call - Active". They can hear everything as you respond.]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('voice')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('voice')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 4: GustauShield detects deepfake -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="4" data-threat="100" data-alert="true" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 4: GustauShield Alerts Deepfake</h2>
+          <p><span class="text-green-400 font-bold">GustauShield's voice AI</span> analyzes the call in real-time and finds <span class="text-green-400 font-bold">irregularities</span> in the speech patterns. It warns you that this voice may be spoofed!</p>
+          <p class="mt-2 text-sm text-gray-400 blink">[ALERT: "Unverified caller – possible voice deepfake!"]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('voice')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('voice')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 5: Voice call takeaway -->
+        <div class="step mb-4 p-4 bg-gray-900 bg-opacity-60 rounded" data-step="5" data-threat="0" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 5: Scam Prevented – Key Takeaways</h2>
+          <ul class="list-disc list-inside text-gray-300">
+            <li>Always verify unusual requests via a secondary channel (e.g., call the person back on a known number).</li>
+            <li>Be aware that <span class="font-medium text-yellow-300">voices can be faked</span> by AI technology – don't rely on voice alone for identity.</li>
+            <li>GustauShield uses voice pattern analysis to detect deepfake audio and will alert you in real-time.</li>
+          </ul>
+          <div class="mt-3 text-green-400 font-medium">Result: You hesitated and got a warning, avoiding divulging the sensitive info.</div>
+          <div class="mt-4 flex justify-start">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('voice')">« Prev</button>
+          </div>
+        </div>
+        <!-- Threat level bar for voice -->
+        <div class="threat-bar w-full bg-gray-700 rounded h-2 overflow-hidden mb-8">
+          <div class="fill bg-red-500 h-full w-0"></div>
+        </div>
+      </section>
+
+      <!-- Image Spoof scenario section -->
+      <section id="scenario-image" class="scenario-section" style="display:none;">
+        <!-- Step 1: Attacker prepares fake face -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="1" data-threat="20">
+          <h2 class="font-semibold text-lg mb-2">Step 1: Fake Identity Presented</h2>
+          <p>An attacker attempts to pass a <span class="text-yellow-300 font-medium">facial recognition login</span> by using a high-resolution photo of the real user’s face.</p>
+          <p class="mt-2 text-sm text-gray-400">[They hold up a glossy photo to the camera, hoping to fool the system.]</p>
+          <div class="mt-3 flex justify-between">
+            <span class="text-gray-500 text-sm self-center">Spoofing a biometric</span>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('image')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 2: System attempts verification -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="2" data-threat="50" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 2: System Scanning Face</h2>
+          <p>The security system scans the face. At first glance, it matches the authorized person's photo on record. It is on the verge of granting access.</p>
+          <p class="mt-2 text-sm text-gray-400">[The attacker smirks, thinking this simple trick is working.]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('image')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('image')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 3: GustauShield detects liveness failure -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="3" data-threat="90" data-alert="true" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 3: GustauShield Spots a Fake</h2>
+          <p><span class="text-green-400 font-bold">GustauShield's vision AI</span> performs a <span class="text-green-400 font-bold">liveness check</span> – it notices no blink, no natural skin texture or depth. This face is likely a <span class="text-red-500 font-medium">photo</span>!</p>
+          <p class="mt-2 text-sm text-gray-400 blink">[ALERT: "Face Liveness Failed – Access Blocked"]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('image')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('image')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 4: Access denied -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="4" data-threat="100" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 4: Access Denied</h2>
+          <p>The system refuses to unlock. The attacker’s spoof attempt fails – the door stays closed (or the account remains locked).</p>
+          <p class="mt-2 text-sm text-gray-400">[Security is alerted to a possible spoofing attempt. The attacker is left outside, caught on camera.]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('image')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('image')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 5: Image spoof takeaway -->
+        <div class="step mb-4 p-4 bg-gray-900 bg-opacity-60 rounded" data-step="5" data-threat="0" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 5: Spoof Stopped – Lessons Learned</h2>
+          <ul class="list-disc list-inside text-gray-300">
+            <li>Biometric systems should use <span class="font-medium text-yellow-300">liveness detection</span> (e.g., ask for a blink or movement) to thwart imposters.</li>
+            <li>Never assume a static photo or video replay is sufficient ID; always layer with PINs or security questions for critical access.</li>
+            <li>GustauShield's AI can detect subtle differences between a live person and a fake image (lighting, eye reflections, etc.) to protect your accounts.</li>
+          </ul>
+          <div class="mt-3 text-green-400 font-medium">Result: The fake face is exposed, and the attacker gains no access.</div>
+          <div class="mt-4 flex justify-start">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('image')">« Prev</button>
+          </div>
+        </div>
+        <!-- Threat level bar for image -->
+        <div class="threat-bar w-full bg-gray-700 rounded h-2 overflow-hidden mb-8">
+          <div class="fill bg-red-500 h-full w-0"></div>
+        </div>
+      </section>
+
+      <!-- Credential Theft scenario section -->
+      <section id="scenario-cred" class="scenario-section" style="display:none;">
+        <!-- Step 1: Credentials leaked -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="1" data-threat="70">
+          <h2 class="font-semibold text-lg mb-2">Step 1: Password Exposed</h2>
+          <p>An attacker has obtained your <span class="text-yellow-300 font-medium">login credentials</span> (username &amp; password) from a prior breach/phishing incident. They have the keys to your account.</p>
+          <p class="mt-2 text-sm text-gray-400">[Your password was found in a leaked database online. The attacker is ready to use it.]</p>
+          <div class="mt-3 flex justify-between">
+            <span class="text-gray-500 text-sm self-center">Credentials compromised</span>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('cred')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 2: Attacker attempts login -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="2" data-threat="90" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 2: Unauthorized Login Attempt</h2>
+          <p>The attacker enters your credentials on the service (e.g., your work VPN or email portal) and tries to log in as you. From their perspective, the password works...</p>
+          <p class="mt-2 text-sm text-gray-400">[They are logging in from a different location/device. If unchallenged, they'll have full access to your account.]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('cred')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('cred')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 3: GustauShield detects unusual login -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="3" data-threat="100" data-alert="true" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 3: GustauShield Detects Anomaly</h2>
+          <p><span class="text-green-400 font-bold">GustauShield's monitoring</span> finds this login suspicious (new device, unusual location). It flags the attempt and <span class="text-green-400 font-bold">challenges the login</span>.</p>
+          <p class="mt-2 text-sm text-gray-400 blink">[ALERT: "Unusual Login Blocked – Verification Required"]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('cred')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('cred')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 4: Account access blocked -->
+        <div class="step mb-4 p-4 bg-gray-800 bg-opacity-50 rounded" data-step="4" data-threat="100" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 4: Attack Thwarted</h2>
+          <p>The attacker is prompted for additional verification (which they cannot provide) or the account is automatically locked. They fail to gain access.</p>
+          <p class="mt-2 text-sm text-gray-400">[You receive an alert about a blocked login attempt, prompting you to change your password immediately.]</p>
+          <div class="mt-3 flex justify-between">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('cred')">« Prev</button>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium" onclick="nextStep('cred')">Next »</button>
+          </div>
+        </div>
+        <!-- Step 5: Credential theft takeaway -->
+        <div class="step mb-4 p-4 bg-gray-900 bg-opacity-60 rounded" data-step="5" data-threat="0" style="display:none;">
+          <h2 class="font-semibold text-lg mb-2">Step 5: Breach Prevented – Stay Safe</h2>
+          <ul class="list-disc list-inside text-gray-300">
+            <li>Use <span class="font-medium text-yellow-300">strong, unique passwords</span> for each account to limit damage from any single breach.</li>
+            <li>Enable <span class="font-medium text-yellow-300">multi-factor authentication (MFA)</span> – so a stolen password alone isn’t enough to log in.</li>
+            <li>GustauShield constantly monitors login patterns and will <span class="font-medium text-green-400">block unusual access</span>, buying you time to secure your account.</li>
+          </ul>
+          <div class="mt-3 text-green-400 font-medium">Result: The attacker is stopped. Your account remains secure, and you update your credentials.</div>
+          <div class="mt-4 flex justify-start">
+            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium" onclick="prevStep('cred')">« Prev</button>
+          </div>
+        </div>
+        <!-- Threat level bar for credential theft -->
+        <div class="threat-bar w-full bg-gray-700 rounded h-2 overflow-hidden mb-8">
+          <div class="fill bg-red-500 h-full w-0"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- JavaScript for simulation interactivity and animations -->
+  <script>
+    // State tracking for current step in each scenario
+    var currentSteps = {
+      phishing: 1,
+      voice: 1,
+      image: 1,
+      cred: 1
+    };
+
+    // Show a given scenario section and hide others
+    function showScenario(name) {
+      // Hide all scenario sections
+      document.querySelectorAll('.scenario-section').forEach(sec => sec.style.display = 'none');
+      // Show the selected scenario
+      const scenarioSec = document.getElementById('scenario-' + name);
+      scenarioSec.style.display = 'block';
+      // Reset steps for this scenario: show first step, hide others
+      const steps = scenarioSec.querySelectorAll('.step');
+      steps.forEach((step, index) => {
+        step.style.display = (index === 0) ? 'block' : 'none';
+      });
+      // Reset current step index
+      currentSteps[name] = 1;
+      // Reset threat bar to initial width (from first step's data-threat)
+      updateThreatBar(name, steps[0].dataset.threat || 0);
+      // Update active button style
+      document.querySelectorAll('.scenario-btn').forEach(btn => {
+        if(btn.dataset.scenario === name) {
+          btn.classList.remove('text-gray-400');
+          btn.classList.add('text-white', 'underline');
+        } else {
+          btn.classList.remove('text-white', 'underline');
+          btn.classList.add('text-gray-400');
+        }
+      });
+    }
+
+    // Show a specific step number of a scenario (and hide others)
+    function showStep(scenario, stepNum) {
+      const scenarioSec = document.getElementById('scenario-' + scenario);
+      const allSteps = scenarioSec.querySelectorAll('.step');
+      allSteps.forEach(stepDiv => {
+        stepDiv.style.display = (stepDiv.dataset.step == stepNum) ? 'block' : 'none';
+      });
+      // Update threat bar based on this step's threat level
+      const currentStepDiv = scenarioSec.querySelector('.step[data-step="' + stepNum + '"]');
+      if (currentStepDiv) {
+        const threatLevel = currentStepDiv.dataset.threat || 0;
+        updateThreatBar(scenario, threatLevel);
+        // If this step triggers an alert, play the alert sound
+        if (currentStepDiv.dataset.alert === "true") {
+          playAlertSound();
+        }
+      }
+      // Update current step index
+      currentSteps[scenario] = parseInt(stepNum);
+    }
+
+    function nextStep(scenario) {
+      const next = currentSteps[scenario] + 1;
+      showStep(scenario, next);
+    }
+
+    function prevStep(scenario) {
+      const prev = currentSteps[scenario] - 1;
+      showStep(scenario, prev);
+    }
+
+    // Update the threat level bar fill width for a scenario
+    function updateThreatBar(scenario, level) {
+      const fill = document.querySelector('#scenario-' + scenario + ' .fill');
+      if (fill) {
+        // Ensure level is between 0 and 100
+        let pct = Math.max(0, Math.min(100, level));
+        fill.style.width = pct + '%';
+      }
+    }
+
+    // Audio alert (beep) using Web Audio API for alert steps
+    function playAlertSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = 440; // A4 tone
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        // Short beep: stop after 150 ms
+        osc.stop(ctx.currentTime + 0.15);
+      } catch(e) {
+        console.warn('Web Audio not supported or context blocked.');
+      }
+    }
+
+    // Matrix rain background animation
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    // Characters for matrix effect
+    const matrixChars = '01ABCDEFGHJKLMNOPQRSTUVWXYZ'; 
+    const fontSize = 14;
+    let columns; 
+    let drops; 
+    function initMatrix() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(0);
+      ctx.font = fontSize + 'px monospace';
+    }
+    function drawMatrix() {
+      // Black background with slight opacity to create trailing effect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Bright green characters
+      ctx.fillStyle = '#0f0';
+      drops.forEach((y, x) => {
+        const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+        ctx.fillText(text, x * fontSize, y * fontSize);
+        // Reset drop to start a new column occasionally once it goes off screen
+        if (y * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[x] = 0;
+        }
+        drops[x]++;
+      });
+    }
+    // Initialize and run matrix effect
+    initMatrix();
+    setInterval(drawMatrix, 50);
+    // Re-init on window resize to adjust canvas
+    window.addEventListener('resize', initMatrix);
+
+    // Start with phishing scenario visible by default
+    showScenario('phishing');
+  </script>
+</body>
+</html>
