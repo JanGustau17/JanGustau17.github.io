@@ -1,1 +1,220 @@
 
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GustauShield – AI Cybersecurity</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* =======================================
+       Background & Base Styles
+    ======================================= */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0d0d2b;
+      background-image:
+        linear-gradient(to right, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at top right, rgba(192, 38, 211, 0.4), transparent 50%),
+        radial-gradient(circle at bottom left, rgba(79, 70, 229, 0.4), transparent 60%),
+        radial-gradient(circle at center, rgba(0, 255, 255, 0.05), transparent 70%);
+      background-size: 20px 20px, 20px 20px, cover, cover, cover;
+      margin: 0;
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle, white 1px, transparent 1px) repeat;
+      background-size: 50px 50px;
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* =======================================
+       Neon Window-Bar (Nav) Styles
+    ======================================= */
+    @keyframes line-pulse-extend-1 {
+      0% { height: 30px; opacity: 0.6; }
+      50% { height: 95px; opacity: 1; }
+      100% { height: 90px; }
+    }
+    @keyframes line-pulse-extend-2 {
+      0% { height: 35px; opacity: 0.7; }
+      50% { height: 105px; opacity: 1; }
+      100% { height: 100px; }
+    }
+    @keyframes line-pulse-extend-3 {
+      0% { height: 28px; opacity: 0.5; }
+      50% { height: 90px; opacity: 0.9; }
+      100% { height: 85px; }
+    }
+    @keyframes folder-glow {
+      0%,100% {
+        box-shadow:
+          0 0 10px rgba(0, 255, 255, 0.5),
+          0 0 15px rgba(255, 0, 255, 0.4),
+          inset 0 0 8px rgba(0,0,0,0.4);
+      }
+      50% {
+        box-shadow:
+          0 0 15px rgba(0, 255, 255, 0.7),
+          inset 0 0 12px rgba(0,0,0,0.5);
+      }
+    }
+
+    .folder-container-neon {
+      position: relative;
+      width: 160px; height: 80px;
+      margin: 0 1rem;
+      perspective: 800px;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      transition: transform 0.6s;
+    }
+    .folder-container-neon .folder-card-neon {
+      position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 60px;
+      background: rgba(20,20,50,0.9);
+      border: 1px solid rgba(0,255,255,0.4);
+      backdrop-filter: blur(8px);
+      border-radius: 0 0 8px 8px;
+      display: flex; align-items: center; justify-content: center;
+      transform-style: preserve-3d;
+      transition: box-shadow 0.6s, transform 0.6s;
+      z-index: 2;
+    }
+    .folder-container-neon .folder-card-neon .folder-title-neon {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      color: #e0e0e0;
+      letter-spacing: 1px;
+      text-shadow:
+        0 0 4px #00ffff,
+        0 0 8px #ff00ff;
+    }
+    .folder-container-neon:hover {
+      transform: translateY(-5px) scale(1.05);
+    }
+    .folder-container-neon:hover .folder-card-neon {
+      animation: folder-glow 2s infinite alternate ease-in-out;
+    }
+
+    /* =======================================
+       Hero & Chart Section
+    ======================================= */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #fff;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg,#00f0ff,#6e00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .chart-container {
+      max-width: 400px;
+      margin: 2rem auto 0;
+    }
+  </style>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="fixed top-0 left-0 w-full flex justify-center p-4 z-10">
+    <div class="flex">
+      <a href="#home" class="folder-container-neon">
+        <div class="folder-card-neon">
+          <span class="folder-title-neon">HOME</span>
+        </div>
+      </a>
+      <a href="#stats" class="folder-container-neon">
+        <div class="folder-card-neon">
+          <span class="folder-title-neon">STATS</span>
+        </div>
+      </a>
+      <a href="#simulations" class="folder-container-neon">
+        <div class="folder-card-neon">
+          <span class="folder-title-neon">SIMS</span>
+        </div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="hero mt-20">
+    <h1>AI-Optimized Cybersecurity</h1>
+    <p>Defend in real time against evolving threats powered by deep learning, phishing networks & deepfakes.</p>
+  </section>
+
+  <!-- QUICK STATS CHART -->
+  <section id="stats" class="chart-container">
+    <canvas id="welcomeChart"></canvas>
+  </section>
+
+  <!-- SIMULATIONS CALL-TO-ACTION -->
+  <section id="simulations" class="hero">
+    <h1>Try Our Phishing Simulator</h1>
+    <p>Experience a demo of how attackers mimic real sites — then learn how to spot them.</p>
+    <button
+      onclick="location.href='simulations.html'"
+      class="mt-4 px-6 py-3 bg-gradient-to-r from-cyan-400 to-purple-600 rounded-full font-semibold hover:opacity-90 transition">
+      Launch Simulation
+    </button>
+  </section>
+
+  <!-- MAIN SCRIPT -->
+  <script>
+    // -----------------------------
+    // Quick Chart.js Initialization
+    // -----------------------------
+    const ctx = document.getElementById('welcomeChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Phishing', 'Ransomware', 'Malware', 'Social Eng.', 'Other'],
+        datasets: [{
+          data: [45, 15, 20, 10, 10],
+          backgroundColor: ['#00f0ff','#6e00ff','#4ade80','#facc15','#f87171']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom', labels:{color:'#fff'} }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
