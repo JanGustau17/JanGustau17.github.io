@@ -1,1 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GustauShield – AI-Optimized Cybersecurity Dashboard</title>
+  <!-- Tailwind CSS CDN for styling  [oai_citation:3‡tailwindcss.com](https://tailwindcss.com/docs/installation/play-cdn#:~:text=Use%20the%20Play%20CDN%20to,is%20not%20intended%20for%20production) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'orbitron': ['Orbitron', 'sans-serif'],
+            'poppins': ['Poppins', 'sans-serif']
+          },
+          dropShadow: {
+            'neon': '0 0 10px rgba(0, 255, 255, 0.7)'  /* glow effect for neon text */
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts for Orbitron and Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN for charts  [oai_citation:4‡chartjs.org](https://www.chartjs.org/docs/latest/getting-started/#:~:text=Now%20that%20we%20have%20a,js%20from%20a%20CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Neon text glow effect */
+    .neon-text {
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+    }
+    /* Keyframes for news ticker scroll */
+    @keyframes ticker {
+      0%   { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    /* Applying the ticker animation to an element */
+    .animate-ticker {
+      display: inline-block;
+      animation: ticker 30s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-black text-gray-200 font-poppins overflow-x-hidden">
+  <!-- Canvas for Matrix background effect (positioned fixed behind content) -->
+  <canvas id="matrixCanvas" class="fixed top-0 left-0 w-full h-full"></canvas>
 
+  <!-- Top Navigation Bar (fixed to top, semi-transparent background) -->
+  <nav class="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 bg-gray-900 bg-opacity-80 text-cyan-300 z-20">
+    <!-- Logo/Project Name -->
+    <div class="text-xl font-orbitron font-bold drop-shadow-neon">GustauShield</div>
+    <!-- Nav Links -->
+    <ul class="flex space-x-6 text-sm">
+      <li><a href="#" class="playsound hover:text-white">Home</a></li>
+      <li><a href="#" class="playsound hover:text-white">Threats</a></li>
+      <li><a href="#" class="playsound hover:text-white">Simulations</a></li>
+      <li><a href="#" class="playsound hover:text-white">Research</a></li>
+      <li><a href="#" class="playsound hover:text-red-400">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content (with top padding to avoid navbar overlap) -->
+  <main class="pt-20 px-6">
+    <!-- Live Threat Statistics Section -->
+    <section class="my-8">
+      <h2 class="text-2xl font-orbitron text-cyan-400 neon-text mb-4">Live Threat Statistics</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Stat Card 1 -->
+        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700">
+          <div class="text-lg font-orbitron text-purple-400">Detected Intrusions</div>
+          <div class="text-4xl font-bold text-white counter" data-target="1250">0</div>
+        </div>
+        <!-- Stat Card 2 -->
+        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700">
+          <div class="text-lg font-orbitron text-purple-400">Phishing Attempts</div>
+          <div class="text-4xl font-bold text-white counter" data-target="320">0</div>
+        </div>
+        <!-- Stat Card 3 -->
+        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700">
+          <div class="text-lg font-orbitron text-purple-400">Malware Blocked</div>
+          <div class="text-4xl font-bold text-white counter" data-target="89">0</div>
+        </div>
+        <!-- Stat Card 4 -->
+        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700">
+          <div class="text-lg font-orbitron text-purple-400">Spam Emails</div>
+          <div class="text-4xl font-bold text-white counter" data-target="1567">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="my-8">
+      <h2 class="text-2xl font-orbitron text-cyan-400 neon-text mb-4">Recent Scam Types</h2>
+      <div class="flex flex-wrap gap-8">
+        <!-- Pie Chart Canvas -->
+        <div class="w-full md:w-1/2">
+          <canvas id="scamTypesChart" width="400" height="300"></canvas>
+        </div>
+        <!-- Bar Chart Canvas -->
+        <div class="w-full md:w-1/2">
+          <canvas id="phishingTrendChart" width="400" height="300"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top 10 Phishing Simulation Sites Section -->
+    <section class="my-8">
+      <h2 class="text-2xl font-orbitron text-cyan-400 neon-text mb-4">Top 10 Phishing Simulation Sites</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm bg-gray-800 bg-opacity-50">
+          <thead class="font-orbitron text-cyan-300 uppercase">
+            <tr>
+              <th class="py-2 px-4">#</th>
+              <th class="py-2 px-4">Website</th>
+              <th class="py-2 px-4">Risk Level</th>
+            </tr>
+          </thead>
+          <tbody class="font-poppins">
+            <!-- Dummy data rows -->
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">1</td>
+              <td class="py-1 px-4">phishingsite.com</td>
+              <td class="py-1 px-4 text-red-400">High</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">2</td>
+              <td class="py-1 px-4">fakelogin.net</td>
+              <td class="py-1 px-4 text-yellow-300">Medium</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">3</td>
+              <td class="py-1 px-4">secure-update.io</td>
+              <td class="py-1 px-4 text-red-400">High</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">4</td>
+              <td class="py-1 px-4">accountverify.co</td>
+              <td class="py-1 px-4 text-yellow-300">Medium</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">5</td>
+              <td class="py-1 px-4">login-alert.com</td>
+              <td class="py-1 px-4 text-red-400">High</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">6</td>
+              <td class="py-1 px-4">update-your-bank.com</td>
+              <td class="py-1 px-4 text-red-400">High</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">7</td>
+              <td class="py-1 px-4">free-gift-card.net</td>
+              <td class="py-1 px-4 text-yellow-300">Medium</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">8</td>
+              <td class="py-1 px-4">win-prize-now.com</td>
+              <td class="py-1 px-4 text-green-400">Low</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">9</td>
+              <td class="py-1 px-4">official-login.org</td>
+              <td class="py-1 px-4 text-yellow-300">Medium</td>
+            </tr>
+            <tr class="hover:bg-gray-700">
+              <td class="py-1 px-4">10</td>
+              <td class="py-1 px-4">account-support.info</td>
+              <td class="py-1 px-4 text-green-400">Low</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer with News Ticker -->
+  <footer class="bg-gray-900 bg-opacity-80 py-4">
+    <div class="overflow-hidden whitespace-nowrap">
+      <!-- Scrolling text container -->
+      <div class="animate-ticker text-cyan-300 font-poppins text-sm">
+        <span class="mx-8">[News] New phishing scam targets online banking users.</span>
+        <span class="mx-8">[Alert] Major data breach exposes millions of accounts.</span>
+        <span class="mx-8">[Update] Cybersecurity guidelines released for IoT devices.</span>
+        <span class="mx-8">[Insight] AI system detects a zero-day exploit in the wild.</span>
+        <!-- Repeat news items for continuous loop -->
+        <span class="mx-8">[News] New phishing scam targets online banking users.</span>
+        <span class="mx-8">[Alert] Major data breach exposes millions of accounts.</span>
+        <span class="mx-8">[Update] Cybersecurity guidelines released for IoT devices.</span>
+        <span class="mx-8">[Insight] AI system detects a zero-day exploit in the wild.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: Charts, Counters, Sound, and Background Effect -->
+  <script>
+    // 1. Initialize Chart.js charts
+    const ctx1 = document.getElementById('scamTypesChart').getContext('2d');
+    const scamChart = new Chart(ctx1, {
+      type: 'pie',
+      data: {
+        labels: ['Phishing', 'Malware', 'Spam', 'Other'],
+        datasets: [{
+          data: [55, 25, 15, 5],  // sample percentage data
+          backgroundColor: ['#ff6384', '#36a2eb', '#4bc0c0', '#9966ff']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: true, labels: { color: '#fff' } }
+        }
+      }
+    });
+    const ctx2 = document.getElementById('phishingTrendChart').getContext('2d');
+    const trendChart = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Phishing Attempts',
+          data: [5, 12, 8, 19, 17, 10],  // sample data for each month
+          backgroundColor: '#36a2eb'
+        }]
+      },
+      options: {
+        scales: {
+          x: { ticks: { color: '#fff' } },
+          y: { ticks: { color: '#fff' } }
+        },
+        plugins: {
+          legend: { display: false }  // hide legend for single dataset chart
+        }
+      }
+    });
+
+    // 2. Animate the counters for stats
+    document.querySelectorAll('.counter').forEach(counter => {
+      const target = Number(counter.dataset.target);
+      let count = 0;
+      const increment = Math.ceil(target / 100);  // increment in 100 steps
+      const updateCounter = () => {
+        count += increment;
+        if (count >= target) {
+          counter.textContent = target;
+        } else {
+          counter.textContent = count;
+          requestAnimationFrame(updateCounter);
+        }
+      };
+      requestAnimationFrame(updateCounter);
+    });
+
+    // 3. Hover sound effect using Web Audio API
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playHoverSound() {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();  // resume context if suspended (autoplay policy)
+      }
+      // oscillator for beep
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 880;      // frequency in Hz (880 ~= A5 note)
+      gain.gain.value = 0.2;          // lower volume for subtle effect
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);  // 100ms beep
+    }
+    // attach sound to elements with class 'playsound'
+    document.querySelectorAll('.playsound').forEach(el => {
+      el.addEventListener('mouseenter', playHoverSound);
+    });
+
+    // 4. Matrix rain background effect on canvas
+    const canvas = document.getElementById('matrixCanvas');
+    const ctxMatrix = canvas.getContext('2d');
+    // Full-screen canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    // Characters (Katakana, Latin letters, and numbers)
+    const katakana = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン";
+    const latin = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const nums = "0123456789";
+    const alphabet = katakana + latin + nums;
+    // Matrix columns (one column per letter of width)
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const rainDrops = Array(columns).fill(0);  // Y positions of drops for each column
+    // Draw the matrix effect
+    function drawMatrix() {
+      // Black background with transparency for trail effect
+      ctxMatrix.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctxMatrix.fillRect(0, 0, canvas.width, canvas.height);
+      // Set text style to neon green matrix code
+      ctxMatrix.fillStyle = "#0F0";
+      ctxMatrix.font = fontSize + "px monospace";
+      // Draw characters
+      for (let i = 0; i < rainDrops.length; i++) {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        ctxMatrix.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+        // Send drop back to top randomly after it has crossed the screen
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
+        }
+        rainDrops[i]++;  // move drop down one step
+      }
+    }
+    // Loop the draw function at ~20fps (50ms)
+    setInterval(drawMatrix, 50);
+    // Update canvas size if window is resized (to keep effect full-screen)
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      // Reset drops to start over on resize
+      rainDrops.length = Math.floor(canvas.width / fontSize);
+      rainDrops.fill(0);
+    });
+  </script>
+</body>
+</html>
