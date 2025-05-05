@@ -452,6 +452,25 @@
 
     // Start with phishing scenario visible by default
     showScenario('phishing');
+
+
+    // ── About Me Modal Logic ──
+const aboutModal   = document.getElementById('aboutMeModal');
+const openAboutBtn = document.getElementById('openAboutMe');
+const closeAboutBtn= document.getElementById('closeAboutMe');
+
+openAboutBtn.addEventListener('click', () => {
+  aboutModal.classList.remove('hidden');
+});
+closeAboutBtn.addEventListener('click', () => {
+  aboutModal.classList.add('hidden');
+});
+// Optional: click outside panel to close
+aboutModal.addEventListener('click', e => {
+  if (e.target === aboutModal) aboutModal.classList.add('hidden');
+});
+// ── End About Me Modal Logic ──
+    
   </script>
 </body>
 </html>
