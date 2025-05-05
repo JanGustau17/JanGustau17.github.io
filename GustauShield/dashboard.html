@@ -1,1 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GustauShield - AI Cybersecurity Landscape</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%); color: #cccccc; font-family: 'Poppins', sans-serif; min-height: 100vh; overflow-x: hidden; padding-top: 64px; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .header-gradient { background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
+        nav { background-color: rgba(10, 10, 26, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0, 255, 255, 0.15); }
+        nav a, nav button { transition: color 0.2s ease, text-shadow 0.2s ease; }
+        nav a:hover, nav button:hover { color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        nav a.active { color: #00ffff; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        .cyber-button { background: linear-gradient(to right, #0077ff, #8a2be2); color: white; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3); }
+        .cyber-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4); }
+        .content-card { background-color: rgba(25, 35, 45, 0.6); border: 1px solid rgba(0, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: 8px; padding: 1.5rem; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.4; }
+        main, nav, footer { position: relative; z-index: 1; }
+        section { padding: 4rem 1rem; } /* Standard section padding */
+         /* Chart Container */
+         .chart-container { position: relative; height: 350px; width: 100%; margin-top: 1.5rem; }
+         /* News Snippet Styling */
+        .news-snippet { border-left: 3px solid #0077ff; padding-left: 1rem; margin-bottom: 1rem; }
+        .news-snippet time { font-size: 0.8rem; color: #888888; display: block; margin-bottom: 0.25rem; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Base Styles */
+        html { scroll-behavior: smooth; }
+        body {
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%);
+            color: #cccccc; /* light-gray */
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* Custom Fonts */
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* Header Gradient */
+        .header-gradient {
+             background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2);
+             -webkit-background-clip: text;
+             background-clip: text;
+             color: transparent;
+        }
+        /* Neon Text */
+        .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
+
+        /* Navigation */
+        nav { background-color: rgba(10, 10, 26, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0, 255, 255, 0.15); }
+        nav a { transition: color 0.2s ease, text-shadow 0.2s ease; }
+        nav a:hover, nav button:hover { color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        nav a.active { color: #00ffff; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+
+        /* Buttons */
+        .cyber-button {
+            background: linear-gradient(to right, #0077ff, #8a2be2);
+            color: white; padding: 0.75rem 1.5rem; border-radius: 6px;
+            font-weight: 600; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+        }
+        .cyber-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+        }
+
+        /* Cards */
+        .content-card {
+            background-color: rgba(25, 35, 45, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+
+        /* Matrix Canvas Styling */
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -10; /* Deep background */
+            opacity: 0.4; /* Reduced opacity */
+        }
+        /* Ensure content is above canvas */
+        main, nav, footer { position: relative; z-index: 1; }
+    </style>
+
+    </head>
+<body class="font-poppins">
+
+    <canvas id="matrix-canvas"></canvas>
+
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
+        <div class="container mx-auto flex justify-between items-center px-4 py-3">
+            {/* Link back to landing page */}
+            <a href="index.html" class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></a>
+            <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">
+                ☰
+            </button>
+            {/* Desktop Menu - Update active class */}
+            <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
+                <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
+                <li><a href="dashboard.html" class="active hover:text-cyber-cyan">Dashboard</a></li> {/* Active page */}
+                <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
+                <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
+                {/* No Login/Logout needed for this version */}
+            </ul>
+        </div>
+         {/* Mobile Menu Panel */}
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
+            <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
+                <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
+                <li><a href="dashboard.html" class="active hover:text-cyber-cyan">Dashboard</a></li> {/* Active page */}
+                <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
+                <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <h1 class="text-3xl md:text-4xl font-bold neon-text-cyan font-orbitron mb-10 text-center">The AI Cybersecurity Landscape</h1>
+
+        <section id="ai-defenses" class="mb-12">
+            <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-6 header-gradient">AI: The Proactive Defender</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="content-card">
+                    <h3 class="text-xl font-semibold text-cyber-cyan mb-3">Detecting the Unseen</h3>
+                    <p class="text-light-gray mb-4 leading-relaxed text-sm">
+                        Traditional security relies on known signatures of malware or attacks. AI changes the game by learning *normal* behavior within a network or on a device. When something deviates – even slightly – AI can flag it as suspicious long before it matches a known threat signature. It's like a security guard who knows everyone's routine and instantly spots someone acting strangely.
+                    </p>
+                    <ul class="space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-cyan">
+                        <li>Analyzes billions of data points (logs, network traffic, user actions) in real-time.</li>
+                        <li>Identifies subtle anomalies and zero-day threats missed by signature-based tools.</li>
+                        <li>Reduces "alert fatigue" for human analysts by prioritizing genuinely suspicious events.</li>
+                    </ul>
+                </div>
+                 <div class="content-card">
+                     <h3 class="text-xl font-semibold text-cyber-cyan mb-3">Automated Response & Prediction</h3>
+                     <p class="text-light-gray mb-4 leading-relaxed text-sm">
+                        Speed is critical in cyber defense. AI doesn't just detect; it can *react* instantly. It can automatically isolate infected devices, block malicious IP addresses, or patch vulnerabilities the moment they are discovered. Furthermore, by analyzing global threat data, AI models can predict emerging attack trends or likely targets, allowing organizations to bolster defenses proactively.
+                    </p>
+                     <ul class="space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-cyan">
+                        <li>Enables sub-second response times to contain breaches.</li>
+                        <li>Predicts attack vectors based on machine learning models.</li>
+                        <li>Continuously learns and adapts defenses as the threat landscape evolves.</li>
+                    </ul>
+                </div>
+                 <div class="md:col-span-2 flex justify-center mt-6">
+                     <div class="w-full max-w-2xl h-48 border border-cyber-blue/50 rounded-lg flex items-center justify-center text-medium-gray bg-dark-bg/50 shadow-lg text-center p-4">
+                        [Visual Placeholder: Flowchart showing Data Input -> AI Analysis (Anomaly Detection, Prediction) -> Automated Output (Alert, Block, Patch)]
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="ai-attacks" class="mb-12">
+             <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-6 text-center header-gradient">AI: The Attacker's New Weapon</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                 <div class="content-card">
+                    <h3 class="text-xl font-semibold text-cyber-purple mb-3">Hyper-Realistic Scams</h3>
+                    <p class="text-light-gray mb-4 leading-relaxed text-sm">
+                       AI excels at mimicry. Attackers use AI language models (like ChatGPT's cousins) to generate flawless, highly personalized phishing emails that bypass spam filters and trick users. Deepfake technology allows them to clone voices or even create fake videos for sophisticated impersonation scams (e.g., fake CEO requests for wire transfers).
+                    </p>
+                    <ul class="space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-purple">
+                        <li>Spear-phishing emails tailored with personal details gathered by AI.</li>
+                        <li>Convincing voice clones used in "vishing" (voice phishing) calls.</li>
+                        <li>Potential for realistic fake video calls for high-stakes impersonation.</li>
+                    </ul>
+                 </div>
+                 <div class="content-card">
+                     <h3 class="text-xl font-semibold text-cyber-purple mb-3">Automation & Evasion</h3>
+                     <p class="text-light-gray mb-4 leading-relaxed text-sm">
+                         AI significantly lowers the bar for launching complex attacks. Tools can automate vulnerability scanning, password guessing, and even malware creation. AI can also help malware adapt its behaviour ("polymorphic code") to evade detection by antivirus software, making threats stealthier and more persistent.
+                    </p>
+                     <ul class="space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-purple">
+                        <li>Faster discovery and exploitation of software vulnerabilities.</li>
+                        <li>AI-driven password cracking and credential stuffing attacks.</li>
+                        <li>Malware that dynamically changes to avoid known signatures.</li>
+                     </ul>
+                 </div>
+                  <div class="md:col-span-2 flex justify-center mt-6">
+                     <div class="w-full max-w-2xl h-48 border border-cyber-purple/50 rounded-lg flex items-center justify-center text-medium-gray bg-dark-bg/50 shadow-lg text-center p-4">
+                        [Visual Placeholder: Graphic showing AI tools generating fake emails, voice waves, searching for vulnerabilities]
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="stats-news" class="mb-12">
+            <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-8 text-center header-gradient">Stats, Trends & News</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                {/* Charts Area */}
+                <div class="md:col-span-2 content-card">
+                     <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron">Visualizing the Impact</h3>
+                     <div class="flex flex-col xl:flex-row gap-6">
+                         <div class="flex-1">
+                             <h4 class="text-center text-medium-gray text-sm mb-1">Common AI Attack Vectors*</h4>
+                            <div class="chart-container mx-auto max-w-sm">
+                                <canvas id="attackVectorChart"></canvas> {/* Changed ID */}
+                            </div>
+                         </div>
+                          <div class="flex-1">
+                             <h4 class="text-center text-medium-gray text-sm mb-1">AI Detection Speed Trend*</h4>
+                             <div class="chart-container mx-auto max-w-sm">
+                                <canvas id="detectionTrendChart"></canvas> {/* Changed ID */}
+                             </div>
+                          </div>
+                     </div>
+                     <p class="text-xs text-medium-gray mt-4 text-center">*Charts show illustrative, simulated data based on industry trends.</p>
+                </div>
+
+                {/* Simulated News Feed */}
+                <div class="md:col-span-1 content-card">
+                    <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron">Intel Feed (Simulated)</h3>
+                    <div class="space-y-4 max-h-96 overflow-y-auto pr-2"> {/* Added max-height and scroll */}
+                        <div class="news-snippet">
+                             <time datetime="2025-05-05T14:00:00Z">May 5, 2025 - 14:00 UTC</time>
+                             <p class="text-sm text-light-gray">AI model successfully identifies zero-day exploit in popular web server software, patch deployed proactively.</p>
+                        </div>
+                         <div class="news-snippet">
+                             <time datetime="2025-05-05T11:30:00Z">May 5, 2025 - 11:30 UTC</time>
+                             <p class="text-sm text-light-gray"><strong class="text-yellow-400">[Warning]</strong> Spike detected in AI-generated phishing emails impersonating cloud service providers.</p>
+                        </div>
+                         <div class="news-snippet">
+                             <time datetime="2025-05-04T20:15:00Z">May 4, 2025 - 20:15 UTC</time>
+                             <p class="text-sm text-light-gray">Research published on new technique using generative AI to create polymorphic malware undetectable by older AV engines.</p>
+                        </div>
+                         <div class="news-snippet">
+                             <time datetime="2025-05-04T09:05:00Z">May 4, 2025 - 09:05 UTC</time>
+                             <p class="text-sm text-light-gray"><strong class="text-red-500">[Alert]</strong> Credential stuffing attack using AI-optimized password lists blocked against financial services client.</p>
+                        </div>
+                         <div class="news-snippet">
+                             <time datetime="2025-05-03T16:40:00Z">May 3, 2025 - 16:40 UTC</time>
+                             <p class="text-sm text-light-gray">Deepfake voice analysis flagged incoming call to executive as synthetic; potential fraud averted.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
+        GustauShield Insights | English Project | AI in Cybersecurity Analysis
+    </footer>
+
+    {/* Ensure these files exist in a 'js/' subfolder relative to this html file */}
+    <script src="js/matrix.js" defer></script>
+    <script src="js/charts.js" defer></script> {/* Contains initDashboardCharts() */}
+    <script src="js/main.js" defer></script> {/* Contains initCommon() which runs on DOMContentLoaded */}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Dashboard Initializing...");
+
+            // Initialize Matrix Background (from matrix.js)
+            if (typeof initRainbowMatrix === 'function') {
+                try {
+                    initRainbowMatrix('matrix-canvas');
+                } catch (error) {
+                    console.error("Error initializing Matrix background:", error);
+                }
+            } else {
+                console.error("Initialization Error: initRainbowMatrix function not found. Check js/matrix.js.");
+            }
+
+            // Initialize Dashboard Charts (from charts.js)
+            // This function needs to be defined in js/charts.js and should
+            // target the canvas IDs: 'attackVectorChart' and 'detectionTrendChart'
+            if (typeof initDashboardCharts === 'function') {
+                try {
+                    initDashboardCharts(); // Assumes this function finds the correct canvas IDs
+                    console.log("Dashboard charts initialization initiated.");
+                } catch(error) {
+                    console.error("Error initializing dashboard charts:", error);
+                }
+            } else {
+                console.warn("Optional: initDashboardCharts function not found. No charts will be rendered. Check js/charts.js.");
+            }
+
+             // Note: Common initializations like mobile menu are handled by js/main.js
+
+            console.log("Dashboard initialization complete.");
+        });
+    </script>
+
+</body>
+</html>
