@@ -4,133 +4,95 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GustauShield – AI-Optimized Cybersecurity</title>
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN for styling -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Custom Tailwind config (if needed) could go here */
   </style>
-  <!-- Additional custom styles for neon/glassmorphism and animations -->
   <style>
+    /* Ensure smooth scroll */
+    html { scroll-behavior: smooth; }
+
     /* Neon text glow */
     .neon-text {
       text-shadow: 0 0 8px #0ff, 0 0 16px #0ff;
     }
     /* Neon border and glassmorphism for panels */
     .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(6px);
+      background: rgba(25, 35, 45, 0.6); /* Darker, less transparent */
+      backdrop-filter: blur(8px);
       border: 1px solid rgba(0, 255, 255, 0.2);
-      box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
     }
     /* Glowing button */
     .glow-btn {
       box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
-      transition: box-shadow 0.3s ease;
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
     }
     .glow-btn:hover {
       box-shadow: 0 0 12px rgba(0, 255, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.6);
+      transform: translateY(-1px);
     }
     /* Audio player disc and bars */
-    .music-widget .disc {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #555 10%, #333 70%, #111 100%);
-      border: 2px solid #777;
-      position: relative;
-      margin: 0 auto;
-    }
-    .music-widget .disc::after {
-      content: "";
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 16px; height: 16px;
-      background: #111;
-      border: 2px solid #444;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .music-widget .bars {
-      display: flex;
-      justify-content: center;
-      margin-top: 0.5rem;
-      height: 20px;
-    }
-    .music-widget .bar {
-      width: 4px;
-      background: #0ff;
-      margin: 0 2px;
-      opacity: 0.8;
-      animation: equalize 1s ease-in-out infinite alternate;
-    }
-    .music-widget.playing .disc {
-      animation: spin 5s linear infinite;
-    }
-    .music-widget.playing .bar {
-      /* When playing, bars animate (already animating by default) */
-      opacity: 1;
-    }
-    .music-widget:not(.playing) .bar {
-      /* Pause bars when not playing by freezing animation */
-      animation-play-state: paused;
-      opacity: 0.4;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    @keyframes equalize {
-      0% { height: 4px; }
-      100% { height: 16px; }
-    }
+    .music-widget .disc { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #555 10%, #333 70%, #111 100%); border: 2px solid #777; position: relative; margin: 0 auto; }
+    .music-widget .disc::after { content: ""; position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; background: #111; border: 2px solid #444; border-radius: 50%; transform: translate(-50%, -50%); }
+    .music-widget .bars { display: flex; justify-content: center; margin-top: 0.5rem; height: 20px; align-items: flex-end; /* Align bars at bottom */ }
+    .music-widget .bar { width: 4px; background: #0ff; margin: 0 2px; opacity: 0.8; animation: equalize 1s ease-in-out infinite alternate; }
+    .music-widget.playing .disc { animation: spin 5s linear infinite; }
+    .music-widget.playing .bar { opacity: 1; animation-play-state: running; /* Ensure animation runs */}
+    .music-widget:not(.playing) .bar { animation-play-state: paused; opacity: 0.4; height: 4px; /* Reset height when paused */ }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes equalize { 0% { height: 4px; } 100% { height: 16px; } }
     /* Ticker scroll animation */
-    @keyframes scroll-text {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+    @keyframes scroll-text { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .ticker-content { display: inline-block; white-space: nowrap; animation: scroll-text 25s linear infinite; padding-left: 100%; /* Start off-screen */}
+    /* Neon flicker effect */
+    @keyframes flicker { 0%, 80%, 100% { opacity: 1; text-shadow: 0 0 8px #0ff, 0 0 12px #0ff; } 82%, 85% { opacity: 0.8; text-shadow: none; } 90% { opacity: 0.6; } }
+    .flicker { animation: flicker 5s infinite; }
+
+    /* Basic Form Field Styling */
+    .form-field {
+        background-color: rgba(0, 30, 30, 0.5);
+        border: 1px solid #007a7a;
+        color: #99ffff;
+        caret-color: #00ffcc;
+        box-shadow: inset 0 0 6px rgba(0, 255, 204, 0.2);
+        border-radius: 4px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
     }
-    .ticker-content {
-      display: inline-block;
-      white-space: nowrap;
-      animation: scroll-text 20s linear infinite;
-    }
-    /* Neon flicker effect for main title */
-    @keyframes flicker {
-      0%, 80%, 100% { opacity: 1; text-shadow: 0 0 8px #0ff, 0 0 12px #0ff; }
-      82%, 85% { opacity: 0.8; text-shadow: none; }
-      90% { opacity: 0.6; }
-    }
-    .flicker {
-      animation: flicker 5s infinite;
+    .form-field::placeholder { color: #007a7a; opacity: 0.8; }
+    .form-field:focus {
+        outline: none;
+        border-color: #00ffcc;
+        background-color: rgba(0, 40, 40, 0.6);
+        box-shadow: 0 0 10px rgba(0, 255, 204, 0.4), inset 0 0 8px rgba(0, 255, 204, 0.3);
+        color: #ffffff;
     }
   </style>
 </head>
-<body class="bg-black text-gray-200 font-[Poppins]">
-  <!-- Fixed Navigation Bar -->
+{/* Corrected font class */}
+<body class="bg-black text-gray-200 font-poppins">
   <nav class="fixed top-0 left-0 w-full z-50 bg-black bg-opacity-60 backdrop-blur-sm border-b border-cyan-800 text-gray-300">
     <div class="flex justify-between items-center px-4 py-2">
-      <!-- Brand/Logo in nav -->
       <a href="#home" class="text-cyan-400 font-orbitron font-bold text-xl">GustauShield</a>
-      <!-- Hamburger (mobile) -->
       <button id="burger" class="md:hidden text-gray-300 text-2xl focus:outline-none" aria-label="Menu">☰</button>
-      <!-- Nav Menu Links -->
-      <ul id="nav-menu" class="hidden md:flex flex-col md:flex-row md:items-center bg-black md:bg-transparent bg-opacity-80 md:bg-opacity-0 absolute md:static top-full left-0 w-full md:w-auto space-y-4 md:space-y-0 md:space-x-8 px-4 py-4 md:p-0">
-        <li><a href="#home" class="hover:text-cyan-300">Home</a></li>
-        <li><a href="#dashboard" class="hover:text-cyan-300">Dashboard</a></li>
-        <li><a href="#simulations" class="hover:text-cyan-300">Simulations</a></li>
-        <li><a href="#research" class="hover:text-cyan-300">Research</a></li>
-        <li><a href="#about" class="hover:text-cyan-300">About</a></li>
-        <li><a href="#signup" class="hover:text-cyan-300">Log Out</a></li>
+      {/* Added padding for mobile menu items */}
+      <ul id="nav-menu" class="hidden md:flex flex-col md:flex-row md:items-center bg-black md:bg-transparent bg-opacity-80 md:bg-opacity-0 absolute md:static top-full left-0 w-full md:w-auto space-y-4 md:space-y-0 md:space-x-8 px-4 py-4 md:p-0 text-sm">
+        <li><a href="#home" class="block py-2 md:py-0 hover:text-cyan-300">Home</a></li>
+        <li><a href="#dashboard" class="block py-2 md:py-0 hover:text-cyan-300">Dashboard</a></li>
+        <li><a href="#simulations" class="block py-2 md:py-0 hover:text-cyan-300">Simulations</a></li>
+        <li><a href="#research" class="block py-2 md:py-0 hover:text-cyan-300">Research</a></li>
+        <li><a href="#about" class="block py-2 md:py-0 hover:text-cyan-300">About</a></li>
+        {/* Changed Log Out to Sign Up for this single page context */}
+        <li><a href="#signup" class="block py-2 md:py-0 hover:text-cyan-300">Sign Up</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section id="home" class="relative flex flex-col items-center justify-center min-h-screen text-center px-4">
-    <!-- Matrix code canvas background -->
-    <canvas id="matrix-canvas" class="absolute inset-0 z-0"></canvas>
-    <!-- Hero Content -->
+  <section id="home" class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 overflow-hidden">
+    {/* Added overflow-hidden */}
+    <canvas id="matrix-canvas" class="absolute inset-0 z-0 w-full h-full"></canvas> {/* Added w/h-full */}
     <div class="relative z-10">
       <h1 class="text-4xl md:text-6xl font-orbitron font-bold text-cyan-300 neon-text flicker">GustauShield</h1>
       <p class="mt-4 text-gray-300 max-w-2xl">
@@ -142,223 +104,473 @@
     </div>
   </section>
 
-  <!-- Dashboard Section -->
   <section id="dashboard" class="max-w-6xl mx-auto py-16 px-4">
     <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Dashboard Preview</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      <!-- Panel: Realtime Threat Feed -->
-      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100">
-        <h3 class="mb-2 font-semibold text-cyan-200">Realtime Threat Feed</h3>
-        <ul>
-          <li>[12:01:05] <span class="text-red-500 font-bold">ALERT:</span> Phishing attempt <em>blocked</em> (User: jdoe, IP: 192.168.10.5)</li>
-          <li>[12:05:47] <span class="text-yellow-300 font-bold">WARNING:</span> Unusual login pattern detected (Account: admin)</li>
-          <li>[12:15:12] <span class="text-red-500 font-bold">ALERT:</span> Deepfake voice call <em>quarantined</em></li>
-          <li>[12:20:30] <span class="text-green-400 font-bold">INFO:</span> AI model updated with 2 new threat signatures</li>
+      {/* Panel: Realtime Threat Feed */}
+      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100 h-48 overflow-y-auto"> {/* Fixed height and scroll */}
+        <h3 class="mb-2 font-semibold text-cyan-200 sticky top-0 bg-inherit pb-1">Realtime Threat Feed</h3> {/* Sticky header */}
+        <ul id="threat-feed-list"> {/* Added ID */}
+          {/* Content will be added by JS */}
         </ul>
       </div>
-      <!-- Panel: Command Console -->
-      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100">
+      {/* Panel: Command Console */}
+      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100 h-48 overflow-y-auto"> {/* Fixed height and scroll */}
         <h3 class="mb-2 font-semibold text-cyan-200">AI Command Console</h3>
-        <pre>
+        <pre class="whitespace-pre-wrap"> {/* Allow wrapping */}
 GustauShield> <span class="text-green-300">scan network --mode=deep</span>
 Scanning network...
 Host 10.0.0.34 – status: SECURE
-Host 10.0.0.58 – status: <span class="text-yellow-300">ANOMALY</span> (suspicious traffic)
+Host 10.0.0.58 – status: <span class="text-yellow-300">ANOMALY</span> (traffic)
 Host 10.0.0.87 – status: SECURE
 Scan complete: <span class="text-red-500">1 threat isolated</span>
-<span class="text-green-300">_</span>
+GustauShield> <span class="text-green-300">analyze threat id_58</span>
+Analyzing... Anomaly confirmed.
+Type: C2 Beaconing
+Severity: High
+Action: <span class="text-green-400">Blocked & Logged</span>
+GustauShield> <span class="text-green-300">_</span>
         </pre>
       </div>
-      <!-- Panel: System Status -->
-      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100">
-        <h3 class="mb-2 font-semibold text-cyan-200">System Status</h3>
-        <p>Active Threats: <span class="text-green-400 font-bold">0</span></p>
-        <p>Threats Blocked Today: <span class="text-green-400 font-bold">18</span></p>
-        <p>AI Model Accuracy: <span class="text-green-400 font-bold">99.8%</span></p>
-        <p>System Uptime: 36 days 04:12:09</p>
+      {/* Panel: System Status with IDs for counters */}
+      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100 h-48 flex flex-col justify-between"> {/* Fixed height + flex */}
+         <div>
+            <h3 class="mb-2 font-semibold text-cyan-200">System Status</h3>
+            <p>Active Threats: <span id="stat-active-threats" class="text-green-400 font-bold">0</span></p>
+            <p>Threats Blocked (24h): <span id="stat-threats-blocked" class="text-green-400 font-bold">0</span></p>
+            <p>AI Model Accuracy: <span id="stat-ai-accuracy" class="text-green-400 font-bold">0</span>%</p>
+         </div>
+         <p class="text-xs text-gray-500">Uptime: 36d 04h:12m:09s</p>
       </div>
     </div>
   </section>
 
-  <!-- Simulations Section -->
   <section id="simulations" class="max-w-6xl mx-auto py-16 px-4">
     <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Simulations</h2>
     <div class="flex flex-col md:flex-row items-center md:space-x-8">
       <div class="md:w-1/2 mb-6 md:mb-0">
-        <h3 class="text-2xl text-cyan-200 font-semibold mb-4">Cyber Attack Simulations</h3>
+        <h3 class="text-2xl text-cyan-200 font-semibold mb-4">Cyber Attack Scenarios</h3>
         <p class="text-gray-300 mb-4">
           GustauShield runs realistic attack simulations for phishing emails, malware infiltration, and deepfake scams. Our AI continuously learns from these scenarios, improving defenses before real threats strike.
         </p>
-        <p class="text-gray-400">
-          Each simulation is sandboxed, allowing safe observation of attack behavior. Users can explore interactive scenarios to see how GustauShield intelligently detects and neutralizes threats in real-time.
-        </p>
+        {/* Added simulation interaction placeholder */}
+        <div id="simulation-output" class="mt-4 p-3 glass-card rounded text-sm h-24 overflow-y-auto">
+             Select a simulation type to see details...
+        </div>
+        <div class="mt-4 space-x-2">
+            <button onclick="runSimulation('phishing')" class="px-3 py-1 border border-cyan-600 text-cyan-300 text-xs rounded hover:bg-cyan-700">Phishing</button>
+            <button onclick="runSimulation('deepfake')" class="px-3 py-1 border border-cyan-600 text-cyan-300 text-xs rounded hover:bg-cyan-700">Deepfake</button>
+            <button onclick="runSimulation('malware')" class="px-3 py-1 border border-cyan-600 text-cyan-300 text-xs rounded hover:bg-cyan-700">Malware</button>
+        </div>
       </div>
-      <div class="md:w-1/2 flex justify-center">
-        <!-- Example image representing deepfake simulation -->
-        <img src="deepfake_simulation.jpg" alt="AI detecting deepfake voice waveform" class="max-w-full rounded shadow-lg" />
-      </div>
+      <div class="md:w-1/2 flex justify-center mt-6 md:mt-0">
+        {/* Added a placeholder or replaced potentially missing image */}
+        <div class="w-full h-64 glass-card rounded shadow-lg flex items-center justify-center text-cyan-500">
+            (Simulation Visual Area)
+        </div>
+        </div>
     </div>
   </section>
 
-  <!-- Research Section -->
   <section id="research" class="max-w-6xl mx-auto py-16 px-4">
     <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Research & Insights</h2>
     <p class="text-gray-300 mb-6">
       Stay informed with the latest advances in AI-driven cybersecurity. Explore how machine learning and adaptive defense systems are shaping the future of threat prevention.
     </p>
-    <!-- Embedded YouTube Videos -->
     <div class="flex flex-col md:flex-row gap-8">
+      {/* Placeholder iframes - Replace src with actual YouTube embed links */}
       <div class="video-frame-container glass-card rounded-md p-2">
-        <iframe class="w-full" style="aspect-ratio: 16/9;" src="https://www.youtube.com/embed/S3QNDSax2IA" title="AI Cybersecurity Future" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe class="w-full" style="aspect-ratio: 16/9;" src="https://www.youtube.com/embed/VIDEO_ID_1" title="AI Cybersecurity Future" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
       <div class="video-frame-container glass-card rounded-md p-2">
-        <iframe class="w-full" style="aspect-ratio: 16/9;" src="https://www.youtube.com/embed/OJxRruHrSow" title="Future of AI in Cybersecurity" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe class="w-full" style="aspect-ratio: 16/9;" src="https://www.youtube.com/embed/VIDEO_ID_2" title="Future of AI in Cybersecurity" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
   </section>
 
-  <!-- About Me Section -->
   <section id="about" class="max-w-4xl mx-auto py-16 px-4 text-center">
     <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">About Me</h2>
-    <!-- User Photo -->
-    <img src="profile.jpg" alt="Profile photo" class="mx-auto mb-6 rounded-full w-40 h-40 object-cover shadow-xl">
-    <!-- About Text -->
+    {/* Use online image source */}
+    <img src="https://source.unsplash.com/zGuBURGGmdY/160x160" alt="Profile photo" class="mx-auto mb-6 rounded-full w-40 h-40 object-cover shadow-xl border-2 border-cyan-400">
     <p class="text-gray-300 mb-6">
       I am a cybersecurity student currently studying at NYC College of Technology (CIS major) and preparing to transfer to John Jay College. I'm fascinated by new technologies like AI and enjoy applying them to cybersecurity to understand and counter emerging threats. Passionate about leveraging digital tools to protect users and systems, my long-term goal is to build a career in advanced cybersecurity defense and AI-driven threat response.
     </p>
-    <!-- Social Links -->
     <div class="flex justify-center space-x-4">
-      <a href="https://www.linkedin.com/in/mukhammadali-yuldoshev" class="px-4 py-2 border border-cyan-500 text-cyan-300 rounded hover:bg-cyan-500 hover:text-black transition">LinkedIn</a>
-      <a href="https://github.com/JanGustau17" class="px-4 py-2 border border-cyan-500 text-cyan-300 rounded hover:bg-cyan-500 hover:text-black transition">GitHub</a>
+      <a href="https://www.linkedin.com/in/mukhammadali-yuldoshev" target="_blank" rel="noopener noreferrer" class="px-4 py-2 border border-cyan-500 text-cyan-300 rounded hover:bg-cyan-500 hover:text-black transition">LinkedIn</a>
+      <a href="https://github.com/JanGustau17" target="_blank" rel="noopener noreferrer" class="px-4 py-2 border border-cyan-500 text-cyan-300 rounded hover:bg-cyan-500 hover:text-black transition">GitHub</a>
     </div>
   </section>
 
-  <!-- Sign Up Section -->
   <section id="signup" class="max-w-md mx-auto py-16 px-4">
     <h2 class="text-2xl font-orbitron text-cyan-300 mb-6 text-center">Get Started with GustauShield</h2>
-    <form action="#" method="POST" class="space-y-4">
+    {/* Removed method and action, added ID */}
+    <form id="signupForm" class="space-y-4 glass-card p-6 rounded-lg">
       <div>
-        <label class="block text-left text-gray-300 mb-1" for="name">Name</label>
-        <input id="name" name="name" type="text" required class="form-field w-full" placeholder="Your Name">
+        <label class="block text-left text-gray-300 mb-1 text-sm" for="signupName">Name</label>
+        {/* Added ID and required styling class */}
+        <input id="signupName" name="name" type="text" required class="form-field w-full" placeholder="Your Name">
       </div>
       <div>
-        <label class="block text-left text-gray-300 mb-1" for="email">Email</label>
-        <input id="email" name="email" type="email" required class="form-field w-full" placeholder="you@example.com">
+        <label class="block text-left text-gray-300 mb-1 text-sm" for="signupEmail">Email</label>
+        {/* Added ID and required styling class */}
+        <input id="signupEmail" name="email" type="email" required class="form-field w-full" placeholder="you@example.com">
       </div>
       <div>
-        <label class="block text-left text-gray-300 mb-1" for="password">Password</label>
-        <input id="password" name="password" type="password" required class="form-field w-full" placeholder="Create a password">
+        <label class="block text-left text-gray-300 mb-1 text-sm" for="signupPassword">Password</label>
+        {/* Added ID and required styling class */}
+        <input id="signupPassword" name="password" type="password" required class="form-field w-full" placeholder="Create a password (min 8 chars)">
       </div>
-      <button type="submit" class="w-full mt-4 py-2 bg-cyan-500 text-black font-semibold rounded hover:bg-cyan-400 transition">Sign Up</button>
+       {/* Added area for success/error messages */}
+       <p id="signupMessage" class="text-center text-sm h-5"></p>
+      <button type="submit" class="w-full mt-4 py-2 bg-cyan-500 text-black font-semibold rounded hover:bg-cyan-400 transition glow-btn">Create Account</button>
     </form>
   </section>
 
-  <!-- Ticker / Footer Alerts -->
-  <div class="ticker-container bg-black bg-opacity-70 border-t border-b border-cyan-800 py-2 overflow-hidden text-cyan-300 text-sm">
+  <div class="ticker-container fixed bottom-0 left-0 w-full bg-black bg-opacity-80 border-t border-cyan-800 py-2 overflow-hidden text-cyan-300 text-sm z-40"> {/* Fixed bottom */}
     <div class="ticker-content px-4">
-      [SECURITY NEWS] Zero-day exploit detected and patched in under 30s ★ 
-      AI stops sophisticated spear phishing attempt ★ 
-      All systems normal – no active threats ★ 
-      New malware strain caught by AI sandbox ★ 
-      Voice deepfake scam foiled in real-time ★ 
-      [END]
+      {/* Added more variety */}
+      [STATUS] AI Defense Matrix Online | Learning Rate: 0.98 | Threats Neutralized Today: <span id="ticker-threats">18</span> ★
+      [ALERT] Anomaly detected Zone 7 - Investigating... ★
+      [INFO] Neural net synchronization complete ★
+      [ALERT] Potential deepfake signature identified - Packet quarantined ★
+      [STATUS] All systems nominal ★
+      [INFO] Threat database updated ★
+      [END OF TRANSMISSION] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     </div>
   </div>
 
-  <!-- Music Player Widget (background music toggle) -->
-  <div id="music-player" class="music-widget fixed bottom-16 right-4 text-center text-gray-100">
+  <div id="music-player" class="music-widget fixed bottom-12 right-4 text-center text-gray-100 z-40"> {/* Adjusted bottom */}
     <div class="disc"></div>
     <div class="bars">
-      <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      {/* Added unique animation delays for variety */}
+      <span class="bar" style="animation-delay: 0s;"></span>
+      <span class="bar" style="animation-delay: 0.2s;"></span>
+      <span class="bar" style="animation-delay: 0.4s;"></span>
+      <span class="bar" style="animation-delay: 0.1s;"></span>
+      <span class="bar" style="animation-delay: 0.3s;"></span>
     </div>
-    <button id="music-toggle" class="mt-2 text-sm text-cyan-300 hover:text-cyan-400 focus:outline-none">Background Music</button>
+    <button id="music-toggle" class="mt-2 text-xs text-cyan-300 hover:text-cyan-400 focus:outline-none">(Toggle Music)</button>
   </div>
 
-  <!-- JavaScript for interactivity -->
   <script>
-    // Smooth scroll behavior for anchor links
-    document.documentElement.style.scrollBehavior = 'smooth';
+    // Wrap all JS in DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
 
-    // Mobile nav toggle
-    const burger = document.getElementById('burger');
-    const navMenu = document.getElementById('nav-menu');
-    burger.addEventListener('click', () => {
-      navMenu.classList.toggle('hidden');
-    });
-    // Close menu on link click (mobile)
-    navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth < 768) {
-          navMenu.classList.add('hidden');
-        }
-      });
-    });
+      console.log("GustauShield Initializing...");
 
-    // "Enter GustauShield" button scroll to sign-up section
-    document.getElementById('enter-btn').addEventListener('click', () => {
-      document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
-    });
+      // --- Smooth scroll for anchor links ---
+      // (Already enabled via CSS `html { scroll-behavior: smooth; }`)
 
-    // Background matrix code animation
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-    let matrixColumns;
-    let drops = [];
-    const fontSize = 14;
-    const matrixChars = "01\u0301\u0300";  // mix of 0,1 and combining accent (for effect)
-    function resetMatrix() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      matrixColumns = Math.floor(canvas.width / fontSize);
-      drops = Array(matrixColumns).fill(0);
-    }
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";  // clear slight trail
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0f0"; 
-      ctx.font = fontSize + "px monospace";
-      for (let i = 0; i < drops.length; i++) {
-        const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-    window.addEventListener('resize', resetMatrix);
-    resetMatrix();
-    setInterval(drawMatrix, 50);
-
-    // Background music toggle functionality
-    let musicPlaying = false;
-    const musicPlayer = document.getElementById('music-player');
-    const musicToggleBtn = document.getElementById('music-toggle');
-    // Hidden iframe for music (YouTube embed)
-    let musicIframe = null;
-    musicToggleBtn.addEventListener('click', () => {
-      if (!musicPlaying) {
-        // Start music
-        if (!musicIframe) {
-          musicIframe = document.createElement('iframe');
-          musicIframe.style.display = 'none';
-          musicIframe.src = "https://www.youtube.com/embed/32XsfeIX_rM?autoplay=1&loop=1&playlist=32XsfeIX_rM";
-          musicIframe.allow = "autoplay";
-          document.body.appendChild(musicIframe);
-        } else {
-          musicIframe.src = "https://www.youtube.com/embed/32XsfeIX_rM?autoplay=1&loop=1&playlist=32XsfeIX_rM";
-        }
-        musicPlayer.classList.add('playing');
-        musicPlaying = true;
+      // --- Mobile nav toggle ---
+      const burger = document.getElementById('burger');
+      const navMenu = document.getElementById('nav-menu');
+      if (burger && navMenu) {
+          burger.addEventListener('click', () => {
+              navMenu.classList.toggle('hidden');
+              navMenu.classList.toggle('flex'); // Use flex for column layout on mobile
+              console.log("Mobile nav toggled");
+          });
+          // Close menu on link click (mobile)
+          navMenu.querySelectorAll('a').forEach(link => {
+              link.addEventListener('click', () => {
+                  if (window.innerWidth < 768) { // md breakpoint
+                      navMenu.classList.add('hidden');
+                      navMenu.classList.remove('flex');
+                  }
+              });
+          });
       } else {
-        // Stop music
-        if (musicIframe) {
-          musicIframe.src = "";  // effectively stop the video
-        }
-        musicPlayer.classList.remove('playing');
-        musicPlaying = false;
+          console.warn("Burger menu or nav menu element not found.");
       }
-    });
+
+      // --- "Enter GustauShield" button scroll ---
+      const enterBtn = document.getElementById('enter-btn');
+      const signupSection = document.getElementById('signup');
+      if (enterBtn && signupSection) {
+          enterBtn.addEventListener('click', () => {
+              signupSection.scrollIntoView({ behavior: 'smooth' });
+          });
+      }
+
+      // --- Background matrix code animation ---
+      const canvas = document.getElementById('matrix-canvas');
+      if (canvas) {
+          const ctx = canvas.getContext('2d');
+          let matrixColumns;
+          let drops = [];
+          const fontSize = 14;
+          // Use a wider range of characters for visual interest
+          const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%+-=<>[]{}|;:/?.";
+          let matrixIntervalId;
+
+          function resetMatrix() {
+              canvas.width = window.innerWidth;
+              canvas.height = window.innerHeight;
+              matrixColumns = Math.floor(canvas.width / fontSize);
+              // Ensure drops array is resized correctly
+              const newDrops = Array(matrixColumns);
+              for(let i=0; i<matrixColumns; i++) {
+                  newDrops[i] = (drops && drops[i] !== undefined) ? drops[i] : Math.floor(Math.random() * (canvas.height / fontSize));
+              }
+              drops = newDrops;
+              ctx.font = fontSize + "px monospace";
+          }
+
+          function drawMatrix() {
+              ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; // Slower fade for trails
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              ctx.fillStyle = "rgba(0, 255, 0, 0.8)"; // Matrix green with slight alpha
+
+              for (let i = 0; i < drops.length; i++) {
+                  const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                  ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                  if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                      drops[i] = 0; // Reset drop
+                  }
+                  drops[i]++;
+              }
+          }
+
+          window.addEventListener('resize', resetMatrix);
+          resetMatrix(); // Initial setup
+          if (matrixIntervalId) clearInterval(matrixIntervalId); // Clear if exists
+          matrixIntervalId = setInterval(drawMatrix, 60); // Adjust speed (ms)
+          console.log("Matrix background initialized.");
+      } else {
+          console.error("Matrix canvas not found.");
+      }
+
+        // --- Fix Sign-Up Form Submission ---
+        const signupForm = document.getElementById('signupForm');
+        const signupMessageEl = document.getElementById('signupMessage');
+
+        if (signupForm && signupMessageEl) {
+            signupForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // IMPORTANT: Stop browser POST request
+                signupMessageEl.textContent = ''; // Clear previous message
+                signupMessageEl.classList.remove('text-red-500', 'text-green-400');
+
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+
+                // Basic Validation (Inline Example)
+                if (!name || !email || !password) {
+                    signupMessageEl.textContent = 'Error: All fields are required.';
+                    signupMessageEl.classList.add('text-red-500');
+                    console.warn("Signup failed: Missing fields");
+                    return;
+                }
+                 if (password.length < 8) {
+                    signupMessageEl.textContent = 'Error: Password must be at least 8 characters.';
+                    signupMessageEl.classList.add('text-red-500');
+                    console.warn("Signup failed: Password too short");
+                     return;
+                 }
+                if (!/\S+@\S+\.\S+/.test(email)) {
+                    signupMessageEl.textContent = 'Error: Please enter a valid email.';
+                    signupMessageEl.classList.add('text-red-500');
+                    console.warn("Signup failed: Invalid email");
+                    return;
+                }
+
+                // --- Simulation of Success ---
+                // In a real app, you'd send this data to a server or use auth.js/data.js
+                console.log('Simulating Sign Up:');
+                console.log('Name:', name);
+                console.log('Email:', email);
+                console.log('Password:', '********'); // Don't log real password
+
+                // Show success message
+                signupMessageEl.textContent = `Account simulation for ${name} created!`;
+                signupMessageEl.classList.add('text-green-400');
+
+                // Optionally clear the form
+                signupForm.reset();
+
+                // Simulate adding to localStorage (using basic structure)
+                // NOTE: This is VERY basic and doesn't use the data.js functions fully
+                try {
+                   let users = JSON.parse(localStorage.getItem('gustau_simple_users') || '{}');
+                   let username = email.split('@')[0].toLowerCase(); // Simple username generation
+                   if (users[username]) {
+                       signupMessageEl.textContent = `Signup simulation complete, but username '${username}' already exists.`;
+                       signupMessageEl.classList.add('text-yellow-400');
+                   } else {
+                       // Basic hash simulation (NOT SECURE!)
+                       let hash = 0; for (let i = 0; i < password.length; i++) { hash = ((hash << 5) - hash) + password.charCodeAt(i); hash |= 0;}
+                       users[username] = { name: name, email: email, hash: hash };
+                       localStorage.setItem('gustau_simple_users', JSON.stringify(users));
+                       console.log("User simulation saved to localStorage (key: gustau_simple_users).");
+                   }
+                } catch(e) {
+                    console.error("Failed to save user simulation to localStorage", e);
+                    signupMessageEl.textContent = `Account simulation created, but failed to save locally.`;
+                    signupMessageEl.classList.add('text-yellow-400');
+                }
+
+            });
+             console.log("Sign-up form handler attached.");
+        } else {
+             console.error("Sign-up form or message element not found.");
+        }
+
+        // --- Dashboard Preview Enhancements ---
+
+        // Animate Stats (Example - needs IDs on the P tags in HTML)
+        function animateStat(id, targetValue) {
+            const element = document.getElementById(id);
+            if (!element) return;
+            const duration = 1500;
+            let start = 0;
+            const startTime = performance.now();
+
+            function step(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(1, elapsedTime / duration);
+                const currentVal = Math.floor(progress * targetValue);
+                element.textContent = currentVal.toLocaleString();
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                     element.textContent = targetValue.toLocaleString(); // Ensure final value
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        // Trigger stat animations (use actual target values)
+        animateStat('stat-active-threats', 0); // Example value
+        animateStat('stat-threats-blocked', 18); // Example value from your HTML
+        animateStat('stat-ai-accuracy', 99.8); // Note: animation works best with integers
+
+        // Make AI Accuracy display percentage correctly
+        const accEl = document.getElementById('stat-ai-accuracy');
+        if(accEl && !accEl.textContent.includes('%')) {
+            // The animation function strips the %, re-add it if necessary after animation (or adjust animation)
+            // Simple fix: just set text directly for non-integer/percentage values for now
+             accEl.textContent = '99.8%';
+        }
+
+
+        // Simulate Threat Feed Update
+        const threatFeedList = document.getElementById('threat-feed-list');
+        if (threatFeedList) {
+            const initialThreats = [
+                { time: "12:01:05", type: "ALERT", color: "text-red-500", msg: "Phishing attempt <em>blocked</em> (User: jdoe, IP: 192.168.10.5)" },
+                { time: "12:05:47", type: "WARN", color: "text-yellow-300", msg: "Unusual login pattern (Account: admin)" },
+                { time: "12:15:12", type: "ALERT", color: "text-red-500", msg: "Deepfake voice call <em>quarantined</em>" },
+                { time: "12:20:30", type: "INFO", color: "text-green-400", msg: "AI model updated (2 new signatures)" }
+            ];
+            initialThreats.forEach(threat => addThreatToList(threat, threatFeedList));
+
+            // Add new threats periodically
+            setInterval(() => {
+                const newThreat = generateRandomThreat();
+                addThreatToList(newThreat, threatFeedList, true); // Add to top
+            }, 7000); // Add a new threat every 7 seconds
+        }
+
+        function addThreatToList(threat, listElement, addToTop = false) {
+             const li = document.createElement('li');
+             li.className = "mb-1"; // Spacing
+             li.innerHTML = `[${threat.time}] <span class="${threat.color} font-bold">${threat.type}:</span> ${threat.msg}`;
+             if (addToTop) {
+                 listElement.insertBefore(li, listElement.firstChild);
+                 // Limit list length (e.g., keep last 10)
+                 while (listElement.children.length > 10) {
+                     listElement.removeChild(listElement.lastChild);
+                 }
+             } else {
+                 listElement.appendChild(li);
+             }
+        }
+
+        function generateRandomThreat() {
+             const types = [
+                 { type: "ALERT", color: "text-red-500" },
+                 { type: "WARN", color: "text-yellow-300" },
+                 { type: "INFO", color: "text-green-400" },
+                 { type: "SECURE", color: "text-cyan-400" }
+             ];
+             const messages = [
+                "Network scan complete Zone 4.", "Suspicious outbound connection blocked.", "Malware signature detected & quarantined.",
+                "AI heuristic engine confidence increased.", "User authentication successful.", "Failed login attempt detected.",
+                "System resource usage normal.", "New vulnerability patched."
+             ];
+             const randomType = types[Math.floor(Math.random() * types.length)];
+             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+             const now = new Date();
+             const time = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+             return { time: time, type: randomType.type, color: randomType.color, msg: randomMsg };
+        }
+
+        // Simulate clicking simulation buttons
+        const simOutput = document.getElementById('simulation-output');
+        window.runSimulation = function(type) { // Make function global for onclick
+             if (!simOutput) return;
+             simOutput.innerHTML = `Running <span class='font-semibold text-cyan-300'>${type}</span> simulation...<br>`;
+             setTimeout(() => {
+                 let result = '';
+                 switch(type) {
+                     case 'phishing': result = 'Phishing site identified by URL analysis. Connection blocked. User alerted.'; break;
+                     case 'deepfake': result = 'Voice analysis indicates high probability of deepfake (96%). Call flagged, user notified.'; break;
+                     case 'malware': result = 'Unknown executable attempted autorun. Sandboxed & detonated. Signature matched polymorphic worm. Threat neutralized.'; break;
+                     default: result = 'Unknown simulation type.';
+                 }
+                 simOutput.innerHTML += `<span class='text-green-400'>Simulation Complete: ${result}</span>`;
+             }, 1500 + Math.random() * 1000); // Simulate processing time
+         }
+
+
+        // --- Background music toggle ---
+        let musicPlaying = false;
+        const musicPlayer = document.getElementById('music-player');
+        const musicToggleBtn = document.getElementById('music-toggle');
+        let musicIframe = null; // Keep track of the iframe
+
+        if (musicPlayer && musicToggleBtn) {
+            musicToggleBtn.addEventListener('click', () => {
+                 console.log("Music toggle clicked. Current state:", musicPlaying);
+                if (!musicPlaying) {
+                    // Start music
+                    if (!musicIframe) {
+                        musicIframe = document.createElement('iframe');
+                        musicIframe.style.display = 'none';
+                         // IMPORTANT: Replace VIDEO_ID_MUSIC with an actual YouTube video ID for background music
+                         // Ensure the video allows embedding and potentially use loop=1&playlist=VIDEO_ID_MUSIC parameters
+                        musicIframe.src = "https://www.youtube.com/embed/VIDEO_ID_MUSIC?autoplay=1&loop=1&playlist=VIDEO_ID_MUSIC&controls=0"; // Added loop and controls=0
+                        musicIframe.allow = "autoplay; encrypted-media"; // Autoplay might be blocked by browser
+                        document.body.appendChild(musicIframe);
+                        console.log("Music iframe created and added.");
+                    } else {
+                         // If iframe exists, just set src again to ensure it plays (might be needed if stopped previously)
+                         musicIframe.src = "https://www.youtube.com/embed/VIDEO_ID_MUSIC?autoplay=1&loop=1&playlist=VIDEO_ID_MUSIC&controls=0";
+                         console.log("Music iframe src reset.");
+                    }
+                    musicPlayer.classList.add('playing');
+                    musicPlaying = true;
+                    musicToggleBtn.textContent = "(Pause Music)";
+                } else {
+                    // Stop music
+                    if (musicIframe) {
+                        // Setting src to empty is a common way to stop YouTube embeds
+                        musicIframe.src = "";
+                        console.log("Music iframe stopped.");
+                         // Optional: Remove iframe entirely?
+                         // musicIframe.remove();
+                         // musicIframe = null;
+                    }
+                    musicPlayer.classList.remove('playing');
+                    musicPlaying = false;
+                     musicToggleBtn.textContent = "(Play Music)";
+                }
+            });
+        } else {
+            console.warn("Music player or toggle button not found.");
+        }
+
+    }); // End DOMContentLoaded listener
   </script>
 </body>
 </html>
