@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GustauShield – AI-Optimized Cybersecurity Dashboard</title>
-  <!-- Tailwind CSS CDN for styling  [oai_citation:3‡tailwindcss.com](https://tailwindcss.com/docs/installation/play-cdn#:~:text=Use%20the%20Play%20CDN%20to,is%20not%20intended%20for%20production) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    // Tailwind configuration
     tailwind.config = {
       theme: {
         extend: {
@@ -15,177 +15,160 @@
             'poppins': ['Poppins', 'sans-serif']
           },
           dropShadow: {
-            'neon': '0 0 10px rgba(0, 255, 255, 0.7)'  /* glow effect for neon text */
+            'neon': '0 0 10px rgba(0, 255, 255, 0.7)' /* glow effect */
           }
         }
       }
     }
   </script>
-  <!-- Google Fonts for Orbitron and Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-  <!-- Chart.js CDN for charts  [oai_citation:4‡chartjs.org](https://www.chartjs.org/docs/latest/getting-started/#:~:text=Now%20that%20we%20have%20a,js%20from%20a%20CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* Neon text glow effect */
+    /* Custom styles */
     .neon-text {
       text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
     }
-    /* Keyframes for news ticker scroll */
     @keyframes ticker {
       0%   { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-    /* Applying the ticker animation to an element */
     .animate-ticker {
       display: inline-block;
       animation: ticker 30s linear infinite;
     }
+    /* Ensure canvas is behind everything */
+    #matrixCanvas {
+        z-index: -1;
+    }
   </style>
 </head>
 <body class="bg-black text-gray-200 font-poppins overflow-x-hidden">
-  <!-- Canvas for Matrix background effect (positioned fixed behind content) -->
   <canvas id="matrixCanvas" class="fixed top-0 left-0 w-full h-full"></canvas>
 
-  <!-- Top Navigation Bar (fixed to top, semi-transparent background) -->
   <nav class="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-4 bg-gray-900 bg-opacity-80 text-cyan-300 z-20">
-    <!-- Logo/Project Name -->
     <div class="text-xl font-orbitron font-bold drop-shadow-neon">GustauShield</div>
-    <!-- Nav Links -->
     <ul class="flex space-x-6 text-sm">
       <li><a href="#" class="playsound hover:text-white">Home</a></li>
       <li><a href="#" class="playsound hover:text-white">Threats</a></li>
       <li><a href="#" class="playsound hover:text-white">Simulations</a></li>
       <li><a href="#" class="playsound hover:text-white">Research</a></li>
-      <li><button id="openAboutMe" class="playsound px-3 py-1 bg-cyan-700 text-white rounded hover:bg-cyan-600"> 
-        About Me
-      </button></li>
+      <li><button id="openAboutMe" class="playsound px-3 py-1 bg-cyan-700 text-white rounded hover:bg-cyan-600">
+          About Me
+        </button></li>
     </ul>
   </nav>
 
-  <!-- Main Content (with top padding to avoid navbar overlap) -->
-  <main class="pt-20 px-6">
-    <!-- Live Threat Statistics Section -->
+  <main class="pt-20 px-6 relative z-10"> {/* Added relative z-10 to ensure main content is above canvas */}
     <section class="my-8">
       <h2 class="text-2xl font-orbitron text-cyan-400 neon-text mb-4">Live Threat Statistics</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- Stat Card 1 -->
-        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700">
+        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">
           <div class="text-lg font-orbitron text-purple-400">Detected Intrusions</div>
           <div class="text-4xl font-bold text-white counter" data-target="1250">0</div>
         </div>
-        <!-- Stat Card 2 -->
-        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700">
+        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">
           <div class="text-lg font-orbitron text-purple-400">Phishing Attempts</div>
           <div class="text-4xl font-bold text-white counter" data-target="320">0</div>
         </div>
-        <!-- Stat Card 3 -->
-        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700">
+        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">
           <div class="text-lg font-orbitron text-purple-400">Malware Blocked</div>
           <div class="text-4xl font-bold text-white counter" data-target="89">0</div>
         </div>
-        <!-- Stat Card 4 -->
-        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700">
+        <div class="playsound bg-gray-800 bg-opacity-50 p-4 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">
           <div class="text-lg font-orbitron text-purple-400">Spam Emails</div>
           <div class="text-4xl font-bold text-white counter" data-target="1567">0</div>
         </div>
       </div>
     </section>
 
-    <!-- Charts Section -->
     <section class="my-8">
       <h2 class="text-2xl font-orbitron text-cyan-400 neon-text mb-4">Recent Scam Types</h2>
       <div class="flex flex-wrap gap-8">
-        <!-- Pie Chart Canvas -->
-        <div class="w-full md:w-1/2">
-          <canvas id="scamTypesChart" width="400" height="300"></canvas>
+        <div class="w-full md:w-1/2 bg-gray-800 bg-opacity-50 p-4 rounded-lg">
+          <canvas id="scamTypesChart" class="max-w-full"></canvas> {/* Removed fixed width/height */}
         </div>
-        <!-- Bar Chart Canvas -->
-        <div class="w-full md:w-1/2">
-          <canvas id="phishingTrendChart" width="400" height="300"></canvas>
+        <div class="w-full md:w-1/2 bg-gray-800 bg-opacity-50 p-4 rounded-lg">
+          <canvas id="phishingTrendChart" class="max-w-full"></canvas> {/* Removed fixed width/height */}
         </div>
       </div>
     </section>
 
-    <!-- Top 10 Phishing Simulation Sites Section -->
     <section class="my-8">
       <h2 class="text-2xl font-orbitron text-cyan-400 neon-text mb-4">Top 10 Phishing Simulation Sites</h2>
-      <div class="overflow-x-auto">
-        <table class="min-w-full text-left text-sm bg-gray-800 bg-opacity-50">
-          <thead class="font-orbitron text-cyan-300 uppercase">
+      <div class="overflow-x-auto bg-gray-800 bg-opacity-50 rounded-lg">
+        <table class="min-w-full text-left text-sm">
+          <thead class="font-orbitron text-cyan-300 uppercase border-b border-gray-700">
             <tr>
-              <th class="py-2 px-4">#</th>
-              <th class="py-2 px-4">Website</th>
-              <th class="py-2 px-4">Risk Level</th>
+              <th class="py-3 px-4">#</th>
+              <th class="py-3 px-4">Website</th>
+              <th class="py-3 px-4">Risk Level</th>
             </tr>
           </thead>
           <tbody class="font-poppins">
-            <!-- Dummy data rows -->
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">1</td>
-              <td class="py-1 px-4">phishingsite.com</td>
-              <td class="py-1 px-4 text-red-400">High</td>
+            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+              <td class="py-2 px-4">1</td>
+              <td class="py-2 px-4">phishingsite.com</td>
+              <td class="py-2 px-4 text-red-400">High</td>
             </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">2</td>
-              <td class="py-1 px-4">fakelogin.net</td>
-              <td class="py-1 px-4 text-yellow-300">Medium</td>
+            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+              <td class="py-2 px-4">2</td>
+              <td class="py-2 px-4">fakelogin.net</td>
+              <td class="py-2 px-4 text-yellow-300">Medium</td>
             </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">3</td>
-              <td class="py-1 px-4">secure-update.io</td>
-              <td class="py-1 px-4 text-red-400">High</td>
+            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+              <td class="py-2 px-4">3</td>
+              <td class="py-2 px-4">secure-update.io</td>
+              <td class="py-2 px-4 text-red-400">High</td>
             </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">4</td>
-              <td class="py-1 px-4">accountverify.co</td>
-              <td class="py-1 px-4 text-yellow-300">Medium</td>
+            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+              <td class="py-2 px-4">4</td>
+              <td class="py-2 px-4">accountverify.co</td>
+              <td class="py-2 px-4 text-yellow-300">Medium</td>
             </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">5</td>
-              <td class="py-1 px-4">login-alert.com</td>
-              <td class="py-1 px-4 text-red-400">High</td>
+            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+              <td class="py-2 px-4">5</td>
+              <td class="py-2 px-4">login-alert.com</td>
+              <td class="py-2 px-4 text-red-400">High</td>
             </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">6</td>
-              <td class="py-1 px-4">update-your-bank.com</td>
-              <td class="py-1 px-4 text-red-400">High</td>
-            </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">7</td>
-              <td class="py-1 px-4">free-gift-card.net</td>
-              <td class="py-1 px-4 text-yellow-300">Medium</td>
-            </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">8</td>
-              <td class="py-1 px-4">win-prize-now.com</td>
-              <td class="py-1 px-4 text-green-400">Low</td>
-            </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">9</td>
-              <td class="py-1 px-4">official-login.org</td>
-              <td class="py-1 px-4 text-yellow-300">Medium</td>
-            </tr>
-            <tr class="hover:bg-gray-700">
-              <td class="py-1 px-4">10</td>
-              <td class="py-1 px-4">account-support.info</td>
-              <td class="py-1 px-4 text-green-400">Low</td>
-            </tr>
+             <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+               <td class="py-2 px-4">6</td>
+               <td class="py-2 px-4">update-your-bank.com</td>
+               <td class="py-2 px-4 text-red-400">High</td>
+             </tr>
+             <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+               <td class="py-2 px-4">7</td>
+               <td class="py-2 px-4">free-gift-card.net</td>
+               <td class="py-2 px-4 text-yellow-300">Medium</td>
+             </tr>
+             <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+               <td class="py-2 px-4">8</td>
+               <td class="py-2 px-4">win-prize-now.com</td>
+               <td class="py-2 px-4 text-green-400">Low</td>
+             </tr>
+             <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200">
+               <td class="py-2 px-4">9</td>
+               <td class="py-2 px-4">official-login.org</td>
+               <td class="py-2 px-4 text-yellow-300">Medium</td>
+             </tr>
+             <tr class="hover:bg-gray-700 transition-colors duration-200"> {/* No bottom border on last row */}
+               <td class="py-2 px-4">10</td>
+               <td class="py-2 px-4">account-support.info</td>
+               <td class="py-2 px-4 text-green-400">Low</td>
+             </tr>
           </tbody>
         </table>
       </div>
     </section>
   </main>
 
-  <!-- Footer with News Ticker -->
-  <footer class="bg-gray-900 bg-opacity-80 py-4">
+  <footer class="bg-gray-900 bg-opacity-80 py-4 mt-12 relative z-10"> {/* Added relative z-10 */}
     <div class="overflow-hidden whitespace-nowrap">
-      <!-- Scrolling text container -->
       <div class="animate-ticker text-cyan-300 font-poppins text-sm">
         <span class="mx-8">[News] New phishing scam targets online banking users.</span>
         <span class="mx-8">[Alert] Major data breach exposes millions of accounts.</span>
         <span class="mx-8">[Update] Cybersecurity guidelines released for IoT devices.</span>
         <span class="mx-8">[Insight] AI system detects a zero-day exploit in the wild.</span>
-        <!-- Repeat news items for continuous loop -->
         <span class="mx-8">[News] New phishing scam targets online banking users.</span>
         <span class="mx-8">[Alert] Major data breach exposes millions of accounts.</span>
         <span class="mx-8">[Update] Cybersecurity guidelines released for IoT devices.</span>
@@ -193,170 +176,292 @@
       </div>
     </div>
   </footer>
-  
 
 
   <div id="aboutMeModal"
        class="fixed inset-0 z-50 flex items-center justify-center
-              bg-black bg-opacity-75 overflow-y-auto hidden">
+              bg-black bg-opacity-75 overflow-y-auto hidden"> {/* Start hidden */}
     <div class="relative bg-gray-900 text-gray-200 font-poppins
-                p-6 rounded-lg shadow-lg w-full max-w-lg m-4">
+                p-6 rounded-lg shadow-lg w-full max-w-lg m-4 border border-cyan-700"> {/* Added border */}
       <button id="closeAboutMe"
-              class="absolute top-4 right-4 text-gray-400 hover:text-white
-                     text-2xl font-bold"
+              class="absolute top-2 right-3 text-gray-400 hover:text-white
+                     text-3xl font-bold leading-none" /* Adjusted styling */
               aria-label="Close">&times;</button>
       <h2 class="text-2xl font-orbitron text-cyan-300 drop-shadow-neon
                  text-center mb-4">About Me</h2>
-      <!-- In your About Me modal -->
+
       <img
-  src="https://JanGustau17.github.io/GustauShield/assets/profile.jpg"
-  alt="Mukhammadali Yuldoshev"
-  class="w-32 h-32 rounded-full mx-auto mb-4
-         border-2 border-cyan-300 drop-shadow-neon"
-/>
-      <p class="text-center leading-relaxed mb-4">
+        src="https://source.unsplash.com/zGuBURGGmdY/128x128"  /* Using Unsplash Source link */
+        alt="Profile photo"
+        class="w-32 h-32 rounded-full mx-auto mb-4
+               border-2 border-cyan-300 drop-shadow-neon object-cover" /* Added object-cover */
+        onerror="this.style.display='none'" /* Hide if image fails to load */
+      />
+
+      <p class="text-center leading-relaxed mb-4 text-gray-300"> {/* Adjusted text color */}
         Now studying at NYC College of Technology majoring in CIS, and transferring to John Jay College.
         Interest: testing new technologies like AI and applying them to cybersecurity.
         My main field goal is Cybersecurity.
       </p>
-      <div class="flex justify-center space-x-6 text-2xl">
-        <a href="https://github.com/JanGustau17" target="_blank" rel="noopener"
-           class="text-gray-400 hover:text-cyan-300 flex items-center">
+      <div class="flex justify-center space-x-6 text-lg"> {/* Adjusted text size */}
+        <a href="https://github.com/JanGustau17" target="_blank" rel="noopener noreferrer"
+           class="text-gray-400 hover:text-cyan-300 flex items-center transition-colors duration-200">
           <i class="fab fa-github mr-2"></i> GitHub
         </a>
-        <a href="https://www.linkedin.com/in/mukhammadali-yuldoshev" target="_blank" rel="noopener"
-           class="text-gray-400 hover:text-cyan-300 flex items-center">
+        <a href="https://www.linkedin.com/in/mukhammadali-yuldoshev" target="_blank" rel="noopener noreferrer"
+           class="text-gray-400 hover:text-cyan-300 flex items-center transition-colors duration-200">
           <i class="fab fa-linkedin mr-2"></i> LinkedIn
         </a>
       </div>
     </div>
   </div>
-  
 
-  <!-- Scripts: Charts, Counters, Sound, and Background Effect -->
+
   <script>
-    // 1. Initialize Chart.js charts
-    const ctx1 = document.getElementById('scamTypesChart').getContext('2d');
-    const scamChart = new Chart(ctx1, {
-      type: 'pie',
-      data: {
-        labels: ['Phishing', 'Malware', 'Spam', 'Other'],
-        datasets: [{
-          data: [55, 25, 15, 5],  // sample percentage data
-          backgroundColor: ['#ff6384', '#36a2eb', '#4bc0c0', '#9966ff']
-        }]
-      },
-      options: {
-        plugins: {
-          legend: { display: true, labels: { color: '#fff' } }
-        }
-      }
-    });
-    const ctx2 = document.getElementById('phishingTrendChart').getContext('2d');
-    const trendChart = new Chart(ctx2, {
-      type: 'bar',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [{
-          label: 'Phishing Attempts',
-          data: [5, 12, 8, 19, 17, 10],  // sample data for each month
-          backgroundColor: '#36a2eb'
-        }]
-      },
-      options: {
-        scales: {
-          x: { ticks: { color: '#fff' } },
-          y: { ticks: { color: '#fff' } }
-        },
-        plugins: {
-          legend: { display: false }  // hide legend for single dataset chart
-        }
-      }
-    });
+    // Ensure DOM is fully loaded before running scripts
+    document.addEventListener('DOMContentLoaded', () => {
 
-    // 2. Animate the counters for stats
-    document.querySelectorAll('.counter').forEach(counter => {
-      const target = Number(counter.dataset.target);
-      let count = 0;
-      const increment = Math.ceil(target / 100);  // increment in 100 steps
-      const updateCounter = () => {
-        count += increment;
-        if (count >= target) {
-          counter.textContent = target;
+        console.log("Dashboard DOM loaded.");
+
+        // --- Authentication Check (Placeholder - Needs auth.js) ---
+        // IMPORTANT: Add the real check using functions from auth.js here
+        // if (typeof isLoggedIn !== 'function' || !isLoggedIn()) {
+        //    console.warn("User not logged in. Redirecting...");
+        //    window.location.href = 'index.html'; // Adjust to your login page filename
+        //    return;
+        // }
+        // console.log("User authenticated.");
+
+        // --- Initialize Chart.js charts ---
+        try {
+            const ctx1 = document.getElementById('scamTypesChart');
+            if (ctx1) {
+                new Chart(ctx1.getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['Phishing', 'Malware', 'Spam', 'Ransomware', 'Other'],
+                        datasets: [{
+                            data: [45, 25, 15, 10, 5], // sample percentage data
+                            backgroundColor: ['#ff6384', '#36a2eb', '#4bc0c0', '#ffcd56', '#9966ff'],
+                            borderColor: '#1f2937', // Match dark background
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                         responsive: true, // Make chart responsive
+                         maintainAspectRatio: false, // Allow custom aspect ratio
+                         plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom', // Better position for pie chart legend
+                                labels: { color: '#cbd5e1' } // Lighter gray for legend text
+                            },
+                            tooltip: {
+                                bodyFont: { family: "'Poppins', sans-serif" },
+                                titleFont: { family: "'Orbitron', sans-serif" }
+                            }
+                        }
+                    }
+                });
+                console.log("Pie chart initialized.");
+            } else {
+                console.error("Canvas element 'scamTypesChart' not found.");
+            }
+
+            const ctx2 = document.getElementById('phishingTrendChart');
+            if (ctx2) {
+                new Chart(ctx2.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Phishing Attempts',
+                            data: [50, 120, 80, 190, 170, 100], // sample data
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)', // Use rgba for transparency
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                         responsive: true,
+                         maintainAspectRatio: false,
+                         scales: {
+                            x: {
+                                ticks: { color: '#cbd5e1' },
+                                grid: { color: 'rgba(203, 213, 225, 0.1)' } // Subtle grid lines
+                            },
+                            y: {
+                                ticks: { color: '#cbd5e1' },
+                                grid: { color: 'rgba(203, 213, 225, 0.1)' },
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }, // hide legend for single dataset
+                            tooltip: {
+                                bodyFont: { family: "'Poppins', sans-serif" },
+                                titleFont: { family: "'Orbitron', sans-serif" }
+                            }
+                        }
+                    }
+                });
+                 console.log("Bar chart initialized.");
+            } else {
+                 console.error("Canvas element 'phishingTrendChart' not found.");
+            }
+        } catch (error) {
+            console.error("Error initializing charts:", error);
+        }
+
+
+        // --- Animate the counters for stats ---
+        document.querySelectorAll('.counter').forEach(counter => {
+            const target = Number(counter.dataset.target);
+            if (isNaN(target)) {
+                console.warn("Invalid data-target value for counter:", counter);
+                return;
+            }
+            let count = 0;
+            const duration = 1500; // Animation duration in ms
+            const startTime = performance.now();
+
+            function step(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(1, elapsedTime / duration);
+                const easedProgress = progress * (2 - progress); // easeOutQuad
+
+                count = Math.floor(easedProgress * target);
+                counter.textContent = count.toLocaleString(); // Format with commas
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    counter.textContent = target.toLocaleString(); // Ensure final value is exact
+                }
+            }
+            requestAnimationFrame(step);
+        });
+        console.log("Counters initialized.");
+
+
+        // --- Hover sound effect ---
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            // Resume context on first user interaction (needed for autoplay policies)
+            const resumeAudio = () => {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume().then(() => console.log("AudioContext resumed."));
+                }
+                // Remove listener after first interaction
+                document.body.removeEventListener('click', resumeAudio);
+                document.body.removeEventListener('touchend', resumeAudio);
+            };
+            document.body.addEventListener('click', resumeAudio, { once: true });
+            document.body.addEventListener('touchend', resumeAudio, { once: true });
+
+
+            function playHoverSound() {
+                if (audioCtx.state !== 'running') return; // Don't play if context isn't running
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
+                 gain.gain.setValueAtTime(0.15, audioCtx.currentTime); // Lower volume
+                 gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1); // Quick fade out
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.1); // Play for 100ms
+            }
+
+            document.querySelectorAll('.playsound').forEach(el => {
+                el.addEventListener('mouseenter', playHoverSound);
+            });
+             console.log("Hover sound effect initialized.");
+        } catch (error) {
+            console.error("Web Audio API not supported or failed to initialize:", error);
+        }
+
+
+        // --- Matrix rain background effect ---
+        const canvas = document.getElementById('matrixCanvas');
+        if (canvas) {
+            const ctxMatrix = canvas.getContext('2d');
+            const katakana = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン";
+            const latin = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const nums = "0123456789";
+            const alphabet = katakana + latin + nums;
+            const fontSize = 14;
+            let columns;
+            let rainDrops = [];
+            let matrixInterval;
+
+            function resizeMatrix() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                columns = Math.floor(canvas.width / fontSize);
+                // Adjust rainDrops array length, preserving existing positions if possible
+                const newDrops = Array(columns);
+                for(let i = 0; i < columns; i++) {
+                    newDrops[i] = (rainDrops && rainDrops[i] !== undefined) ? rainDrops[i] : 1;
+                }
+                rainDrops = newDrops;
+                ctxMatrix.font = fontSize + "px monospace"; // Set font after resize
+            }
+
+            function drawMatrix() {
+                ctxMatrix.fillStyle = "rgba(0, 0, 0, 0.05)"; // Trail effect
+                ctxMatrix.fillRect(0, 0, canvas.width, canvas.height);
+                ctxMatrix.fillStyle = "#0F0"; // Green text
+
+                for (let i = 0; i < rainDrops.length; i++) {
+                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    ctxMatrix.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                    if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        rainDrops[i] = 0;
+                    }
+                    rainDrops[i]++;
+                }
+            }
+
+            resizeMatrix(); // Initial setup
+            if (matrixInterval) clearInterval(matrixInterval); // Clear previous interval if any
+            matrixInterval = setInterval(drawMatrix, 50); // Start animation loop
+            window.addEventListener('resize', resizeMatrix); // Adjust on resize
+             console.log("Matrix background initialized.");
         } else {
-          counter.textContent = count;
-          requestAnimationFrame(updateCounter);
+             console.error("Matrix canvas element not found.");
         }
-      };
-      requestAnimationFrame(updateCounter);
-    });
 
-    // 3. Hover sound effect using Web Audio API
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playHoverSound() {
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();  // resume context if suspended (autoplay policy)
-      }
-      // oscillator for beep
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = 880;      // frequency in Hz (880 ~= A5 note)
-      gain.gain.value = 0.2;          // lower volume for subtle effect
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.1);  // 100ms beep
-    }
-    // attach sound to elements with class 'playsound'
-    document.querySelectorAll('.playsound').forEach(el => {
-      el.addEventListener('mouseenter', playHoverSound);
-    });
+        // --- About Me Modal Logic ---
+        const openBtn = document.getElementById('openAboutMe');
+        const closeBtn = document.getElementById('closeAboutMe');
+        const modal = document.getElementById('aboutMeModal');
 
-    // 4. Matrix rain background effect on canvas
-    const canvas = document.getElementById('matrixCanvas');
-    const ctxMatrix = canvas.getContext('2d');
-    // Full-screen canvas
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    // Characters (Katakana, Latin letters, and numbers)
-    const katakana = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン";
-    const latin = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const nums = "0123456789";
-    const alphabet = katakana + latin + nums;
-    // Matrix columns (one column per letter of width)
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const rainDrops = Array(columns).fill(0);  // Y positions of drops for each column
-    // Draw the matrix effect
-    function drawMatrix() {
-      // Black background with transparency for trail effect
-      ctxMatrix.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctxMatrix.fillRect(0, 0, canvas.width, canvas.height);
-      // Set text style to neon green matrix code
-      ctxMatrix.fillStyle = "#0F0";
-      ctxMatrix.font = fontSize + "px monospace";
-      // Draw characters
-      for (let i = 0; i < rainDrops.length; i++) {
-        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-        ctxMatrix.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-        // Send drop back to top randomly after it has crossed the screen
-        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          rainDrops[i] = 0;
+        if (openBtn && closeBtn && modal) {
+            openBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                console.log("About Me modal opened.");
+            });
+            closeBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                 console.log("About Me modal closed.");
+            });
+            // Optional: Close modal if clicking outside the content area
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) { // Check if click was on the backdrop
+                    modal.classList.add('hidden');
+                     console.log("About Me modal closed (backdrop click).");
+                }
+            });
+             console.log("About Me modal listeners attached.");
+        } else {
+            console.error("Modal elements (open button, close button, or modal itself) not found.");
         }
-        rainDrops[i]++;  // move drop down one step
-      }
-    }
-    // Loop the draw function at ~20fps (50ms)
-    setInterval(drawMatrix, 50);
-    // Update canvas size if window is resized (to keep effect full-screen)
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      // Reset drops to start over on resize
-      rainDrops.length = Math.floor(canvas.width / fontSize);
-      rainDrops.fill(0);
-    });
+
+    }); // End DOMContentLoaded listener
   </script>
 </body>
 </html>
