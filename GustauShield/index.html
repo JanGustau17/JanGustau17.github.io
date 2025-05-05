@@ -1,576 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GustauShield – AI-Optimized Cybersecurity</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Custom Tailwind config (if needed) could go here */
-  </style>
-  <style>
-    /* Ensure smooth scroll */
-    html { scroll-behavior: smooth; }
-
-    /* Neon text glow */
-    .neon-text {
-      text-shadow: 0 0 8px #0ff, 0 0 16px #0ff;
-    }
-    /* Neon border and glassmorphism for panels */
-    .glass-card {
-      background: rgba(25, 35, 45, 0.6); /* Darker, less transparent */
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(0, 255, 255, 0.2);
-      box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
-    }
-    /* Glowing button */
-    .glow-btn {
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
-      transition: box-shadow 0.3s ease, transform 0.2s ease;
-    }
-    .glow-btn:hover {
-      box-shadow: 0 0 12px rgba(0, 255, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.6);
-      transform: translateY(-1px);
-    }
-    /* Audio player disc and bars */
-    .music-widget .disc { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #555 10%, #333 70%, #111 100%); border: 2px solid #777; position: relative; margin: 0 auto; }
-    .music-widget .disc::after { content: ""; position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; background: #111; border: 2px solid #444; border-radius: 50%; transform: translate(-50%, -50%); }
-    .music-widget .bars { display: flex; justify-content: center; margin-top: 0.5rem; height: 20px; align-items: flex-end; /* Align bars at bottom */ }
-    .music-widget .bar { width: 4px; background: #0ff; margin: 0 2px; opacity: 0.8; animation: equalize 1s ease-in-out infinite alternate; }
-    .music-widget.playing .disc { animation: spin 5s linear infinite; }
-    .music-widget.playing .bar { opacity: 1; animation-play-state: running; /* Ensure animation runs */}
-    .music-widget:not(.playing) .bar { animation-play-state: paused; opacity: 0.4; height: 4px; /* Reset height when paused */ }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    @keyframes equalize { 0% { height: 4px; } 100% { height: 16px; } }
-    /* Ticker scroll animation */
-    @keyframes scroll-text { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-    .ticker-content { display: inline-block; white-space: nowrap; animation: scroll-text 25s linear infinite; padding-left: 100%; /* Start off-screen */}
-    /* Neon flicker effect */
-    @keyframes flicker { 0%, 80%, 100% { opacity: 1; text-shadow: 0 0 8px #0ff, 0 0 12px #0ff; } 82%, 85% { opacity: 0.8; text-shadow: none; } 90% { opacity: 0.6; } }
-    .flicker { animation: flicker 5s infinite; }
-
-    /* Basic Form Field Styling */
-    .form-field {
-        background-color: rgba(0, 30, 30, 0.5);
-        border: 1px solid #007a7a;
-        color: #99ffff;
-        caret-color: #00ffcc;
-        box-shadow: inset 0 0 6px rgba(0, 255, 204, 0.2);
-        border-radius: 4px;
-        padding: 0.75rem 1rem;
-        transition: all 0.3s ease;
-    }
-    .form-field::placeholder { color: #007a7a; opacity: 0.8; }
-    .form-field:focus {
-        outline: none;
-        border-color: #00ffcc;
-        background-color: rgba(0, 40, 40, 0.6);
-        box-shadow: 0 0 10px rgba(0, 255, 204, 0.4), inset 0 0 8px rgba(0, 255, 204, 0.3);
-        color: #ffffff;
-    }
-  </style>
-</head>
-{/* Corrected font class */}
-<body class="bg-black text-gray-200 font-poppins">
-  <nav class="fixed top-0 left-0 w-full z-50 bg-black bg-opacity-60 backdrop-blur-sm border-b border-cyan-800 text-gray-300">
-    <div class="flex justify-between items-center px-4 py-2">
-      <a href="#home" class="text-cyan-400 font-orbitron font-bold text-xl">GustauShield</a>
-      <button id="burger" class="md:hidden text-gray-300 text-2xl focus:outline-none" aria-label="Menu">☰</button>
-      {/* Added padding for mobile menu items */}
-      <ul id="nav-menu" class="hidden md:flex flex-col md:flex-row md:items-center bg-black md:bg-transparent bg-opacity-80 md:bg-opacity-0 absolute md:static top-full left-0 w-full md:w-auto space-y-4 md:space-y-0 md:space-x-8 px-4 py-4 md:p-0 text-sm">
-        <li><a href="#home" class="block py-2 md:py-0 hover:text-cyan-300">Home</a></li>
-        <li><a href="#dashboard" class="block py-2 md:py-0 hover:text-cyan-300">Dashboard</a></li>
-        <li><a href="#simulations" class="block py-2 md:py-0 hover:text-cyan-300">Simulations</a></li>
-        <li><a href="#research" class="block py-2 md:py-0 hover:text-cyan-300">Research</a></li>
-        <li><a href="#about" class="block py-2 md:py-0 hover:text-cyan-300">About</a></li>
-        {/* Changed Log Out to Sign Up for this single page context */}
-        <li><a href="#signup" class="block py-2 md:py-0 hover:text-cyan-300">Sign Up</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <section id="home" class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 overflow-hidden">
-    {/* Added overflow-hidden */}
-    <canvas id="matrix-canvas" class="absolute inset-0 z-0 w-full h-full"></canvas> {/* Added w/h-full */}
-    <div class="relative z-10">
-      <h1 class="text-4xl md:text-6xl font-orbitron font-bold text-cyan-300 neon-text flicker">GustauShield</h1>
-      <p class="mt-4 text-gray-300 max-w-2xl">
-        AI-optimized cybersecurity defends in real-time against evolving threats powered by deep learning, phishing networks, and voice/video deepfakes.
-      </p>
-      <button id="enter-btn" class="mt-8 px-6 py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold rounded-full glow-btn hover:from-cyan-300 hover:to-purple-400">
-        Enter GustauShield →
-      </button>
-    </div>
-  </section>
-
-  <section id="dashboard" class="max-w-6xl mx-auto py-16 px-4">
-    <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Dashboard Preview</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      {/* Panel: Realtime Threat Feed */}
-      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100 h-48 overflow-y-auto"> {/* Fixed height and scroll */}
-        <h3 class="mb-2 font-semibold text-cyan-200 sticky top-0 bg-inherit pb-1">Realtime Threat Feed</h3> {/* Sticky header */}
-        <ul id="threat-feed-list"> {/* Added ID */}
-          {/* Content will be added by JS */}
-        </ul>
-      </div>
-      {/* Panel: Command Console */}
-      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100 h-48 overflow-y-auto"> {/* Fixed height and scroll */}
-        <h3 class="mb-2 font-semibold text-cyan-200">AI Command Console</h3>
-        <pre class="whitespace-pre-wrap"> {/* Allow wrapping */}
-GustauShield> <span class="text-green-300">scan network --mode=deep</span>
-Scanning network...
-Host 10.0.0.34 – status: SECURE
-Host 10.0.0.58 – status: <span class="text-yellow-300">ANOMALY</span> (traffic)
-Host 10.0.0.87 – status: SECURE
-Scan complete: <span class="text-red-500">1 threat isolated</span>
-GustauShield> <span class="text-green-300">analyze threat id_58</span>
-Analyzing... Anomaly confirmed.
-Type: C2 Beaconing
-Severity: High
-Action: <span class="text-green-400">Blocked & Logged</span>
-GustauShield> <span class="text-green-300">_</span>
-        </pre>
-      </div>
-      {/* Panel: System Status with IDs for counters */}
-      <div class="glass-card rounded-md p-4 font-mono text-sm text-gray-100 h-48 flex flex-col justify-between"> {/* Fixed height + flex */}
-         <div>
-            <h3 class="mb-2 font-semibold text-cyan-200">System Status</h3>
-            <p>Active Threats: <span id="stat-active-threats" class="text-green-400 font-bold">0</span></p>
-            <p>Threats Blocked (24h): <span id="stat-threats-blocked" class="text-green-400 font-bold">0</span></p>
-            <p>AI Model Accuracy: <span id="stat-ai-accuracy" class="text-green-400 font-bold">0</span>%</p>
-         </div>
-         <p class="text-xs text-gray-500">Uptime: 36d 04h:12m:09s</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="simulations" class="max-w-6xl mx-auto py-16 px-4">
-    <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Simulations</h2>
-    <div class="flex flex-col md:flex-row items-center md:space-x-8">
-      <div class="md:w-1/2 mb-6 md:mb-0">
-        <h3 class="text-2xl text-cyan-200 font-semibold mb-4">Cyber Attack Scenarios</h3>
-        <p class="text-gray-300 mb-4">
-          GustauShield runs realistic attack simulations for phishing emails, malware infiltration, and deepfake scams. Our AI continuously learns from these scenarios, improving defenses before real threats strike.
-        </p>
-        {/* Added simulation interaction placeholder */}
-        <div id="simulation-output" class="mt-4 p-3 glass-card rounded text-sm h-24 overflow-y-auto">
-             Select a simulation type to see details...
-        </div>
-        <div class="mt-4 space-x-2">
-            <button onclick="runSimulation('phishing')" class="px-3 py-1 border border-cyan-600 text-cyan-300 text-xs rounded hover:bg-cyan-700">Phishing</button>
-            <button onclick="runSimulation('deepfake')" class="px-3 py-1 border border-cyan-600 text-cyan-300 text-xs rounded hover:bg-cyan-700">Deepfake</button>
-            <button onclick="runSimulation('malware')" class="px-3 py-1 border border-cyan-600 text-cyan-300 text-xs rounded hover:bg-cyan-700">Malware</button>
-        </div>
-      </div>
-      <div class="md:w-1/2 flex justify-center mt-6 md:mt-0">
-        {/* Added a placeholder or replaced potentially missing image */}
-        <div class="w-full h-64 glass-card rounded shadow-lg flex items-center justify-center text-cyan-500">
-            (Simulation Visual Area)
-        </div>
-        </div>
-    </div>
-  </section>
-
-  <section id="research" class="max-w-6xl mx-auto py-16 px-4">
-    <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">Research & Insights</h2>
-    <p class="text-gray-300 mb-6">
-      Stay informed with the latest advances in AI-driven cybersecurity. Explore how machine learning and adaptive defense systems are shaping the future of threat prevention.
-    </p>
-    <div class="flex flex-col md:flex-row gap-8">
-      {/* Placeholder iframes - Replace src with actual YouTube embed links */}
-      <div class="video-frame-container glass-card rounded-md p-2">
-        <iframe class="w-full" style="aspect-ratio: 16/9;" src="https://www.youtube.com/embed/VIDEO_ID_1" title="AI Cybersecurity Future" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <div class="video-frame-container glass-card rounded-md p-2">
-        <iframe class="w-full" style="aspect-ratio: 16/9;" src="https://www.youtube.com/embed/VIDEO_ID_2" title="Future of AI in Cybersecurity" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="max-w-4xl mx-auto py-16 px-4 text-center">
-    <h2 class="text-3xl font-orbitron text-cyan-300 mb-8">About Me</h2>
-    {/* Use online image source */}
-    <img src="https://source.unsplash.com/zGuBURGGmdY/160x160" alt="Profile photo" class="mx-auto mb-6 rounded-full w-40 h-40 object-cover shadow-xl border-2 border-cyan-400">
-    <p class="text-gray-300 mb-6">
-      I am a cybersecurity student currently studying at NYC College of Technology (CIS major) and preparing to transfer to John Jay College. I'm fascinated by new technologies like AI and enjoy applying them to cybersecurity to understand and counter emerging threats. Passionate about leveraging digital tools to protect users and systems, my long-term goal is to build a career in advanced cybersecurity defense and AI-driven threat response.
-    </p>
-    <div class="flex justify-center space-x-4">
-      <a href="https://www.linkedin.com/in/mukhammadali-yuldoshev" target="_blank" rel="noopener noreferrer" class="px-4 py-2 border border-cyan-500 text-cyan-300 rounded hover:bg-cyan-500 hover:text-black transition">LinkedIn</a>
-      <a href="https://github.com/JanGustau17" target="_blank" rel="noopener noreferrer" class="px-4 py-2 border border-cyan-500 text-cyan-300 rounded hover:bg-cyan-500 hover:text-black transition">GitHub</a>
-    </div>
-  </section>
-
-  <section id="signup" class="max-w-md mx-auto py-16 px-4">
-    <h2 class="text-2xl font-orbitron text-cyan-300 mb-6 text-center">Get Started with GustauShield</h2>
-    {/* Removed method and action, added ID */}
-    <form id="signupForm" class="space-y-4 glass-card p-6 rounded-lg">
-      <div>
-        <label class="block text-left text-gray-300 mb-1 text-sm" for="signupName">Name</label>
-        {/* Added ID and required styling class */}
-        <input id="signupName" name="name" type="text" required class="form-field w-full" placeholder="Your Name">
-      </div>
-      <div>
-        <label class="block text-left text-gray-300 mb-1 text-sm" for="signupEmail">Email</label>
-        {/* Added ID and required styling class */}
-        <input id="signupEmail" name="email" type="email" required class="form-field w-full" placeholder="you@example.com">
-      </div>
-      <div>
-        <label class="block text-left text-gray-300 mb-1 text-sm" for="signupPassword">Password</label>
-        {/* Added ID and required styling class */}
-        <input id="signupPassword" name="password" type="password" required class="form-field w-full" placeholder="Create a password (min 8 chars)">
-      </div>
-       {/* Added area for success/error messages */}
-       <p id="signupMessage" class="text-center text-sm h-5"></p>
-      <button type="submit" class="w-full mt-4 py-2 bg-cyan-500 text-black font-semibold rounded hover:bg-cyan-400 transition glow-btn">Create Account</button>
-    </form>
-  </section>
-
-  <div class="ticker-container fixed bottom-0 left-0 w-full bg-black bg-opacity-80 border-t border-cyan-800 py-2 overflow-hidden text-cyan-300 text-sm z-40"> {/* Fixed bottom */}
-    <div class="ticker-content px-4">
-      {/* Added more variety */}
-      [STATUS] AI Defense Matrix Online | Learning Rate: 0.98 | Threats Neutralized Today: <span id="ticker-threats">18</span> ★
-      [ALERT] Anomaly detected Zone 7 - Investigating... ★
-      [INFO] Neural net synchronization complete ★
-      [ALERT] Potential deepfake signature identified - Packet quarantined ★
-      [STATUS] All systems nominal ★
-      [INFO] Threat database updated ★
-      [END OF TRANSMISSION] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </div>
-  </div>
-
-  <div id="music-player" class="music-widget fixed bottom-12 right-4 text-center text-gray-100 z-40"> {/* Adjusted bottom */}
-    <div class="disc"></div>
-    <div class="bars">
-      {/* Added unique animation delays for variety */}
-      <span class="bar" style="animation-delay: 0s;"></span>
-      <span class="bar" style="animation-delay: 0.2s;"></span>
-      <span class="bar" style="animation-delay: 0.4s;"></span>
-      <span class="bar" style="animation-delay: 0.1s;"></span>
-      <span class="bar" style="animation-delay: 0.3s;"></span>
-    </div>
-    <button id="music-toggle" class="mt-2 text-xs text-cyan-300 hover:text-cyan-400 focus:outline-none">(Toggle Music)</button>
-  </div>
-
-  <script>
-    // Wrap all JS in DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', () => {
-
-      console.log("GustauShield Initializing...");
-
-      // --- Smooth scroll for anchor links ---
-      // (Already enabled via CSS `html { scroll-behavior: smooth; }`)
-
-      // --- Mobile nav toggle ---
-      const burger = document.getElementById('burger');
-      const navMenu = document.getElementById('nav-menu');
-      if (burger && navMenu) {
-          burger.addEventListener('click', () => {
-              navMenu.classList.toggle('hidden');
-              navMenu.classList.toggle('flex'); // Use flex for column layout on mobile
-              console.log("Mobile nav toggled");
-          });
-          // Close menu on link click (mobile)
-          navMenu.querySelectorAll('a').forEach(link => {
-              link.addEventListener('click', () => {
-                  if (window.innerWidth < 768) { // md breakpoint
-                      navMenu.classList.add('hidden');
-                      navMenu.classList.remove('flex');
-                  }
-              });
-          });
-      } else {
-          console.warn("Burger menu or nav menu element not found.");
-      }
-
-      // --- "Enter GustauShield" button scroll ---
-      const enterBtn = document.getElementById('enter-btn');
-      const signupSection = document.getElementById('signup');
-      if (enterBtn && signupSection) {
-          enterBtn.addEventListener('click', () => {
-              signupSection.scrollIntoView({ behavior: 'smooth' });
-          });
-      }
-
-      // --- Background matrix code animation ---
-      const canvas = document.getElementById('matrix-canvas');
-      if (canvas) {
-          const ctx = canvas.getContext('2d');
-          let matrixColumns;
-          let drops = [];
-          const fontSize = 14;
-          // Use a wider range of characters for visual interest
-          const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%+-=<>[]{}|;:/?.";
-          let matrixIntervalId;
-
-          function resetMatrix() {
-              canvas.width = window.innerWidth;
-              canvas.height = window.innerHeight;
-              matrixColumns = Math.floor(canvas.width / fontSize);
-              // Ensure drops array is resized correctly
-              const newDrops = Array(matrixColumns);
-              for(let i=0; i<matrixColumns; i++) {
-                  newDrops[i] = (drops && drops[i] !== undefined) ? drops[i] : Math.floor(Math.random() * (canvas.height / fontSize));
-              }
-              drops = newDrops;
-              ctx.font = fontSize + "px monospace";
-          }
-
-          function drawMatrix() {
-              ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; // Slower fade for trails
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-              ctx.fillStyle = "rgba(0, 255, 0, 0.8)"; // Matrix green with slight alpha
-
-              for (let i = 0; i < drops.length; i++) {
-                  const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-                  ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                  if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                      drops[i] = 0; // Reset drop
-                  }
-                  drops[i]++;
-              }
-          }
-
-          window.addEventListener('resize', resetMatrix);
-          resetMatrix(); // Initial setup
-          if (matrixIntervalId) clearInterval(matrixIntervalId); // Clear if exists
-          matrixIntervalId = setInterval(drawMatrix, 60); // Adjust speed (ms)
-          console.log("Matrix background initialized.");
-      } else {
-          console.error("Matrix canvas not found.");
-      }
-
-        // --- Fix Sign-Up Form Submission ---
-        const signupForm = document.getElementById('signupForm');
-        const signupMessageEl = document.getElementById('signupMessage');
-
-        if (signupForm && signupMessageEl) {
-            signupForm.addEventListener('submit', (event) => {
-                event.preventDefault(); // IMPORTANT: Stop browser POST request
-                signupMessageEl.textContent = ''; // Clear previous message
-                signupMessageEl.classList.remove('text-red-500', 'text-green-400');
-
-                const name = document.getElementById('signupName').value;
-                const email = document.getElementById('signupEmail').value;
-                const password = document.getElementById('signupPassword').value;
-
-                // Basic Validation (Inline Example)
-                if (!name || !email || !password) {
-                    signupMessageEl.textContent = 'Error: All fields are required.';
-                    signupMessageEl.classList.add('text-red-500');
-                    console.warn("Signup failed: Missing fields");
-                    return;
-                }
-                 if (password.length < 8) {
-                    signupMessageEl.textContent = 'Error: Password must be at least 8 characters.';
-                    signupMessageEl.classList.add('text-red-500');
-                    console.warn("Signup failed: Password too short");
-                     return;
-                 }
-                if (!/\S+@\S+\.\S+/.test(email)) {
-                    signupMessageEl.textContent = 'Error: Please enter a valid email.';
-                    signupMessageEl.classList.add('text-red-500');
-                    console.warn("Signup failed: Invalid email");
-                    return;
-                }
-
-                // --- Simulation of Success ---
-                // In a real app, you'd send this data to a server or use auth.js/data.js
-                console.log('Simulating Sign Up:');
-                console.log('Name:', name);
-                console.log('Email:', email);
-                console.log('Password:', '********'); // Don't log real password
-
-                // Show success message
-                signupMessageEl.textContent = `Account simulation for ${name} created!`;
-                signupMessageEl.classList.add('text-green-400');
-
-                // Optionally clear the form
-                signupForm.reset();
-
-                // Simulate adding to localStorage (using basic structure)
-                // NOTE: This is VERY basic and doesn't use the data.js functions fully
-                try {
-                   let users = JSON.parse(localStorage.getItem('gustau_simple_users') || '{}');
-                   let username = email.split('@')[0].toLowerCase(); // Simple username generation
-                   if (users[username]) {
-                       signupMessageEl.textContent = `Signup simulation complete, but username '${username}' already exists.`;
-                       signupMessageEl.classList.add('text-yellow-400');
-                   } else {
-                       // Basic hash simulation (NOT SECURE!)
-                       let hash = 0; for (let i = 0; i < password.length; i++) { hash = ((hash << 5) - hash) + password.charCodeAt(i); hash |= 0;}
-                       users[username] = { name: name, email: email, hash: hash };
-                       localStorage.setItem('gustau_simple_users', JSON.stringify(users));
-                       console.log("User simulation saved to localStorage (key: gustau_simple_users).");
-                   }
-                } catch(e) {
-                    console.error("Failed to save user simulation to localStorage", e);
-                    signupMessageEl.textContent = `Account simulation created, but failed to save locally.`;
-                    signupMessageEl.classList.add('text-yellow-400');
-                }
-
-            });
-             console.log("Sign-up form handler attached.");
-        } else {
-             console.error("Sign-up form or message element not found.");
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI & Cybersecurity: The Double-Edged Sword</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Apply smooth scrolling */
+        html {
+            scroll-behavior: smooth;
         }
-
-        // --- Dashboard Preview Enhancements ---
-
-        // Animate Stats (Example - needs IDs on the P tags in HTML)
-        function animateStat(id, targetValue) {
-            const element = document.getElementById(id);
-            if (!element) return;
-            const duration = 1500;
-            let start = 0;
-            const startTime = performance.now();
-
-            function step(currentTime) {
-                const elapsedTime = currentTime - startTime;
-                const progress = Math.min(1, elapsedTime / duration);
-                const currentVal = Math.floor(progress * targetValue);
-                element.textContent = currentVal.toLocaleString();
-                if (progress < 1) {
-                    requestAnimationFrame(step);
-                } else {
-                     element.textContent = targetValue.toLocaleString(); // Ensure final value
+        /* Custom Tailwind config (optional) */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        'cyber-cyan': '#00ffff',
+                        'cyber-blue': '#0077ff',
+                        'cyber-purple': '#8a2be2',
+                        'dark-bg': '#0a0a1a', /* Slightly blue dark */
+                        'light-gray': '#cccccc',
+                        'medium-gray': '#888888',
+                    },
+                    boxShadow: {
+                         'neon-cyan': '0 0 8px rgba(0, 255, 255, 0.6), 0 0 16px rgba(0, 255, 255, 0.4)',
+                         'neon-purple': '0 0 8px rgba(138, 43, 226, 0.6), 0 0 16px rgba(138, 43, 226, 0.4)',
+                    }
                 }
             }
-            requestAnimationFrame(step);
         }
-
-        // Trigger stat animations (use actual target values)
-        animateStat('stat-active-threats', 0); // Example value
-        animateStat('stat-threats-blocked', 18); // Example value from your HTML
-        animateStat('stat-ai-accuracy', 99.8); // Note: animation works best with integers
-
-        // Make AI Accuracy display percentage correctly
-        const accEl = document.getElementById('stat-ai-accuracy');
-        if(accEl && !accEl.textContent.includes('%')) {
-            // The animation function strips the %, re-add it if necessary after animation (or adjust animation)
-            // Simple fix: just set text directly for non-integer/percentage values for now
-             accEl.textContent = '99.8%';
+        /* Custom CSS */
+        body {
+            background-color: #0a0a1a; /* Use dark-bg color */
+            color: #cccccc; /* Use light-gray */
         }
-
-
-        // Simulate Threat Feed Update
-        const threatFeedList = document.getElementById('threat-feed-list');
-        if (threatFeedList) {
-            const initialThreats = [
-                { time: "12:01:05", type: "ALERT", color: "text-red-500", msg: "Phishing attempt <em>blocked</em> (User: jdoe, IP: 192.168.10.5)" },
-                { time: "12:05:47", type: "WARN", color: "text-yellow-300", msg: "Unusual login pattern (Account: admin)" },
-                { time: "12:15:12", type: "ALERT", color: "text-red-500", msg: "Deepfake voice call <em>quarantined</em>" },
-                { time: "12:20:30", type: "INFO", color: "text-green-400", msg: "AI model updated (2 new signatures)" }
-            ];
-            initialThreats.forEach(threat => addThreatToList(threat, threatFeedList));
-
-            // Add new threats periodically
-            setInterval(() => {
-                const newThreat = generateRandomThreat();
-                addThreatToList(newThreat, threatFeedList, true); // Add to top
-            }, 7000); // Add a new threat every 7 seconds
+        /* Header styles */
+        .header-gradient {
+             background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2);
+             -webkit-background-clip: text;
+             background-clip: text;
+             color: transparent;
         }
-
-        function addThreatToList(threat, listElement, addToTop = false) {
-             const li = document.createElement('li');
-             li.className = "mb-1"; // Spacing
-             li.innerHTML = `[${threat.time}] <span class="${threat.color} font-bold">${threat.type}:</span> ${threat.msg}`;
-             if (addToTop) {
-                 listElement.insertBefore(li, listElement.firstChild);
-                 // Limit list length (e.g., keep last 10)
-                 while (listElement.children.length > 10) {
-                     listElement.removeChild(listElement.lastChild);
-                 }
-             } else {
-                 listElement.appendChild(li);
-             }
+        /* Section padding */
+        section {
+            padding: 6rem 1rem 4rem 1rem; /* More top padding */
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1); /* Subtle separator */
         }
-
-        function generateRandomThreat() {
-             const types = [
-                 { type: "ALERT", color: "text-red-500" },
-                 { type: "WARN", color: "text-yellow-300" },
-                 { type: "INFO", color: "text-green-400" },
-                 { type: "SECURE", color: "text-cyan-400" }
-             ];
-             const messages = [
-                "Network scan complete Zone 4.", "Suspicious outbound connection blocked.", "Malware signature detected & quarantined.",
-                "AI heuristic engine confidence increased.", "User authentication successful.", "Failed login attempt detected.",
-                "System resource usage normal.", "New vulnerability patched."
-             ];
-             const randomType = types[Math.floor(Math.random() * types.length)];
-             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-             const now = new Date();
-             const time = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
-             return { time: time, type: randomType.type, color: randomType.color, msg: randomMsg };
+        section:last-of-type {
+            border-bottom: none;
         }
+        /* Active nav link style */
+        nav ul li a.active {
+            color: #00ffff; /* cyber-cyan */
+            font-weight: 600;
+        }
+        /* Basic input field styling */
+        .form-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: #cccccc;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            width: 100%;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-input::placeholder { color: #888888; }
+        .form-input:focus {
+            outline: none;
+            border-color: #00ffff; /* cyber-cyan */
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+        }
+        /* Button styling */
+        .cyber-button {
+            background-color: #0077ff; /* cyber-blue */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cyber-button:hover {
+            background-color: #0055cc; /* Darker blue */
+            box-shadow: 0 0 10px rgba(0, 119, 255, 0.5);
+        }
+        /* Simulation result box */
+        .simulation-result {
+             background-color: rgba(255, 0, 0, 0.1); /* Red tint */
+             border: 1px solid rgba(255, 0, 0, 0.4);
+             padding: 1rem;
+             border-radius: 6px;
+             margin-top: 1.5rem;
+             color: #ffcccc; /* Pale red text */
+        }
+        /* Simple Bar Chart Styling */
+        .bar-chart-container { display: flex; align-items: flex-end; height: 150px; gap: 1rem; margin-top: 1rem; }
+        .bar { background-color: #00ffff; width: 40px; transition: height 0.5s ease-out; }
+        .bar-label { text-align: center; font-size: 0.8rem; color: #888888; margin-top: 0.5rem; }
 
-        // Simulate clicking simulation buttons
-        const simOutput = document.getElementById('simulation-output');
-        window.runSimulation = function(type) { // Make function global for onclick
-             if (!simOutput) return;
-             simOutput.innerHTML = `Running <span class='font-semibold text-cyan-300'>${type}</span> simulation...<br>`;
-             setTimeout(() => {
-                 let result = '';
-                 switch(type) {
-                     case 'phishing': result = 'Phishing site identified by URL analysis. Connection blocked. User alerted.'; break;
-                     case 'deepfake': result = 'Voice analysis indicates high probability of deepfake (96%). Call flagged, user notified.'; break;
-                     case 'malware': result = 'Unknown executable attempted autorun. Sandboxed & detonated. Signature matched polymorphic worm. Threat neutralized.'; break;
-                     default: result = 'Unknown simulation type.';
-                 }
-                 simOutput.innerHTML += `<span class='text-green-400'>Simulation Complete: ${result}</span>`;
-             }, 1500 + Math.random() * 1000); // Simulate processing time
-         }
+    </style>
+</head>
+<body class="font-poppins">
 
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 bg-dark-bg/80 backdrop-blur-md border-b border-cyber-cyan/20 text-light-gray shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-4 py-3">
+            <div class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></div>
+            {/* Hamburger Menu Button (Mobile) */}
+             <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">
+                ☰
+             </button>
+            {/* Desktop Menu */}
+            <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
+                <li><a href="#intro" class="hover:text-cyber-cyan transition-colors duration-200 active">Intro</a></li>
+                <li><a href="#how-ai-helps" class="hover:text-cyber-cyan transition-colors duration-200">AI Defenses</a></li>
+                <li><a href="#how-ai-harms" class="hover:text-cyber-cyan transition-colors duration-200">AI Attacks</a></li>
+                <li><a href="#simulation" class="hover:text-cyber-cyan transition-colors duration-200">Simulation</a></li>
+                <li><a href="#stats" class="hover:text-cyber-cyan transition-colors duration-200">Stats</a></li>
+                <li><a href="#conclusion" class="hover:text-cyber-cyan transition-colors duration-200">Takeaways</a></li>
+            </ul>
+        </div>
+         {/* Mobile Menu Panel */}
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
+            <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
+                <li><a href="#intro" class="hover:text-cyber-cyan transition-colors duration-200 active">Intro</a></li>
+                <li><a href="#how-ai-helps" class="hover:text-cyber-cyan transition-colors duration-200">AI Defenses</a></li>
+                <li><a href="#how-ai-harms" class="hover:text-cyber-cyan transition-colors duration-200">AI Attacks</a></li>
+                <li><a href="#simulation" class="hover:text-cyber-cyan transition-colors duration-200">Simulation</a></li>
+                <li><a href="#stats" class="hover:text-cyber-cyan transition-colors duration-200">Stats</a></li>
+                <li><a href="#conclusion" class="hover:text-cyber-cyan transition-colors duration-200">Takeaways</a></li>
+            </ul>
+        </div>
+    </nav>
 
-        // --- Background music toggle ---
-        let musicPlaying = false;
-        const musicPlayer = document.getElementById('music-player');
-        const musicToggleBtn = document.getElementById('music-toggle');
-        let musicIframe = null; // Keep track of the iframe
+    <main>
 
-        if (musicPlayer && musicToggleBtn) {
-            musicToggleBtn.addEventListener('click', () => {
-                 console.log("Music toggle clicked. Current state:", musicPlaying);
-                if (!musicPlaying) {
-                    // Start music
-                    if (!musicIframe) {
-                        musicIframe = document.createElement('iframe');
-                        musicIframe.style.display = 'none';
-                         // IMPORTANT: Replace VIDEO_ID_MUSIC with an actual YouTube video ID for background music
-                         // Ensure the video allows embedding and potentially use loop=1&playlist=VIDEO_ID_MUSIC parameters
-                        musicIframe.src = "https://www.youtube.com/embed/VIDEO_ID_MUSIC?autoplay=1&loop=1&playlist=VIDEO_ID_MUSIC&controls=0"; // Added loop and controls=0
-                        musicIframe.allow = "autoplay; encrypted-media"; // Autoplay might be blocked by browser
-                        document.body.appendChild(musicIframe);
-                        console.log("Music iframe created and added.");
-                    } else {
-                         // If iframe exists, just set src again to ensure it plays (might be needed if stopped previously)
-                         musicIframe.src = "https://www.youtube.com/embed/VIDEO_ID_MUSIC?autoplay=1&loop=1&playlist=VIDEO_ID_MUSIC&controls=0";
-                         console.log("Music iframe src reset.");
+        <section id="intro" class="min-h-screen flex items-center justify-center text-center bg-gradient-to-b from-dark-bg to-gray-900/80">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-6xl font-bold font-orbitron mb-4 header-gradient">
+                    AI & Cybersecurity
+                </h1>
+                <h2 class="text-2xl md:text-3xl font-semibold text-cyber-cyan mb-6">The Double-Edged Sword</h2>
+                <p class="text-lg text-light-gray mb-8 leading-relaxed">
+                    Artificial Intelligence is rapidly changing our world, and cybersecurity is no exception. It's building stronger defenses than ever before, but it's also giving attackers powerful new tools. This project explores both sides – how AI protects us and how it makes threats more sophisticated – to help you understand the new reality of digital security. No technical background needed!
+                </p>
+                <a href="#how-ai-helps" class="cyber-button inline-block shadow-neon-cyan">Explore AI Defenses ↓</a>
+            </div>
+        </section>
+
+        <section id="how-ai-helps" class="container mx-auto max-w-5xl">
+            <h2 class="text-3xl font-bold font-orbitron text-center mb-2 header-gradient">Smarter Defenses</h2>
+            <h3 class="text-xl font-semibold text-cyber-cyan text-center mb-8">AI as Your Digital Guardian</h3>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-light-gray mb-6 leading-relaxed">
+                        AI is working behind the scenes 24/7 to protect you. It can analyze enormous amounts of data incredibly fast, spotting patterns that humans would miss. This leads to much quicker detection of threats and automated responses.
+                    </p>
+                    <ul class="space-y-3 text-light-gray list-disc list-inside">
+                        <li><strong class="text-cyber-cyan">Rapid Threat Detection:</strong> AI sifts through network traffic and logs to find anomalies indicating an attack in near real-time.</li>
+                        <li><strong class="text-cyber-cyan">Automated Response:</strong> AI can instantly block malicious connections or quarantine suspicious files without human intervention.</li>
+                        <li><strong class="text-cyber-cyan">Predictive Analysis:</strong> By learning from past attacks, AI can predict future threats and vulnerabilities before they're exploited.</li>
+                        <li><strong class="text-cyber-cyan">Behavioral Analysis:</strong> AI learns your normal digital behavior and can flag unusual activity that might signal a compromised account.</li>
+                    </ul>
+                </div>
+                <div class="flex justify-center">
+                     {/* Placeholder for a flowchart/diagram */}
+                     <div class="w-full max-w-sm h-64 border border-cyber-blue/50 rounded-lg flex items-center justify-center text-medium-gray bg-dark-bg/50 shadow-lg">
+                        [Visual: Simple diagram showing AI analyzing data streams (logs, traffic) and outputting alerts/blocks]
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-ai-harms" class="container mx-auto max-w-5xl">
+            <h2 class="text-3xl font-bold font-orbitron text-center mb-2 header-gradient">Smarter Attacks</h2>
+            <h3 class="text-xl font-semibold text-cyber-purple text-center mb-8">AI Empowering Cybercriminals</h3>
+             <div class="grid md:grid-cols-2 gap-8 items-center">
+                 <div class="flex justify-center order-last md:order-first">
+                     {/* Placeholder for a visual */}
+                     <div class="w-full max-w-sm h-64 border border-cyber-purple/50 rounded-lg flex items-center justify-center text-medium-gray bg-dark-bg/50 shadow-lg">
+                        [Visual: Icon or graphic representing AI creating deepfakes or personalized phishing]
+                     </div>
+                 </div>
+                <div>
+                    <p class="text-light-gray mb-6 leading-relaxed">
+                        Unfortunately, attackers are also using AI. This makes scams more convincing, helps malware hide better, and allows criminals to automate parts of their attacks, making them more efficient and widespread.
+                    </p>
+                    <ul class="space-y-3 text-light-gray list-disc list-inside">
+                        <li><strong class="text-cyber-purple">Hyper-Personalized Phishing:</strong> AI creates emails or messages tailored specifically to you, using information scraped online, making them incredibly convincing.</li>
+                        <li><strong class="text-cyber-purple">Realistic Deepfakes:</strong> AI generates fake voice or video calls that can perfectly mimic someone you trust (like your boss or family member) to trick you.</li>
+                        <li><strong class="text-cyber-purple">Automated Hacking:</strong> AI tools can constantly scan for system weaknesses and launch attacks automatically, much faster than humans.</li>
+                        <li><strong class="text-cyber-purple">Adaptive Malware:</strong> AI helps malware change its own code to avoid detection by traditional antivirus software.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulation" class="container mx-auto max-w-3xl text-center">
+            <h2 class="text-3xl font-bold font-orbitron mb-2 header-gradient">Simulation</h2>
+            <h3 class="text-xl font-semibold text-cyber-cyan text-center mb-6">Experience an AI-Enhanced Phishing Attempt</h3>
+            <p class="text-light-gray mb-8 max-w-xl mx-auto">
+                See how easily a fake login page can look real. Enter any <strong class="text-yellow-400">fake details</strong> below (they aren't saved!) to see what happens and learn how AI makes these scams harder to spot.
+            </p>
+
+            {/* Phishing Form */}
+            <form id="phishing-form" class="max-w-md mx-auto bg-dark-bg/50 border border-cyber-blue/30 p-6 rounded-lg shadow-lg space-y-4">
+                 <div>
+                    <label for="sim-email" class="block text-left text-medium-gray mb-1 text-sm">Email Address</label>
+                    <input type="email" id="sim-email" name="sim-email" required class="form-input" placeholder="user@company.com">
+                 </div>
+                 <div>
+                    <label for="sim-password" class="block text-left text-medium-gray mb-1 text-sm">Password</label>
+                    <input type="password" id="sim-password" name="sim-password" required class="form-input" placeholder="••••••••••••">
+                 </div>
+                 <button type="submit" class="cyber-button w-full shadow-neon-cyan">Sign In (Simulation)</button>
+            </form>
+
+            {/* Simulation Result Area (Initially Hidden) */}
+            <div id="simulation-result-area" class="hidden mt-6 max-w-md mx-auto simulation-result text-left">
+                <h4 class="text-lg font-bold text-red-300 mb-2 font-orbitron">COMPROMISE DETECTED (SIMULATION)</h4>
+                <p class="mb-3 text-sm">
+                    If this were real, your credentials would now be stolen! This fake login page might look convincing, but an AI-powered defense could spot it. However, AI also helps attackers create these fakes:
+                </p>
+                <ul class="text-sm space-y-1 list-disc list-inside mb-4">
+                    <li><strong>AI Language:</strong> The text uses flawless grammar and an urgent tone, generated by AI to mimic official communications.</li>
+                    <li><strong>AI Personalization:</strong> The fake email leading here might have included your name or company details, scraped online and inserted by AI to build trust.</li>
+                    <li><strong>AI Urgency:</strong> The scenario (e.g., "account locked") is often generated by AI to pressure you into acting quickly without thinking.</li>
+                </ul>
+                <p class="text-sm font-semibold text-yellow-300">Always double-check the website URL and be wary of urgent requests!</p>
+                <button id="try-again-btn" class="cyber-button w-full mt-4 text-sm py-2">Try Simulation Again</button>
+            </div>
+        </section>
+
+        <section id="stats" class="container mx-auto max-w-5xl text-center">
+            <h2 class="text-3xl font-bold font-orbitron mb-2 header-gradient">By the Numbers</h2>
+             <h3 class="text-xl font-semibold text-cyber-cyan text-center mb-8">The Impact of AI in Security</h3>
+             <div class="grid md:grid-cols-3 gap-8">
+                 {/* Stat 1 */}
+                 <div class="bg-dark-bg/50 border border-cyber-cyan/30 p-6 rounded-lg shadow-lg">
+                    <div class="text-5xl font-orbitron font-bold text-cyber-cyan mb-2">60%</div>
+                    <h4 class="font-semibold text-light-gray mb-2">Increase in Phishing Success*</h4>
+                    <p class="text-sm text-medium-gray">AI-generated phishing emails are significantly more likely to trick users compared to traditional scams.</p>
+                 </div>
+                  {/* Stat 2 */}
+                 <div class="bg-dark-bg/50 border border-cyber-cyan/30 p-6 rounded-lg shadow-lg">
+                    <div class="text-5xl font-orbitron font-bold text-cyber-cyan mb-2">95%</div>
+                    <h4 class="font-semibold text-light-gray mb-2">Faster Threat Detection*</h4>
+                    <p class="text-sm text-medium-gray">AI security systems can identify and react to new threats dramatically faster than human-only teams.</p>
+                 </div>
+                  {/* Stat 3 */}
+                 <div class="bg-dark-bg/50 border border-cyber-cyan/30 p-6 rounded-lg shadow-lg">
+                     <div class="text-5xl font-orbitron font-bold text-cyber-cyan mb-2">$1M+</div>
+                    <h4 class="font-semibold text-light-gray mb-2">Avg. Deepfake Fraud Cost*</h4>
+                    <p class="text-sm text-medium-gray">Successful deepfake voice scams targeting businesses often result in significant financial losses.</p>
+                 </div>
+             </div>
+             <p class="text-xs text-medium-gray mt-6">*Statistics are illustrative examples based on industry reports.</p>
+             {/* Placeholder for simple bar chart visual */}
+             {/*
+             <h4 class="font-semibold text-light-gray mt-10 mb-2">AI vs Human Response Time (Simulated Hours)</h4>
+             <div class="bar-chart-container max-w-xs mx-auto">
+                 <div class="text-center">
+                     <div class="bar" style="height: 20%; background-color: #888888;"></div>
+                     <div class="bar-label">Human</div>
+                 </div>
+                 <div class="text-center">
+                     <div class="bar" style="height: 90%; background-color: #00ffff;"></div>
+                     <div class="bar-label">AI</div>
+                 </div>
+             </div>
+             */}
+        </section>
+
+        <section id="conclusion" class="container mx-auto max-w-3xl text-center">
+             <h2 class="text-3xl font-bold font-orbitron mb-2 header-gradient">What Now?</h2>
+             <h3 class="text-xl font-semibold text-cyber-cyan text-center mb-6">Staying Safe in the Age of AI</h3>
+            <p class="text-lg text-light-gray mb-8 leading-relaxed">
+                AI is fundamentally reshaping cybersecurity. While it offers powerful protection, it also creates new dangers. Being aware is the first step. You don't need to be an expert, but understanding these changes helps you stay safer online.
+            </p>
+            <div class="bg-dark-bg/50 border border-cyber-blue/30 p-6 rounded-lg shadow-lg text-left space-y-3">
+                <h4 class="font-semibold text-cyber-blue text-lg">Simple Steps You Can Take:</h4>
+                <ul class="list-disc list-inside text-light-gray text-sm md:text-base">
+                    <li><strong>Use Strong, Unique Passwords:</strong> Don't reuse passwords across different sites. Consider a password manager.</li>
+                    <li><strong>Enable Multi-Factor Authentication (MFA):</strong> This adds a crucial extra layer of security beyond just your password. Enable it wherever possible!</li>
+                    <li><strong>Be Skeptical of Urgency:</strong> If an email or message pressures you to act immediately (click a link, provide info), pause and verify through a different channel.</li>
+                    <li><strong>Question Unexpected Calls/Videos:</strong> If a call or video from someone you know seems slightly 'off' or makes an unusual request, try to verify their identity independently.</li>
+                     <li><strong>Keep Software Updated:</strong> Updates often patch security holes that automated AI hacking tools look for.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm">
+        Project by [Your Name/Gustau] for English Class | Inspired by David Bombal & Wired | Built with HTML, Tailwind CSS, JS
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.getElementById('navbar');
+            const navLinks = document.querySelectorAll('#nav-links a, #mobile-menu a');
+            const sections = document.querySelectorAll('main section[id]');
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // --- Mobile Menu Toggle ---
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                 // Close mobile menu on link click
+                navLinks.forEach(link => {
+                    if (link.closest('#mobile-menu')) { // Only target links inside mobile menu
+                        link.addEventListener('click', () => {
+                            mobileMenu.classList.add('hidden');
+                        });
                     }
-                    musicPlayer.classList.add('playing');
-                    musicPlaying = true;
-                    musicToggleBtn.textContent = "(Pause Music)";
-                } else {
-                    // Stop music
-                    if (musicIframe) {
-                        // Setting src to empty is a common way to stop YouTube embeds
-                        musicIframe.src = "";
-                        console.log("Music iframe stopped.");
-                         // Optional: Remove iframe entirely?
-                         // musicIframe.remove();
-                         // musicIframe = null;
+                });
+            }
+
+            // --- Active Nav Link Highlighting on Scroll ---
+            const observerOptions = {
+                root: null, // relative to viewport
+                rootMargin: '0px',
+                threshold: 0.4 // Section is 40% visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${entry.target.id}`) {
+                                link.classList.add('active');
+                            }
+                        });
                     }
-                    musicPlayer.classList.remove('playing');
-                    musicPlaying = false;
-                     musicToggleBtn.textContent = "(Play Music)";
-                }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
             });
-        } else {
-            console.warn("Music player or toggle button not found.");
-        }
 
-    }); // End DOMContentLoaded listener
-  </script>
+            // --- Phishing Simulation Logic ---
+            const phishingForm = document.getElementById('phishing-form');
+            const resultArea = document.getElementById('simulation-result-area');
+            const tryAgainBtn = document.getElementById('try-again-btn');
+
+            if (phishingForm && resultArea && tryAgainBtn) {
+                phishingForm.addEventListener('submit', (e) => {
+                    e.preventDefault(); // Stop form submission
+                    console.log("Phishing simulation submitted.");
+                    // Get values (optional, don't use them)
+                    const email = document.getElementById('sim-email').value;
+                    console.log("Simulated email:", email);
+                    // Hide form, show result
+                    phishingForm.style.display = 'none';
+                    resultArea.classList.remove('hidden');
+                    resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+
+                tryAgainBtn.addEventListener('click', () => {
+                     console.log("Trying simulation again.");
+                     resultArea.classList.add('hidden'); // Hide result
+                     phishingForm.style.display = 'block'; // Show form
+                     phishingForm.reset(); // Clear inputs
+                     phishingForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }
+
+            console.log("GustauShield Insights Initialized.");
+        });
+    </script>
+
 </body>
 </html>
