@@ -1,401 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GustauShield – AI-Optimized Cybersecurity</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Apply smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        /* Custom Tailwind config */
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        poppins: ['Poppins', 'sans-serif']
-                    },
-                    colors: {
-                        'cyber-cyan': '#00ffff',
-                        'cyber-blue': '#0077ff',
-                        'cyber-purple': '#8a2be2',
-                        'dark-bg-start': '#0a0a1a', /* Dark blue/black center */
-                        'dark-bg-end': '#000000', /* Black edges */
-                        'light-gray': '#cccccc',
-                        'medium-gray': '#888888',
-                    },
-                    boxShadow: {
-                         'neon-cyan': '0 0 8px rgba(0, 255, 255, 0.6), 0 0 16px rgba(0, 255, 255, 0.4)',
-                         'neon-purple': '0 0 8px rgba(138, 43, 226, 0.6), 0 0 16px rgba(138, 43, 226, 0.4)',
-                    }
-                }
-            }
-        }
-        /* Custom CSS */
+        /* Base Styles */
+        html { scroll-behavior: smooth; }
         body {
-            /* ADDED: Subtle radial gradient background */
             background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%);
-            color: #cccccc; /* Use light-gray */
-            min-height: 100vh; /* Ensure gradient covers viewport */
+            color: #cccccc; /* light-gray */
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        /* Header styles */
+        /* Custom Fonts */
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* Header Gradient */
         .header-gradient {
              background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2);
              -webkit-background-clip: text;
              background-clip: text;
              color: transparent;
         }
-        /* Section padding */
-        section {
-            padding: 6rem 1rem 4rem 1rem;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-        }
-        section:last-of-type { border-bottom: none; }
-        /* Active nav link style */
-        nav ul li a.active { color: #00ffff; font-weight: 600; }
-        /* Basic input field styling */
-        .form-input { background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(0, 255, 255, 0.3); color: #cccccc; padding: 0.75rem 1rem; border-radius: 4px; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
-        .form-input::placeholder { color: #888888; }
-        .form-input:focus { outline: none; border-color: #00ffff; box-shadow: 0 0 8px rgba(0, 255, 255, 0.3); }
-        /* Button styling */
-        .cyber-button { background-color: #0077ff; color: white; padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: 600; transition: background-color 0.3s ease, box-shadow 0.3s ease; }
-        .cyber-button:hover { background-color: #0055cc; box-shadow: 0 0 10px rgba(0, 119, 255, 0.5); }
-        /* Simulation result box */
-        .simulation-result { background-color: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255, 0, 0, 0.4); padding: 1rem; border-radius: 6px; margin-top: 1.5rem; color: #ffcccc; }
-        /* Simple Bar Chart Styling */
-        .bar-chart-container { display: flex; align-items: flex-end; height: 150px; gap: 1rem; margin-top: 1rem; }
-        .bar { background-color: #00ffff; width: 40px; transition: height 0.5s ease-out; }
-        .bar-label { text-align: center; font-size: 0.8rem; color: #888888; margin-top: 0.5rem; }
-         /* Matrix canvas positioning */
-         #matrix-canvas {
-            position: fixed; /* Keep it fixed */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* Behind content */
-            opacity: 0.6; /* Make it slightly less intense */
-         }
-         /* Ensure main content area is above canvas */
-         main, nav, footer {
-            position: relative;
-            z-index: 1;
-         }
-         /* Specific background for nav/footer over gradient/matrix */
-         nav { background-color: rgba(10, 10, 26, 0.8); } /* dark-bg-start with alpha */
-         footer { background-color: rgba(10, 10, 26, 0.9); } /* dark-bg-start with alpha */
+        /* Neon Text */
+        .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
 
+        /* Navigation */
+        nav { background-color: rgba(10, 10, 26, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0, 255, 255, 0.15); }
+        nav a { transition: color 0.2s ease, text-shadow 0.2s ease; }
+        nav a:hover, nav button:hover { color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        nav a.active { color: #00ffff; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+
+        /* Buttons */
+        .cyber-button {
+            background: linear-gradient(to right, #0077ff, #8a2be2);
+            color: white; padding: 0.75rem 1.5rem; border-radius: 6px;
+            font-weight: 600; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+        }
+        .cyber-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+        }
+
+        /* Cards */
+        .content-card {
+            background-color: rgba(25, 35, 45, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+
+        /* Matrix Canvas Styling */
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -10; /* Deep background */
+            opacity: 0.4; /* Reduced opacity */
+        }
+        /* Ensure content is above canvas */
+        main, nav, footer { position: relative; z-index: 1; }
     </style>
 </head>
-<body class="font-poppins">
-
-    <canvas id="matrix-canvas"></canvas>
-
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b border-cyber-cyan/20 text-light-gray shadow-lg">
-        {/* Nav content remains the same */}
-         <div class="container mx-auto flex justify-between items-center px-4 py-3">
-            <div class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></div>
-             <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">
-                ☰
-             </button>
-            <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
-                <li><a href="#intro" class="hover:text-cyber-cyan transition-colors duration-200 active">Intro</a></li>
-                <li><a href="#how-ai-helps" class="hover:text-cyber-cyan transition-colors duration-200">AI Defenses</a></li>
-                <li><a href="#how-ai-harms" class="hover:text-cyber-cyan transition-colors duration-200">AI Attacks</a></li>
-                <li><a href="#simulation" class="hover:text-cyber-cyan transition-colors duration-200">Simulation</a></li>
-                <li><a href="#stats" class="hover:text-cyber-cyan transition-colors duration-200">Stats</a></li>
-                <li><a href="#conclusion" class="hover:text-cyber-cyan transition-colors duration-200">Takeaways</a></li>
-            </ul>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
-            <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
-                <li><a href="#intro" class="hover:text-cyber-cyan transition-colors duration-200 active">Intro</a></li>
-                <li><a href="#how-ai-helps" class="hover:text-cyber-cyan transition-colors duration-200">AI Defenses</a></li>
-                <li><a href="#how-ai-harms" class="hover:text-cyber-cyan transition-colors duration-200">AI Attacks</a></li>
-                <li><a href="#simulation" class="hover:text-cyber-cyan transition-colors duration-200">Simulation</a></li>
-                <li><a href="#stats" class="hover:text-cyber-cyan transition-colors duration-200">Stats</a></li>
-                <li><a href="#conclusion" class="hover:text-cyber-cyan transition-colors duration-200">Takeaways</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    {/* Sections remain the same as the previous version (intro, helps, harms, simulation, stats, conclusion) */}
-    {/* Make sure the content within the sections doesn't have its own opaque background if you want the gradient/matrix to show through */}
-    <main>
-        {/* Introduction Section */}
-        <section id="intro" class="min-h-screen flex items-center justify-center text-center bg-transparent pt-16"> {/* Removed gradient, added padding top */}
-             <div class="max-w-3xl">
-                <h1 class="text-4xl md:text-6xl font-bold font-orbitron mb-4 header-gradient">
-                    AI & Cybersecurity
-                </h1>
-                <h2 class="text-2xl md:text-3xl font-semibold text-cyber-cyan mb-6">The Double-Edged Sword</h2>
-                <p class="text-lg text-light-gray mb-8 leading-relaxed">
-                    Artificial Intelligence is rapidly changing our world, and cybersecurity is no exception. It's building stronger defenses than ever before, but it's also giving attackers powerful new tools. This project explores both sides – how AI protects us and how it makes threats more sophisticated – to help you understand the new reality of digital security. No technical background needed!
-                </p>
-                <a href="#how-ai-helps" class="cyber-button inline-block shadow-neon-cyan">Explore AI Defenses ↓</a>
-            </div>
-        </section>
-
-        {/* How AI Helps Section */}
-        <section id="how-ai-helps" class="container mx-auto max-w-5xl">
-             {/* Content as before */}
-            <h2 class="text-3xl font-bold font-orbitron text-center mb-2 header-gradient">Smarter Defenses</h2>
-            <h3 class="text-xl font-semibold text-cyber-cyan text-center mb-8">AI as Your Digital Guardian</h3>
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                    <p class="text-light-gray mb-6 leading-relaxed">
-                        AI is working behind the scenes 24/7 to protect you. It can analyze enormous amounts of data incredibly fast, spotting patterns that humans would miss. This leads to much quicker detection of threats and automated responses.
-                    </p>
-                    <ul class="space-y-3 text-light-gray list-disc list-inside">
-                        <li><strong class="text-cyber-cyan">Rapid Threat Detection:</strong> AI sifts through network traffic and logs to find anomalies indicating an attack in near real-time.</li>
-                        <li><strong class="text-cyber-cyan">Automated Response:</strong> AI can instantly block malicious connections or quarantine suspicious files without human intervention.</li>
-                        <li><strong class="text-cyber-cyan">Predictive Analysis:</strong> By learning from past attacks, AI can predict future threats and vulnerabilities before they're exploited.</li>
-                        <li><strong class="text-cyber-cyan">Behavioral Analysis:</strong> AI learns your normal digital behavior and can flag unusual activity that might signal a compromised account.</li>
-                    </ul>
-                </div>
-                <div class="flex justify-center">
-                     <div class="w-full max-w-sm h-64 border border-cyber-blue/50 rounded-lg flex items-center justify-center text-medium-gray bg-dark-bg/50 shadow-lg">
-                        [Visual: Simple diagram showing AI analyzing data streams (logs, traffic) and outputting alerts/blocks]
-                     </div>
-                </div>
-            </div>
-        </section>
-
-        {/* How AI Harms Section */}
-        <section id="how-ai-harms" class="container mx-auto max-w-5xl">
-             {/* Content as before */}
-            <h2 class="text-3xl font-bold font-orbitron text-center mb-2 header-gradient">Smarter Attacks</h2>
-            <h3 class="text-xl font-semibold text-cyber-purple text-center mb-8">AI Empowering Cybercriminals</h3>
-             <div class="grid md:grid-cols-2 gap-8 items-center">
-                 <div class="flex justify-center order-last md:order-first">
-                     <div class="w-full max-w-sm h-64 border border-cyber-purple/50 rounded-lg flex items-center justify-center text-medium-gray bg-dark-bg/50 shadow-lg">
-                        [Visual: Icon or graphic representing AI creating deepfakes or personalized phishing]
-                     </div>
-                 </div>
-                <div>
-                    <p class="text-light-gray mb-6 leading-relaxed">
-                        Unfortunately, attackers are also using AI. This makes scams more convincing, helps malware hide better, and allows criminals to automate parts of their attacks, making them more efficient and widespread.
-                    </p>
-                    <ul class="space-y-3 text-light-gray list-disc list-inside">
-                        <li><strong class="text-cyber-purple">Hyper-Personalized Phishing:</strong> AI creates emails or messages tailored specifically to you, using information scraped online, making them incredibly convincing.</li>
-                        <li><strong class="text-cyber-purple">Realistic Deepfakes:</strong> AI generates fake voice or video calls that can perfectly mimic someone you trust (like your boss or family member) to trick you.</li>
-                        <li><strong class="text-cyber-purple">Automated Hacking:</strong> AI tools can constantly scan for system weaknesses and launch attacks automatically, much faster than humans.</li>
-                        <li><strong class="text-cyber-purple">Adaptive Malware:</strong> AI helps malware change its own code to avoid detection by traditional antivirus software.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        {/* Simulation Section */}
-        <section id="simulation" class="container mx-auto max-w-3xl text-center">
-             {/* Content as before */}
-            <h2 class="text-3xl font-bold font-orbitron mb-2 header-gradient">Simulation</h2>
-            <h3 class="text-xl font-semibold text-cyber-cyan text-center mb-6">Experience an AI-Enhanced Phishing Attempt</h3>
-            <p class="text-light-gray mb-8 max-w-xl mx-auto">
-                See how easily a fake login page can look real. Enter any <strong class="text-yellow-400">fake details</strong> below (they aren't saved!) to see the simulated outcome and learn how AI makes these scams harder to spot.
-            </p>
-            <form id="phishing-form" class="max-w-md mx-auto bg-dark-bg/50 border border-cyber-blue/30 p-6 rounded-lg shadow-lg space-y-4">
-                 <div>
-                    <label for="sim-email" class="block text-left text-medium-gray mb-1 text-sm">Email Address</label>
-                    <input type="email" id="sim-email" name="sim-email" required class="form-input" placeholder="user@company.com">
-                 </div>
-                 <div>
-                    <label for="sim-password" class="block text-left text-medium-gray mb-1 text-sm">Password</label>
-                    <input type="password" id="sim-password" name="sim-password" required class="form-input" placeholder="••••••••••••">
-                 </div>
-                 <button type="submit" class="cyber-button w-full shadow-neon-cyan">Sign In (Simulation)</button>
-            </form>
-            <div id="simulation-result-area" class="hidden mt-6 max-w-md mx-auto simulation-result text-left">
-                <h4 class="text-lg font-bold text-red-300 mb-2 font-orbitron">COMPROMISE DETECTED (SIMULATION)</h4>
-                <p class="mb-3 text-sm">
-                    If this were real, your credentials would now be stolen! This fake login page might look convincing, but an AI-powered defense could spot it. However, AI also helps attackers create these fakes:
-                </p>
-                <ul class="text-sm space-y-1 list-disc list-inside mb-4">
-                    <li><strong>AI Language:</strong> The text uses flawless grammar and an urgent tone, generated by AI to mimic official communications.</li>
-                    <li><strong>AI Personalization:</strong> The fake email leading here might have included your name or company details, scraped online and inserted by AI to build trust.</li>
-                    <li><strong>AI Urgency:</strong> The scenario (e.g., "account locked") is often generated by AI to pressure you into acting quickly without thinking.</li>
-                </ul>
-                <p class="text-sm font-semibold text-yellow-300">Always double-check the website URL and be wary of urgent requests!</p>
-                <button id="try-again-btn" class="cyber-button w-full mt-4 text-sm py-2">Try Simulation Again</button>
-            </div>
-        </section>
-
-        {/* Stats Section */}
-        <section id="stats" class="container mx-auto max-w-5xl text-center">
-             {/* Content as before */}
-            <h2 class="text-3xl font-bold font-orbitron mb-2 header-gradient">By the Numbers</h2>
-             <h3 class="text-xl font-semibold text-cyber-cyan text-center mb-8">The Impact of AI in Security</h3>
-             <div class="grid md:grid-cols-3 gap-8">
-                 <div class="bg-dark-bg/50 border border-cyber-cyan/30 p-6 rounded-lg shadow-lg">
-                    <div class="text-5xl font-orbitron font-bold text-cyber-cyan mb-2">60%</div>
-                    <h4 class="font-semibold text-light-gray mb-2">Increase in Phishing Success*</h4>
-                    <p class="text-sm text-medium-gray">AI-generated phishing emails are significantly more likely to trick users compared to traditional scams.</p>
-                 </div>
-                 <div class="bg-dark-bg/50 border border-cyber-cyan/30 p-6 rounded-lg shadow-lg">
-                    <div class="text-5xl font-orbitron font-bold text-cyber-cyan mb-2">95%</div>
-                    <h4 class="font-semibold text-light-gray mb-2">Faster Threat Detection*</h4>
-                    <p class="text-sm text-medium-gray">AI security systems can identify and react to new threats dramatically faster than human-only teams.</p>
-                 </div>
-                 <div class="bg-dark-bg/50 border border-cyber-cyan/30 p-6 rounded-lg shadow-lg">
-                     <div class="text-5xl font-orbitron font-bold text-cyber-cyan mb-2">$1M+</div>
-                    <h4 class="font-semibold text-light-gray mb-2">Avg. Deepfake Fraud Cost*</h4>
-                    <p class="text-sm text-medium-gray">Successful deepfake voice scams targeting businesses often result in significant financial losses.</p>
-                 </div>
-             </div>
-             <p class="text-xs text-medium-gray mt-6">*Statistics are illustrative examples based on industry reports.</p>
-        </section>
-
-        {/* Conclusion / Takeaways Section */}
-        <section id="conclusion" class="container mx-auto max-w-3xl text-center">
-             {/* Content as before */}
-             <h2 class="text-3xl font-bold font-orbitron mb-2 header-gradient">What Now?</h2>
-             <h3 class="text-xl font-semibold text-cyber-cyan text-center mb-6">Staying Safe in the Age of AI</h3>
-            <p class="text-lg text-light-gray mb-8 leading-relaxed">
-                AI is fundamentally reshaping cybersecurity. While it offers powerful protection, it also creates new dangers. Being aware is the first step. You don't need to be an expert, but understanding these changes helps you stay safer online.
-            </p>
-            <div class="bg-dark-bg/50 border border-cyber-blue/30 p-6 rounded-lg shadow-lg text-left space-y-3">
-                <h4 class="font-semibold text-cyber-blue text-lg">Simple Steps You Can Take:</h4>
-                <ul class="list-disc list-inside text-light-gray text-sm md:text-base">
-                    <li><strong>Use Strong, Unique Passwords:</strong> Don't reuse passwords across different sites. Consider a password manager.</li>
-                    <li><strong>Enable Multi-Factor Authentication (MFA):</strong> This adds a crucial extra layer of security beyond just your password. Enable it wherever possible!</li>
-                    <li><strong>Be Skeptical of Urgency:</strong> If an email or message pressures you to act immediately (click a link, provide info), pause and verify through a different channel.</li>
-                    <li><strong>Question Unexpected Calls/Videos:</strong> If a call or video from someone you know seems slightly 'off' or makes an unusual request, try to verify their identity independently.</li>
-                     <li><strong>Keep Software Updated:</strong> Updates often patch security holes that automated AI hacking tools look for.</li>
-                </ul>
-            </div>
-        </section>
-    </main>
-
-    <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
-         Project by Gustau | English Project | Inspired by D. Bombal & Wired
-    </footer>
-
-    {/* Removed Music Player Widget for simplicity, focus on core request */}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navbar = document.getElementById('navbar');
-            const navLinks = document.querySelectorAll('#nav-links a, #mobile-menu a');
-            const sections = document.querySelectorAll('main section[id]');
-            const menuBtn = document.getElementById('menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            // --- Mobile Menu Toggle ---
-            if (menuBtn && mobileMenu) {
-                menuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                });
-                 navLinks.forEach(link => {
-                    if (link.closest('#mobile-menu')) {
-                        link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); });
-                    }
-                });
-            }
-
-             // --- Active Nav Link Highlighting ---
-             // (Observer code remains the same)
-             const observerOptions = { root: null, rootMargin: '0px', threshold: 0.4 };
-             const observer = new IntersectionObserver((entries) => {
-                 entries.forEach(entry => {
-                     if (entry.isIntersecting) {
-                         const activeId = `#${entry.target.id}`;
-                         navLinks.forEach(link => {
-                             link.classList.toggle('active', link.getAttribute('href') === activeId);
-                         });
-                     }
-                 });
-             }, observerOptions);
-             sections.forEach(section => { observer.observe(section); });
-
-
-            // --- Phishing Simulation Logic ---
-            // (Simulation logic remains the same)
-            const phishingForm = document.getElementById('phishing-form');
-            const resultArea = document.getElementById('simulation-result-area');
-            const tryAgainBtn = document.getElementById('try-again-btn');
-            if (phishingForm && resultArea && tryAgainBtn) {
-                phishingForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    phishingForm.style.display = 'none';
-                    resultArea.classList.remove('hidden');
-                    resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                });
-                tryAgainBtn.addEventListener('click', () => {
-                     resultArea.classList.add('hidden');
-                     phishingForm.style.display = 'block';
-                     phishingForm.reset();
-                     phishingForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                });
-            }
-
-
-            // --- MODIFIED: Rainbow Matrix Background Animation ---
-            const canvas = document.getElementById('matrix-canvas');
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-                let matrixColumns;
-                let drops = [];
-                const fontSize = 14;
-                const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%+-=<>[]{}|";
-                let matrixIntervalId;
-
-                function resetMatrix() {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                    matrixColumns = Math.floor(canvas.width / fontSize);
-                    const newDrops = Array(matrixColumns);
-                    for(let i=0; i<matrixColumns; i++) {
-                        newDrops[i] = Math.floor(Math.random() * (canvas.height / fontSize)); // Start randomly
-                    }
-                    drops = newDrops;
-                    ctx.font = fontSize + "px monospace";
-                }
-
-                function drawMatrix() {
-                    // Slightly more transparent fade for better visibility of colors
-                    ctx.fillStyle = "rgba(10, 10, 26, 0.06)"; // Use dark-bg-start color with alpha
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                    // Calculate color and draw characters
-                    for (let i = 0; i < drops.length; i++) {
-                        const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-                        const yPos = drops[i] * fontSize;
-
-                        // --- RAINBOW LOGIC ---
-                        // Calculate Hue based on Y position (cycles through 360 degrees)
-                        // Adjust the multiplier (e.g., 0.5) to change color transition speed
-                        const hue = (yPos * 0.3) % 360;
-                        // Use HSL for easy rainbow: Full Saturation (100%), Bright Lightness (60-70%)
-                        ctx.fillStyle = `hsl(${hue}, 100%, 65%)`;
-                        // --- END RAINBOW LOGIC ---
-
-                        ctx.fillText(text, i * fontSize, yPos);
-
-                        // Reset drop position
-                        if (yPos > canvas.height && Math.random() > 0.975) {
-                            drops[i] = 0;
-                        }
-                        drops[i]++;
-                    }
-                }
-
-                window.addEventListener('resize', resetMatrix);
-                resetMatrix(); // Initial setup
-                if (matrixIntervalId) clearInterval(matrixIntervalId);
-                // Slightly faster refresh rate for smoother color transition
-                matrixIntervalId = setInterval(drawMatrix, 50);
-                console.log("Rainbow Matrix background initialized.");
-            } else {
-                console.error("Matrix canvas not found.");
-            }
-
-            console.log("GustauShield Insights Initialized.");
-        }); // End DOMContentLoaded
-    </script>
-
-</body>
-</html>
