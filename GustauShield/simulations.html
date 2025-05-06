@@ -114,7 +114,6 @@
             <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">
                 ☰
             </button>
-            {/* Desktop Menu - Update active class */}
             <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
                 <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
                 <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
@@ -122,7 +121,6 @@
                 <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
             </ul>
         </div>
-         {/* Mobile Menu Panel */}
         <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
             <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
                  <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
@@ -143,7 +141,6 @@
                 Phishing remains a top threat, and AI makes it dangerously effective. Attackers use AI to generate highly convincing fake emails and websites. This simulation mimics entering credentials into a fake login page. Enter any **mock details** (they won't be stored or sent) to see the outcome and learn how AI plays a role.
             </p>
 
-            {/* Phishing Form Container */}
             <div id="simulationFormContainer" class="content-card max-w-md mx-auto">
                 <h3 class="text-xl font-semibold text-cyber-cyan mb-5 text-center font-orbitron">Secure Access Portal</h3>
                 <form id="phishingForm" class="space-y-4">
@@ -155,13 +152,11 @@
                         <label for="simPassword" class="block text-left text-medium-gray mb-1 text-xs font-medium uppercase tracking-wider">Password</label>
                         <input id="simPassword" name="simPassword" type="password" required class="form-input" placeholder="••••••••••••">
                     </div>
-                     {/* Add a subtle hint */}
                      <p class="text-xs text-medium-gray text-center pt-2">Hint: Is the URL in your browser bar correct?</p>
                     <button type="submit" class="cyber-button w-full !mt-6 shadow-neon-cyan">Login (Simulated)</button> {/* Added !mt-6 for spacing */}
                 </form>
             </div>
 
-            {/* Simulation Result/Hacked Message Container (Hidden Initially) */}
             <div id="hackedMessageContainer" class="hidden simulation-result max-w-md mx-auto">
                  <h3 class="hacked-title font-orbitron mb-3 text-center">! ACCESS DENIED - SIMULATED COMPROMISE !</h3>
                  <p class="mb-4 text-sm leading-relaxed">
@@ -191,11 +186,11 @@
     </main>
 
     <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
-        GustauShield Insights | English Project | AI in Cybersecurity Analysis
+        GustauShield Insights | AI in Cyber Field
     </footer>
 
     <script src="js/matrix.js" defer></script>
-    <script src="js/main.js" defer></script> {/* For Mobile Nav */}
+    <script src="js/main.js" defer></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
