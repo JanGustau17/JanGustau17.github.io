@@ -131,63 +131,60 @@
 
 <h1 class="text-3xl md:text-4xl font-bold neon-text-cyan font-orbitron mb-10 text-center">The AI Cybersecurity Landscape</h1>
 
-<section id="ai-defenses" class="mb-20">
-  <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-10 header-gradient text-center">AI: The Proactive Defender</h2>
-  
-  <div class="grid md:grid-cols-3 gap-6 items-stretch">
-    
-    <!-- Left Image -->
-    <div class="col-span-1">
-      <img src="assets/ai-hack-visual.png" 
-         alt="AI visual hacking" 
-         class="w-full h-[620px] object-contain rounded-xl shadow-xl bg-black glitch-overlay" />
-    </div>
-    
-    <!-- Right Side: Stacked Cards -->
-    <div class="col-span-2 flex flex-col justify-between gap-6">
-      <!-- Card 1 -->
-      <div class="content-card h-full min-h-[300px] p-6 bg-dark-bg rounded-lg shadow-lg" data-taos="fade-up">
-        <h3 class="text-xl font-semibold text-cyber-cyan mb-3">🧠 Detecting the Unseen</h3>
-        <p class="text-light-gray mb-4 text-sm">AI learns what "normal" behavior looks like. When something acts even slightly different, it flags it before the problem gets big.</p>
-        <p class="text-light-gray text-sm"><strong>Example:</strong> Like a security guard who knows everyone's routine and spots strangers instantly—even in disguise.</p>
-        <ul class="mt-4 space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-cyan">
-          <li>🔍 Scans billions of data points (logins, traffic, files).</li>
-          <li>🕵️‍♂️ Spots hidden threats missed by traditional tools.</li>
-          <li>📉 Reduces false alerts—only shows real threats.</li>
-        </ul>
-      </div>
+<section id="ai-defenses" class="mb-12 md:mb-20"> {/* Adjusted bottom margin */}
+            <h2 class="text-3xl md:text-4xl font-semibold font-orbitron mb-10 text-center header-gradient">AI: The Proactive Defender</h2>
 
-      <!-- Card 2 -->
-      <div class="content-card h-full min-h-[300px] p-6 bg-dark-bg rounded-lg shadow-lg" data-taos="fade-up" data-taos-delay="100">
-        <h3 class="text-xl font-semibold text-cyber-cyan mb-3">⚡ Automated Response & Prediction</h3>
-        <p class="text-light-gray mb-4 text-sm">AI doesn't just detect—it acts. It shuts down infected devices or blocks threats in real time, before damage spreads.</p>
-        <ul class="space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-cyan">
-          <li>🚨 Responds instantly to stop live attacks.</li>
-          <li>📊 Predicts future threats by analyzing behavior.</li>
-          <li>🔁 Learns from new attacks to get smarter over time.</li>
-        </ul>
-        <p class="text-light-gray mt-4 text-sm">This gives teams a head start—often before humans even notice.</p>
-      </div>
-    </div>
-  </div>
+            <div class="flex flex-col md:flex-row gap-8 items-stretch"> {/* Increased gap */}
+                <div class="w-full md:w-1/2"> {/* Changed width to 50% on md+ */}
+                    {/* Removed fixed height, changed object-contain to object-cover */}
+                    {/* Added glitch-image-wrapper and glitch classes for CSS effect */}
+                    <div class="glitch-image-wrapper rounded-xl overflow-hidden h-full"> {/* Wrapper for image glitch */}
+                         <img src="assets/ai-hack-visual.png" alt="AI visual hacking"
+                              class="w-full h-full object-cover shadow-xl" />
+                              {/* Removed glitch-overlay class, apply glitch to wrapper */}
+                    </div>
+                </div>
 
-    <!-- Visual Placeholder -->
-    <div class="mt-10 md:col-span-3 flex flex-col items-center gap-4 text-light-gray text-sm animate-pulse">
-      <div class="flex flex-wrap justify-center items-center gap-4 text-center">
-        <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md">📥 <br> Data In</div>
-        <div class="text-cyber-cyan">➝</div>
-        <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md">🧠 <br> AI Analysis</div>
-        <div class="text-cyber-cyan">➝</div>
-        <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md">🚨 <br> Detect & Alert</div>
-        <div class="text-cyber-cyan">➝</div>
-        <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md">🔒 <br> Auto Block or Patch</div>
-      </div>
-    </div>
+                {/* Removed justify-between, adjusted width */}
+                <div class="w-full md:w-1/2 flex flex-col gap-6">
+                    {/* Card 1 - Increased text size */}
+                    <div class="content-card flex-1 p-6">
+                        <h3 class="text-xl md:text-2xl font-semibold text-cyber-cyan mb-3 glitch" data-text="🧠 Detecting the Unseen">🧠 Detecting the Unseen</h3>
+                        {/* Changed text size classes */}
+                        <p class="text-base md:text-lg text-light-gray mb-4 leading-relaxed">AI learns what "normal" behavior looks like. When something acts even slightly different, it flags it before the problem gets big.</p>
+                        <p class="text-base md:text-lg text-light-gray leading-relaxed"><strong>Example:</strong> Like a security guard who knows everyone's routine and spots strangers instantly—even in disguise.</p>
+                        <ul class="mt-4 space-y-2 text-base md:text-lg list-disc list-inside text-light-gray marker:text-cyber-cyan">
+                            <li>🔍 Scans billions of data points (logins, traffic, files).</li>
+                            <li>🕵️‍♂️ Spots hidden threats missed by traditional tools.</li>
+                            <li>📉 Reduces false alerts—only shows real threats.</li>
+                        </ul>
+                    </div>
 
+                    {/* Card 2 - Increased text size */}
+                    <div class="content-card flex-1 p-6">
+                        <h3 class="text-xl md:text-2xl font-semibold text-cyber-cyan mb-3 glitch" data-text="⚡ Automated Response & Prediction">⚡ Automated Response & Prediction</h3>
+                        {/* Changed text size classes */}
+                        <p class="text-base md:text-lg text-light-gray mb-4 leading-relaxed">AI doesn't just detect—it acts. It shuts down infected devices or blocks threats in real time, before damage spreads.</p>
+                        <ul class="space-y-2 text-base md:text-lg list-disc list-inside text-light-gray marker:text-cyber-cyan">
+                            <li>🚨 Responds instantly to stop live attacks.</li>
+                            <li>📊 Predicts future threats by analyzing behavior.</li>
+                            <li>🔁 Learns from new attacks to get smarter over time.</li>
+                        </ul>
+                        <p class="text-base md:text-lg text-light-gray mt-4 leading-relaxed">This gives teams a head start—often before humans even notice.</p>
+                    </div>
+                </div>
+            </div>
 
-  </div>
-</section>
-
+            <div class="mt-10 flex flex-wrap justify-center items-center gap-4 text-light-gray text-sm animate-pulse">
+                <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md w-[120px] text-center">📥<br>Data In</div>
+                <div class="text-cyber-cyan text-2xl mx-2">→</div> {/* Larger arrow */}
+                <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md w-[120px] text-center">🧠<br>AI Analysis</div>
+                <div class="text-cyber-cyan text-2xl mx-2">→</div> {/* Larger arrow */}
+                <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md w-[120px] text-center">🚨<br>Detect & Alert</div>
+                <div class="text-cyber-cyan text-2xl mx-2">→</div> {/* Larger arrow */}
+                <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md w-[120px] text-center">🔒<br>Auto Block/Patch</div>
+            </div>
+        </section>
 
 
 
