@@ -1,14 +1,96 @@
+/* Basic Glitch Container for Text */
+    .glitch {
+      position: relative; /* Needed for absolute positioning of pseudo-elements */
+      color: #00ffff; /* Example color, or use Tailwind text classes */
+      /* Optional: Add data-text attribute in HTML equal to the text content */
+    }
 
-@keyframes glitch {
-  0% { transform: none; opacity: 1; }
-  20% { transform: translate(1px, -1px) skew(0.5deg); opacity: 0.9; }
-  40% { transform: translate(-1px, 2px) skew(-0.5deg); opacity: 1; }
-  60% { transform: translate(2px, 1px) skew(0.5deg); opacity: 0.8; }
-  80% { transform: translate(-1px, -1px) skew(-0.5deg); opacity: 1; }
-  100% { transform: none; opacity: 1; }
-}
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text); /* Duplicate text content from data-text attribute */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a1a; /* Match your body background */
+      overflow: hidden;
+      color: #00ffff; /* Match text color */
+    }
 
-.glitch {
-  animation: glitch 0.5s linear infinite;
-  filter: contrast(200%) brightness(150%) drop-shadow(0 0 5px red);
-}
+    /* First Glitch Layer (Magenta Shift) */
+    .glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00ff; /* Magenta */
+      clip-path: inset(20% 0 55% 0); /* Initial slice */
+      animation: glitch-anim-1 2s infinite linear alternate-reverse;
+    }
+
+    /* Second Glitch Layer (Green/Blue Shift) */
+    .glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 #00ff00, 1px 1px #0077ff; /* Green & Blue */
+      clip-path: inset(65% 0 10% 0); /* Initial slice */
+      animation: glitch-anim-2 1.5s infinite linear alternate-reverse;
+    }
+
+    /* Animation Keyframes (Random slicing) */
+    @keyframes glitch-anim-1 {
+      0% { clip-path: inset(20% 0 55% 0); transform: translate(0, 0); }
+      20% { clip-path: inset(80% 0 5% 0); transform: translate(-3px, 1px); }
+      40% { clip-path: inset(35% 0 40% 0); transform: translate(2px, -1px); }
+      60% { clip-path: inset(10% 0 85% 0); transform: translate(-1px, 2px); }
+      80% { clip-path: inset(55% 0 20% 0); transform: translate(3px, -2px); }
+      100% { clip-path: inset(30% 0 60% 0); transform: translate(0, 0); }
+    }
+
+    @keyframes glitch-anim-2 {
+      0% { clip-path: inset(65% 0 10% 0); transform: translate(0, 0); }
+      25% { clip-path: inset(15% 0 70% 0); transform: translate(1px, -1px); }
+      50% { clip-path: inset(45% 0 45% 0); transform: translate(-2px, 2px); }
+      75% { clip-path: inset(90% 0 2% 0); transform: translate(2px, 1px); }
+      100% { clip-path: inset(25% 0 50% 0); transform: translate(-1px, 0); }
+    }
+
+
+    /* --- Glitch Effect for Images (Requires Wrapper) --- */
+    .glitch-image-wrapper {
+        position: relative;
+        display: inline-block; /* Or block, depending on layout */
+        overflow: hidden; /* Important to contain pseudo-elements */
+        vertical-align: middle; /* Helps alignment if inline-block */
+        background: #0a0a1a; /* Match background */
+    }
+
+    /* Hide original image if using pseudo-elements for full effect */
+    /* .glitch-image-wrapper img { opacity: 0; } */ /* Use only if ::before/::after fully recreate image */
+
+    .glitch-image-wrapper::before,
+    .glitch-image-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Use the same image as the background for pseudo-elements */
+      background: var(--glitch-image-url) center center / cover no-repeat;
+      /* --glitch-image-url needs to be set inline style on the wrapper! */
+    }
+
+    /* Apply animations and clipping like the text version */
+    .glitch-image-wrapper::before {
+      left: 3px;
+      animation: glitch-anim-1 2s infinite linear alternate-reverse 0.1s; /* Add delay */
+      /* You might need mix-blend-mode or colored overlays instead of text-shadow */
+      /* background-color: rgba(255, 0, 255, 0.3); */
+      /* mix-blend-mode: screen; */
+    }
+
+    .glitch-image-wrapper::after {
+      left: -3px;
+      animation: glitch-anim-2 1.5s infinite linear alternate-reverse 0.2s; /* Add delay */
+      /* background-color: rgba(0, 255, 0, 0.3); */
+      /* mix-blend-mode: screen; */
+    }
+    ```
