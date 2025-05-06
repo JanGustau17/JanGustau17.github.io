@@ -324,5 +324,18 @@
         });
     </script>
 
+    <script>
+      const glitchTargets = document.querySelectorAll('.content-card, .glitch-overlay');
+
+      function triggerRandomGlitch() {
+        glitchTargets.forEach(el => el.classList.remove('glitch'));
+        const target = glitchTargets[Math.floor(Math.random() * glitchTargets.length)];
+        target.classList.add('glitch');
+        setTimeout(() => target.classList.remove('glitch'), 2000);
+          }
+
+      setInterval(triggerRandomGlitch, 15000);
+    </script>
+
 </body>
 </html>
