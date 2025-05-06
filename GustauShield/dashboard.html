@@ -215,13 +215,14 @@
                      </div>
                      <p class="text-xs text-medium-gray mt-4 text-center">*Charts show illustrative, simulated data based on industry trends.</p>
                  </div>
+
                  
-                <div class="md:col-span-1 content-card h-full flex flex-col"> {/* Added h-full and flex */}
+                <div class="md:col-span-1 content-card h-full flex flex-col">
                     <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron glitch flex-shrink-0" data-text="Intel Feed (Simulated)">Intel Feed (Simulated)</h3>
-                    {/* Added ID here and flex-grow */}
+                    {/* Add flex-grow to make this div take available vertical space */}
                     <div id="intel-feed-list" class="space-y-4 overflow-y-auto pr-2 flex-grow">
-                        {/* Initial content can be empty or have a loading message */}
                         <p class="text-sm text-medium-gray italic">Initializing feed...</p>
+                        {/* News items will be added here by JS */}
                     </div>
                 </div>
 
