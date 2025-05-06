@@ -10,4 +10,5 @@
 
 .glitch {
   animation: glitch 0.5s linear infinite;
+  filter: contrast(200%) brightness(150%) drop-shadow(0 0 5px red);
 }
