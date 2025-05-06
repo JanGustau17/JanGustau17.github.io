@@ -120,34 +120,39 @@
     <canvas id="matrix-canvas"></canvas>
 
     <main class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 pt-16">
-         <div class="absolute top-16 left-4 right-4 md:left-4 md:right-auto z-20 text-left">
-            <span id="cipherText" class="glitch-cipher-jp" data-text="Don't Get Pwned, Get Informed">
-                Don't Get Pwned, Get Informed
-            </span>
-        </div>
-        
+    
+    <!-- TOP-LEFT GLITCH TEXT -->
+    <div class="absolute top-16 left-4 right-4 md:left-4 md:right-auto z-20 text-left">
+        <span id="cipherText"
+              class="italic text-light-gray text-sm md:text-base font-medium glitch-cipher-jp"
+              data-text="Don't Get Pwned, Get Informed">
+            Don't Get Pwned, Get Informed
+        </span>
+    </div>
 
-        <div class="relative z-10 max-w-3xl mt-16 md:mt-24">
-            <h1 class="text-4xl md:text-6xl font-bold font-orbitron mb-4 header-gradient">
-                AI: Deffence or Offence
-            </h1>
-            <h2 class="text-2xl md:text-3xl font-semibold text-cyber-cyan mb-6 neon-text-cyan">
-                The Double-Edged Sword
-            </h2>
-            
-            <p class="text-lg text-light-gray mb-10 leading-relaxed header-gradient">
-                Artificial Intelligence is revolutionizing digital security - enhancing defenses while simultaneously creating sophisticated new threats. Explore how AI is reshaping the cybersecurity landscape for everyone.
-            </p>
+    <div class="relative z-10 max-w-3xl mt-16 md:mt-24">
+        <h1 class="text-4xl md:text-6xl font-bold font-orbitron mb-4 header-gradient">
+            AI: Deffence or Offence
+        </h1>
+        <h2 class="text-2xl md:text-3xl font-semibold text-cyber-cyan mb-6 neon-text-cyan">
+            The Double-Edged Sword
+        </h2>
 
-            <p class="text-light-gray italic text-sm md:text-base">“Red Pill or Blue Pill?”</p>
-            
-            <a href="dashboard.html" class="cyber-button inline-block enter-button mt-6">
-                Explore the Battlefield →
-            </a>
+        <!-- PARAGRAPH WITH NEW STYLE -->
+        <p class="text-light-gray italic text-base md:text-lg mb-10 leading-relaxed max-w-2xl mx-auto">
+            Artificial Intelligence is revolutionizing digital security — enhancing defenses while simultaneously creating sophisticated new threats.
+            Explore how AI is reshaping the cybersecurity landscape for everyone.
+        </p>
 
-        </div>
+        <!-- Quote -->
+        <p class="text-light-gray italic text-sm md:text-base">“Red Pill or Blue Pill?”</p>
 
-    </main>
+        <!-- Button -->
+        <a href="dashboard.html" class="cyber-button inline-block enter-button mt-6">
+            Explore the Battlefield →
+        </a>
+    </div>
+</main>
 
     <footer class="fixed bottom-0 left-0 w-full text-center py-4 text-gray-500 text-xs opacity-70 z-10">
         GustauShield Insights
