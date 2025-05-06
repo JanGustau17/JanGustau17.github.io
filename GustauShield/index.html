@@ -3,103 +3,122 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI & Cybersecurity: The Double-Edged Sword</title>
+    <title>GustauShield – AI-Optimized Cybersecurity</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        html { scroll-behavior: smooth; }
-        body { background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%); color: #cccccc; font-family: 'Poppins', sans-serif; min-height: 100vh; overflow-x: hidden; }
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        .header-gradient { background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
-        .cyber-button { background: linear-gradient(to right, #0077ff, #8a2be2); color: white; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3); }
-        .cyber-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4); }
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.4; }
-        main, nav, footer { position: relative; z-index: 1; }
-        /* Specific styles for landing page button */
-        .enter-button { padding: 1rem 2.5rem; font-size: 1.1rem; }
-    </style>
+    
+    {/* <link rel="stylesheet" href="css/styles.css" /> */}
 
-    <link rel="stylesheet" href="css/styles.css" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Base Styles */
         html { scroll-behavior: smooth; }
-        body {
-            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%);
+        body { 
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%); 
             color: #cccccc; /* light-gray */
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
         }
-        /* Custom Fonts */
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
 
-        /* Header Gradient */
-        .header-gradient {
-             background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2);
-             -webkit-background-clip: text;
-             background-clip: text;
-             color: transparent;
+        /* MODIFIED Header Gradient - Darker Colors */
+        .header-gradient { 
+            background: linear-gradient(to right, #007A7A, #003399, #540057); /* Darker Cyan, Darker Blue, Darker Violet */
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            color: transparent; 
         }
-        /* Neon Text */
         .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
-
-        /* Navigation */
-        nav { background-color: rgba(10, 10, 26, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0, 255, 255, 0.15); }
-        nav a { transition: color 0.2s ease, text-shadow 0.2s ease; }
-        nav a:hover, nav button:hover { color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
-        nav a.active { color: #00ffff; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
-
-        /* Buttons */
-        .cyber-button {
-            background: linear-gradient(to right, #0077ff, #8a2be2);
-            color: white; padding: 0.75rem 1.5rem; border-radius: 6px;
-            font-weight: 600; transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+        
+        .cyber-button { background: linear-gradient(to right, #0077ff, #8a2be2); color: white; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3); }
+        .cyber-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4); }
+        
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.4; }
+        
+        /* Ensure main content, nav, and footer stack above the fixed canvas */
+        main, nav, footer { 
+            position: relative; 
+            z-index: 1; 
         }
-        .cyber-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
-        }
+        /* Specific styles for landing page button */
+        .enter-button { padding: 1rem 2.5rem; font-size: 1.1rem; }
 
-        /* Cards */
-        .content-card {
-            background-color: rgba(25, 35, 45, 0.6);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        /* --- YOUR GLITCH CSS - Pasted here for testing --- */
+        .glitch-cipher-jp {
+            position: relative;
+            display: inline-block;
+            color: #00fff7; /* Base color for the main text */
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+            font-size: 1.5rem; 
+            letter-spacing: 0.05em;
+            isolation: isolate; 
         }
 
-        /* Matrix Canvas Styling */
-        #matrix-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -10; /* Deep background */
-            opacity: 0.4; /* Reduced opacity */
+        .glitch-cipher-jp::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Ensure it covers the text area */
+            overflow: hidden;
+            color: #ff00ff; /* Magenta */
+            opacity: 0.5;   /* Adjusted opacity */
+            z-index: -1;    
+            animation: glitch-lines 2s infinite linear alternate-reverse;
         }
-        /* Ensure content is above canvas */
-        main, nav, footer { position: relative; z-index: 1; }
+
+        .glitch-cipher-jp::after {
+            content: 'カ ズ ナ ツ ロ キ'; /* Katakana random sample */
+            position: absolute;
+            top: -5px; /* Slightly adjusted */
+            left: 0;
+            width: 100%; 
+            text-align: center; 
+            font-size: 0.9rem; /* Slightly larger Katakana */
+            color: #00ffff; /* Cyan for Katakana */
+            letter-spacing: 0.2em;
+            opacity: 0.3; /* Adjusted opacity */
+            filter: blur(0.5px); /* Slightly less blur */
+            animation: jp-flicker 3s infinite alternate; /* Adjusted speed */
+            z-index: 1; /* Bring Katakana slightly forward, but still allow interaction with main text */
+        }
+
+        @keyframes glitch-lines {
+            0% { clip: rect(0px, 900px, 0px, 0px); transform: translate(0,0); } /* Start with no clip or minimal clip */
+            10% { clip: rect(5px, 900px, 20px, 0px); transform: translate(-2px, -1px) rotate(0.2deg); }
+            20% { clip: rect(10px, 900px, 15px, 0px); transform: translate(2px, 1px) rotate(-0.2deg); }
+            40% { clip: rect(4px, 900px, 25px, 0px); transform: translate(1px, -2px) rotate(0.1deg); }
+            60% { clip: rect(20px, 900px, 30px, 0px); transform: translate(-1px, 2px) rotate(-0.1deg); }
+            80% { clip: rect(15px, 900px, 5px, 0px); transform: translate(2px, -1px) rotate(0.2deg); }
+            100% { clip: rect(25px, 900px, 10px, 0px); transform: translate(0,0); }
+        }
+
+        @keyframes jp-flicker {
+            0%, 100% { opacity: 0.1; transform: translateY(0px) translateX(0px); }
+            25% { opacity: 0.3; transform: translateY(2px) translateX(-1px); }
+            50% { opacity: 0.05; transform: translateY(-1px) translateX(2px); }
+            75% { opacity: 0.25; transform: translateY(1px) translateX(1px); }
+        }
+        /* --- END OF YOUR GLITCH CSS --- */
+
     </style>
-
 </head>
 <body class="font-poppins">
 
     <canvas id="matrix-canvas"></canvas>
 
-        <main class="relative flex flex-col items-center justify-center min-h-screen text-center px-4">
-        <div class="top-4 left-4 text-left">
-            <span class="glitch-cipher-jp text-light-gray" data-text="Don't Get Pwned, Get Informed">
+    <main class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 pt-16">
+        <div class="absolute top-16 left-4 right-4 md:left-4 md:right-auto z-20 text-left">
+            <span class="glitch-cipher-jp" data-text="Don't Get Pwned, Get Informed">
                 Don't Get Pwned, Get Informed
             </span>
         </div>
     
-        <div class="relative z-10 max-w-3xl">
+        <div class="relative z-10 max-w-3xl mt-16 md:mt-24">
             <h1 class="text-4xl md:text-6xl font-bold font-orbitron mb-4 header-gradient">
                 AI: Deffence or Offence
             </h1>
@@ -110,18 +129,14 @@
                 Artificial Intelligence is revolutionizing digital security - enhancing defenses while simultaneously creating sophisticated new threats. Explore how AI is reshaping the cybersecurity landscape for everyone.
             </p>
             <p class="text-light-gray italic text-sm md:text-base">“Red Pill or Blue Pill?”</p>
-        
-            <a href="dashboard.html" class="cyber-button inline-block enter-button mt-4">
+            
+            <a href="dashboard.html" class="cyber-button inline-block enter-button mt-6">
                 Explore the Battlefield →
             </a>
         </div>
     </main>
 
-
-
-    
-
-    <footer class="absolute bottom-0 left-0 w-full text-center py-4 text-medium-gray text-xs opacity-50">
+    <footer class="fixed bottom-0 left-0 w-full text-center py-4 text-gray-500 text-xs opacity-70 z-10">
         GustauShield Insights
     </footer>
 
@@ -136,6 +151,6 @@
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/taos@1.0.3/dist/taos.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/taos@1.0.3/dist/taos.min.js" defer></script>
 </body>
 </html>
