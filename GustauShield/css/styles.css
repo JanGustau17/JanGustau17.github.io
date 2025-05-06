@@ -1,1 +1,13 @@
 
+@keyframes glitch {
+  0% { transform: none; opacity: 1; }
+  20% { transform: translate(1px, -1px) skew(0.5deg); opacity: 0.9; }
+  40% { transform: translate(-1px, 2px) skew(-0.5deg); opacity: 1; }
+  60% { transform: translate(2px, 1px) skew(0.5deg); opacity: 0.8; }
+  80% { transform: translate(-1px, -1px) skew(-0.5deg); opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+.glitch {
+  animation: glitch 0.5s linear infinite;
+}
