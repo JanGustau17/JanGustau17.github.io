@@ -138,3 +138,100 @@ function updateIntelFeed() {
     }
 */
 
+
+
+async function fetchAndDisplayNews(feedUrl, containerId, proxy = 'https://api.allorigins.win/raw?url=') {
+    const feedContainer = document.getElementById(containerId);
+    if (!feedContainer) {
+        console.error(`News feed container #${containerId} not found.`);
+        return;
+    }
+
+    const urlToFetch = `${proxy}${encodeURIComponent(feedUrl)}`;
+    console.log(`Workspaceing news from: ${urlToFetch}`);
+
+    try {
+        const response = await fetch(urlToFetch);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.text(); // Get XML as text
+
+        // --- Basic XML Parsing (More robust library recommended for production) ---
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(data, "text/xml");
+
+        // Find all 'item' elements (standard in RSS)
+        const items = xmlDoc.querySelectorAll("item");
+        if (!items || items.length === 0) {
+             // Handle feeds that might use 'entry' instead of 'item' (like Atom feeds)
+             items = xmlDoc.querySelectorAll("entry");
+        }
+
+        if (!items || items.length === 0) {
+             feedContainer.innerHTML = '<p class="text-sm text-medium-gray italic">Could not find news items in the feed.</p>';
+             console.warn("No <item> or <entry> tags found in fetched feed.");
+             return;
+        }
+
+
+        feedContainer.innerHTML = ''; // Clear previous content or "loading" message
+
+        let itemCount = 0;
+        const maxItemsToShow = 5; // Show latest 5 items
+
+        items.forEach(item => {
+            if (itemCount >= maxItemsToShow) return;
+
+            // Extract data (adjust selectors based on actual feed structure)
+            const title = item.querySelector("title")?.textContent || 'No title';
+            const link = item.querySelector("link")?.textContent || '#';
+            let pubDate = item.querySelector("pubDate")?.textContent || item.querySelector("updated")?.textContent || '';
+            let sourceName = xmlDoc.querySelector("channel > title")?.textContent || xmlDoc.querySelector("feed > title")?.textContent || 'Unknown Source'; // Get source from feed title
+
+            // Format date nicely (optional)
+            if (pubDate) {
+                try {
+                    pubDate = new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                } catch (e) { /* Ignore date parsing error */ }
+            }
+
+            const newsElement = document.createElement('div');
+            newsElement.className = 'news-snippet'; // Use your existing style
+            newsElement.innerHTML = `
+                <time>${pubDate} - ${sourceName}</time>
+                <p class="text-sm text-light-gray mb-1">${title}</p>
+                <a href="${link}" target="_blank" rel="noopener noreferrer" class="text-xs text-cyber-blue hover:text-cyber-cyan underline">
+                    Read the article &rarr;
+                </a>
+            `;
+            feedContainer.appendChild(newsElement);
+            itemCount++;
+        });
+
+        console.log(`Displayed ${itemCount} news items.`);
+
+    } catch (error) {
+        console.error('Error fetching or parsing RSS feed:', error);
+        feedContainer.innerHTML = `<p class="text-sm text-red-500 italic">Error loading news feed. ${error.message}</p>`;
+    }
+}
+
+// --- How to use it within your DOMContentLoaded listener ---
+/*
+    const YOUR_RSS_FEED_URL = "https://feeds.feedburner.com/TheHackersNews"; // EXAMPLE URL - FIND A REAL ONE!
+    const feedContainerId = 'intel-feed-list'; // ID of the div to populate
+
+    if (document.getElementById(feedContainerId)) {
+        fetchAndDisplayNews(YOUR_RSS_FEED_URL, feedContainerId); // Initial fetch
+
+        // Fetch updates periodically (e.g., every 15 minutes = 900000 ms)
+        // Avoid very frequent updates like every minute!
+        setInterval(() => {
+            fetchAndDisplayNews(YOUR_RSS_FEED_URL, feedContainerId);
+        }, 900000);
+        console.log("Real-time news feed (via RSS proxy) initialized.");
+    } else {
+        console.error("Intel feed list element not found.");
+    }
+*/
