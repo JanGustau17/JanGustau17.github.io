@@ -194,40 +194,46 @@
 
         {/* --- Stats & News Section --- */}
         <section id="stats-news" class="mb-12">
-            {/* Content as before */}
-            <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-8 text-center header-gradient">Stats, Trends & News</h2>
-             <div class="grid md:grid-cols-3 gap-8">
-                 <div class="md:col-span-2 content-card">
-                     <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron">Visualizing the Impact</h3>
-                     <div class="flex flex-col xl:flex-row gap-6">
-                         <div class="flex-1">
-                             <h4 class="text-center text-medium-gray text-sm mb-1">Common AI Attack Vectors*</h4>
-                            <div class="chart-container mx-auto max-w-sm">
-                                <canvas id="attackVectorChart"></canvas>
-                            </div>
-                         </div>
-                          <div class="flex-1">
-                             <h4 class="text-center text-medium-gray text-sm mb-1">AI Detection Speed Trend*</h4>
-                             <div class="chart-container mx-auto max-w-sm">
-                                <canvas id="detectionTrendChart"></canvas>
-                             </div>
-                          </div>
-                     </div>
-                     <p class="text-xs text-medium-gray mt-4 text-center">*Charts show illustrative, simulated data based on industry trends.</p>
-                 </div>
+    <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-8 text-center header-gradient">Stats, Trends & News</h2>
+    {/* Make the PARENT grid container stretch its items if needed (though h-full on child often suffices) */}
+    <div class="grid md:grid-cols-3 gap-8 items-stretch"> {/* Added items-stretch */}
 
-                 
-                <div class="md:col-span-1 content-card h-full flex flex-col">
-                    <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron glitch flex-shrink-0" data-text="Intel Feed (Simulated)">Intel Feed (Simulated)</h3>
-                    {/* Add flex-grow to make this div take available vertical space */}
-                    <div id="intel-feed-list" class="space-y-4 overflow-y-auto pr-2 flex-grow">
-                        <p class="text-sm text-medium-gray italic">Initializing feed...</p>
-                        {/* News items will be added here by JS */}
+        {/* Charts Area (md:col-span-2) */}
+        <div class="md:col-span-2 content-card">
+            {/* ... Chart canvases and content ... */}
+             <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron">Visualizing the Impact</h3>
+             <div class="flex flex-col xl:flex-row gap-6">
+                 <div class="flex-1">
+                     <h4 class="text-center text-medium-gray text-sm mb-1">Common AI Attack Vectors*</h4>
+                    <div class="chart-container mx-auto max-w-sm">
+                        <canvas id="attackVectorChart"></canvas>
                     </div>
-                </div>
-
+                 </div>
+                  <div class="flex-1">
+                     <h4 class="text-center text-medium-gray text-sm mb-1">AI Detection Speed Trend*</h4>
+                     <div class="chart-container mx-auto max-w-sm">
+                        <canvas id="detectionTrendChart"></canvas>
+                     </div>
+                  </div>
              </div>
-        </section>
+             <p class="text-xs text-medium-gray mt-4 text-center">*Charts show illustrative, simulated data based on industry trends.</p>
+        </div>
+
+        {/* Simulated News Feed - **** MODIFIED **** */}
+        {/* Add h-full to make card stretch, flex flex-col to control inner elements */}
+        <div class="md:col-span-1 content-card h-full flex flex-col">
+            {/* Add flex-shrink-0 to prevent title from shrinking */}
+            <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron glitch flex-shrink-0" data-text="Intel Feed">Intel Feed</h3>
+            {/* Add flex-grow to make this div fill remaining space; ensure it has the ID */}
+            <div id="intel-feed-list" class="space-y-4 overflow-y-auto pr-2 flex-grow">
+                {/* Content will be loaded here by JavaScript */}
+                <p class="text-sm text-medium-gray italic">Loading live feed...</p>
+            </div>
+        </div>
+        {/* **** END OF MODIFICATIONS **** */}
+
+    </div>
+</section>
     </main>
 
     {/* --- Footer --- */}
