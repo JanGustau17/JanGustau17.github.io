@@ -94,61 +94,73 @@
       /* mix-blend-mode: screen; */
     }
 
+
+    /* Make sure this is in your css/styles.css or your main <style> block */
 .glitch-cipher-jp {
   position: relative;
   display: inline-block;
-  color: #00fff7;
-  font-family: 'Orbitron', monospace;
+  color: #00fff7; /* Base color for the main text */
+  font-family: 'Orbitron', monospace; /* Ensure Orbitron is loaded if not globally set */
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.5rem; /* Or adjust as needed */
   letter-spacing: 0.05em;
-  isolation: isolate;
+  isolation: isolate; /* For stacking context with z-index on pseudo-elements */
 }
 
-.glitch-cipher-jp::before,
-.glitch-cipher-jp::after {
+/* This ::before will create the first layer of the text glitch */
+.glitch-cipher-jp::before {
   content: attr(data-text);
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   overflow: hidden;
-  color: #ff00ff;
-  opacity: 0.4;
-  z-index: -1;
+  color: #ff00ff; /* Magenta, for example */
+  opacity: 0.4;   /* Make it semi-transparent */
+  z-index: -1;    /* Behind the main text */
   animation: glitch-lines 2s infinite linear alternate-reverse;
 }
 
-.glitch-cipher-jp::after {
-  color: #00ffff;
-  animation-delay: 0.3s;
-  z-index: -2;
-}
-
-/* Japanese katakana flicker effect */
-.glitch-cipher-jp::marker,
-.glitch-cipher-jp::selection {
-  background: none;
-}
-
+/* This ::after rule will be used for the Katakana flicker.
+   The CSS rule for ::after that might have duplicated attr(data-text) 
+   is overridden by this more specific Katakana one if it's defined later
+   or has higher specificity (which is not the case here, but the last one defined wins).
+   Effectively, you'll have one text glitch layer (::before) and one Katakana layer (::after).
+*/
 .glitch-cipher-jp::after {
   content: 'カ ズ ナ ツ ロ キ'; /* Katakana random sample */
   position: absolute;
-  top: -10px;
+  top: -10px; /* Position above the main text */
   left: 0;
+  width: 100%; /* Ensure it spans the width of the main text for alignment */
+  text-align: center; /* Center the Katakana over the text */
   font-size: 0.75rem;
+  color: #00ffff; /* Cyan, or another color for the Katakana */
   letter-spacing: 0.2em;
   opacity: 0.2;
   filter: blur(1px);
   animation: jp-flicker 4s infinite alternate;
+  z-index: -1; /* Could also be -1 or 1 depending on desired layering */
 }
 
+
+/* Note on the original CSS:
+  You had two definitions for .glitch-cipher-jp::after. 
+  The browser will only use the properties from the *last* one it encounters for ::after,
+  or a combination if properties aren't overridden.
+  For `content`, the Katakana will win. 
+  For `animation`, `jp-flicker` will win for `::after`.
+  The `glitch-lines` animation will still apply to `::before`.
+*/
+
+/* Your keyframes */
 @keyframes glitch-lines {
   0% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
   10% { clip: rect(5px, 9999px, 20px, 0); transform: translate(-2px, -1px) rotate(0.3deg); }
   20% { clip: rect(10px, 9999px, 15px, 0); transform: translate(2px, 1px) rotate(-0.3deg); }
   40% { clip: rect(4px, 9999px, 25px, 0); transform: translate(1px, -2px); }
-  100% { clip: rect(0, 9999px, 100%, 0); transform: none; }
+  /* Ensure the last step of clip makes sense or remove if it should always be partially clipped */
+  100% { clip: rect(15px, 9999px, 30px, 0); transform: none; } /* Example: Keep some clipping */
 }
 
 @keyframes jp-flicker {
