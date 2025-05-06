@@ -126,18 +126,23 @@
 
     <main class="container mx-auto px-4 py-8">
 
-        <h1 class="text-3xl md:text-4xl font-bold neon-text-cyan font-orbitron mb-10 text-center">The AI Cybersecurity Landscape</h1>
+
+        
+
+<h1 class="text-3xl md:text-4xl font-bold neon-text-cyan font-orbitron mb-10 text-center">The AI Cybersecurity Landscape</h1>
 
 <section id="ai-defenses" class="mb-12">
   <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-6 header-gradient text-center">AI: The Proactive Defender</h2>
   
   <div class="grid md:grid-cols-2 gap-8 items-stretch">
     <!-- Card 1 -->
-    <div class="content-card flex flex-col justify-between min-h-[460px]">
+    <div class="content-card flex flex-col justify-between min-h-[460px] p-6 bg-dark-bg rounded-lg shadow-lg" data-taos="fade-up" data-taos-offset="200">
       <div>
         <h3 class="text-xl font-semibold text-cyber-cyan mb-3">🧠 Detecting the Unseen</h3>
+        <img src="/assets/robot-pointing.png" alt="AI Bot" class="w-28 h-auto mx-auto my-4 rounded-lg shadow-md" data-taos="zoom-in" />
+
         <p class="text-light-gray mb-4 leading-relaxed text-sm">
-          Old-school security waits until something is clearly dangerous. AI works smarter—by learning what “normal” looks like on your device or network. If anything acts even a little weird, AI can catch it early—before it becomes a big problem. 
+          Traditional security waits until something is clearly dangerous. AI works smarter—by learning what “normal” looks like on your device or network. If anything acts even a little weird, AI can catch it early—before it becomes a big problem.
         </p>
         <p class="text-light-gray mb-4 leading-relaxed text-sm">
           <strong>Example:</strong> Like a guard who knows everyone's routine, AI spots when something or someone behaves strangely—even if they’re in disguise.
@@ -151,7 +156,7 @@
     </div>
 
     <!-- Card 2 -->
-    <div class="content-card flex flex-col justify-between min-h-[460px]">
+    <div class="content-card flex flex-col justify-between min-h-[460px] p-6 bg-dark-bg rounded-lg shadow-lg" data-taos="fade-up" data-taos-offset="200" data-taos-delay="100">
       <div>
         <h3 class="text-xl font-semibold text-cyber-cyan mb-3">⚡ Automated Response & Prediction</h3>
         <p class="text-light-gray mb-4 leading-relaxed text-sm">
@@ -172,14 +177,24 @@
     </div>
 
     <!-- Visual Placeholder -->
-    <div class="md:col-span-2 flex justify-center mt-6">
-      <div class="w-full max-w-2xl h-48 border border-cyber-blue/50 rounded-lg flex items-center justify-center text-medium-gray bg-dark-bg/50 shadow-lg text-center p-4">
-        🧭 <em>[Visual Placeholder: Flowchart - Data In ➝ AI Detection ➝ Alert or Block Threat]</em>
-      </div>
+    <div class="w-full max-w-2xl h-auto border border-cyber-blue/50 rounded-lg bg-dark-bg/50 shadow-lg p-4 relative overflow-hidden" id="defend-flowchart">
+      <img src="/assets/ai-hack-visual.jpeg" alt="AI Flowchart Visual" class="w-full h-auto rounded-md object-contain" />
+      <div class="absolute top-0 left-0 w-full h-full pointer-events-none glitch-overlay"></div>
     </div>
+
+
   </div>
 </section>
 
+
+
+
+
+
+
+
+
+        
         <section id="ai-attacks" class="mb-12">
              <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-6 text-center header-gradient">AI: The Attacker's New Weapon</h2>
 <div class="grid md:grid-cols-2 gap-8 items-start">
@@ -274,6 +289,9 @@
     </main>
 
     <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
+        <script src="https://cdn.jsdelivr.net/npm/taos@1.0.3/dist/taos.min.js"></script>
+        <div class="content-card" data-taos="fade-up" data-taos-offset="200" data-taos-delay="200">
+
         GustauShield Insights | English Project | AI in Cybersecurity Analysis
     </footer>
 
