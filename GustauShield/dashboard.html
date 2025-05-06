@@ -150,7 +150,6 @@
                  </div>
             </div>
 
-             {/* Row 2: Text + Image */}
              <div class="grid md:grid-cols-2 gap-8 items-stretch">
                   <div class="content-card flex-1 p-6 md:order-last">
                       <h3 class="text-xl md:text-2xl font-semibold text-cyber-purple mb-3 glitch" data-text="🤖 Automation & Evasion">🤖 Automation & Evasion</h3>
@@ -174,7 +173,6 @@
                   </div>
              </div>
 
-            {/* Flowchart - Centered */}
             <div class="mt-12 flex flex-wrap justify-center items-center gap-4 text-light-gray text-sm animate-pulse">
                 <div class="bg-cyber-purple/10 border border-cyber-purple p-3 rounded-lg shadow-md w-[120px] text-center">🔎<br>Recon / Scrape</div>
                 <div class="text-cyber-purple text-2xl mx-2">→</div>
@@ -186,15 +184,12 @@
             </div>
         </section>
 
-        {/* --- Stats & News Section --- */}
         <section id="stats-news" class="mb-12">
     <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-8 text-center header-gradient">Stats, Trends & News</h2>
     {/* Make the PARENT grid container stretch its items if needed (though h-full on child often suffices) */}
-    <div class="grid md:grid-cols-3 gap-8 items-stretch"> {/* Added items-stretch */}
+    <div class="grid md:grid-cols-3 gap-8 items-stretch">
 
-        {/* Charts Area (md:col-span-2) */}
         <div class="md:col-span-2 content-card">
-            {/* ... Chart canvases and content ... */}
              <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron">Visualizing the Impact</h3>
              <div class="flex flex-col xl:flex-row gap-6">
                  <div class="flex-1">
@@ -213,29 +208,21 @@
              <p class="text-xs text-medium-gray mt-4 text-center">*Charts show illustrative, simulated data based on industry trends.</p>
         </div>
 
-        {/* Simulated News Feed - **** MODIFIED **** */}
-        {/* Add h-full to make card stretch, flex flex-col to control inner elements */}
         <div class="md:col-span-1 content-card h-full flex flex-col">
-            {/* Add flex-shrink-0 to prevent title from shrinking */}
             <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron glitch flex-shrink-0" data-text="Intel Feed">Intel Feed</h3>
-            {/* Add flex-grow to make this div fill remaining space; ensure it has the ID */}
             <div id="intel-feed-list" class="space-y-4 overflow-y-auto pr-2 flex-grow">
-                {/* Content will be loaded here by JavaScript */}
                 <p class="text-sm text-medium-gray italic">Loading live feed...</p>
             </div>
         </div>
-        {/* **** END OF MODIFICATIONS **** */}
 
     </div>
 </section>
     </main>
 
-    {/* --- Footer --- */}
     <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
         GustauShield Insights | English Project | AI in Cybersecurity Analysis
     </footer>
 
-    {/* --- Scripts --- */}
     <script src="js/matrix.js" defer></script>
     <script src="js/charts.js" defer></script>
     <script src="js/main.js" defer></script>
