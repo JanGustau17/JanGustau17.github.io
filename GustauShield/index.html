@@ -155,12 +155,59 @@
 
     <script src="js/matrix.js" defer></script>
     <script>
+        
         document.addEventListener('DOMContentLoaded', () => {
+            
             if (typeof initRainbowMatrix === 'function') {
                 initRainbowMatrix('matrix-canvas');
             } else {
                 console.error("Matrix script not loaded or init function missing.");
             }
+
+            const cipherSpan = document.getElementById('cipherText');
+        if (cipherSpan) {
+            const originalEnglishText = "Don't Get Pwned, Get Informed";
+            const japanesePhrases = [
+                "情報を守れ、知識を得よ", // Protect info, gain knowledge
+                "サイバー脅威の解析",     // Cyber threat analysis
+                "防御システム作動中",     // Defense system active
+                "人工知能の進化",       // Evolution of AI
+                "暗号化通信確保",       // Encrypted comms secured
+                "ハッキングを阻止",       // Prevent hacking
+                "脆弱性スキャン実行"      // Vulnerability scan execute
+            ];
+            let isEnglish = true;
+            let textInterval;
+
+            const updateText = () => {
+                if (isEnglish) {
+                    // Switch to a random Japanese phrase
+                    const randomIndex = Math.floor(Math.random() * japanesePhrases.length);
+                    const newText = japanesePhrases[randomIndex];
+                    cipherSpan.innerText = newText;
+                    cipherSpan.dataset.text = newText; // Update data-text for ::before glitch
+                    isEnglish = false;
+                    // Hold Japanese text for a shorter duration
+                    clearInterval(textInterval);
+                    textInterval = setInterval(updateText, 2000 + Math.random() * 1000); // 2-3 seconds
+                } else {
+                    // Switch back to English
+                    cipherSpan.innerText = originalEnglishText;
+                    cipherSpan.dataset.text = originalEnglishText;
+                    isEnglish = true;
+                    // Hold English text for a longer duration
+                    clearInterval(textInterval);
+                    textInterval = setInterval(updateText, 5000 + Math.random() * 3000); // 5-8 seconds
+                }
+            };
+
+            // Start the cycle
+            textInterval = setInterval(updateText, 5000 + Math.random() * 3000); // Initial delay for English
+            console.log("Cipher text transformation initialized.");
+
+        } else {
+            console.error("Cipher text span not found.");
+        }
         });
     </script>
 
