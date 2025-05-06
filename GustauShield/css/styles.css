@@ -94,58 +94,64 @@
       /* mix-blend-mode: screen; */
     }
 
-.glitch-cipher {
+.glitch-cipher-jp {
   position: relative;
   display: inline-block;
   color: #00fff7;
   font-family: 'Orbitron', monospace;
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   letter-spacing: 0.05em;
+  isolation: isolate;
 }
 
-.glitch-cipher::before,
-.glitch-cipher::after {
+.glitch-cipher-jp::before,
+.glitch-cipher-jp::after {
   content: attr(data-text);
   position: absolute;
+  top: 0;
   left: 0;
   width: 100%;
-  color: #ff00ff;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  animation: glitch-crypto 2s infinite linear alternate-reverse;
-  opacity: 0.6;
-  font-family: monospace;
+  color: #ff00ff;
+  opacity: 0.4;
+  z-index: -1;
+  animation: glitch-lines 2s infinite linear alternate-reverse;
 }
 
-.glitch-cipher::after {
+.glitch-cipher-jp::after {
   color: #00ffff;
   animation-delay: 0.3s;
+  z-index: -2;
 }
 
-@keyframes glitch-crypto {
-  0% {
-    clip: rect(0, 9999px, 0, 0);
-    transform: translate(0, 0);
-  }
-  10% {
-    clip: rect(5px, 9999px, 15px, 0);
-    transform: translate(-1px, -1px) rotate(0.3deg);
-  }
-  20% {
-    clip: rect(10px, 9999px, 20px, 0);
-    transform: translate(1px, 1px) rotate(-0.3deg);
-  }
-  30% {
-    clip: rect(15px, 9999px, 25px, 0);
-    transform: translate(-2px, 0);
-  }
-  40% {
-    clip: rect(0, 9999px, 10px, 0);
-    transform: translate(2px, -1px);
-  }
-  100% {
-    clip: rect(0, 9999px, 100%, 0);
-    transform: none;
-  }
+/* Japanese katakana flicker effect */
+.glitch-cipher-jp::marker,
+.glitch-cipher-jp::selection {
+  background: none;
+}
+
+.glitch-cipher-jp::after {
+  content: 'カ ズ ナ ツ ロ キ'; /* Katakana random sample */
+  position: absolute;
+  top: -10px;
+  left: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  opacity: 0.2;
+  filter: blur(1px);
+  animation: jp-flicker 4s infinite alternate;
+}
+
+@keyframes glitch-lines {
+  0% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
+  10% { clip: rect(5px, 9999px, 20px, 0); transform: translate(-2px, -1px) rotate(0.3deg); }
+  20% { clip: rect(10px, 9999px, 15px, 0); transform: translate(2px, 1px) rotate(-0.3deg); }
+  40% { clip: rect(4px, 9999px, 25px, 0); transform: translate(1px, -2px); }
+  100% { clip: rect(0, 9999px, 100%, 0); transform: none; }
+}
+
+@keyframes jp-flicker {
+  0%, 100% { opacity: 0.05; transform: translateY(0px); }
+  50% { opacity: 0.2; transform: translateY(3px); }
 }
