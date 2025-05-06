@@ -194,46 +194,67 @@
 
 
         
-        <section id="ai-attacks" class="mb-12">
-             <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-6 text-center header-gradient">AI: The Attacker's New Weapon</h2>
-<div class="grid md:grid-cols-2 gap-8 items-start">
-    <div class="content-card">
+        <section id="ai-attacks" class="mb-20">
+  <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-10 text-center header-gradient">AI: The Attacker's New Weapon</h2>
+
+  <div class="grid md:grid-cols-3 gap-6 items-stretch">
+    <!-- Left Side: Attack Visual -->
+    <div class="col-span-1">
+      <img src="assets/robot-pointing.png" 
+           alt="AI attack illustration" 
+           class="w-full h-[620px] object-contain rounded-xl shadow-xl bg-black glitch-overlay" />
+    </div>
+
+    <!-- Right Side: Stacked Cards -->
+    <div class="col-span-2 flex flex-col justify-between gap-6">
+      <!-- Card 1 -->
+      <div class="content-card h-full min-h-[300px] p-6 bg-dark-bg rounded-lg shadow-lg" data-taos="fade-up">
         <h3 class="text-xl font-semibold text-cyber-purple mb-3">🎭 Hyper-Realistic Scams</h3>
-        <p class="text-light-gray mb-4 leading-relaxed text-sm">
-            AI can fake things really well. Hackers now use AI to write perfect scam emails that look like they came from your boss or bank. They can even use deepfake tools to copy someone’s voice or face and trick people into sending money or clicking bad links.
+        <p class="text-light-gray mb-4 text-sm">
+          AI can fake things really well. Hackers now use AI to write perfect scam emails that look like they came from your boss or bank. They can even use deepfake tools to copy someone’s voice or face and trick people into sending money or clicking bad links.
         </p>
-        <p class="text-light-gray mb-4 leading-relaxed text-sm">
-            <strong>Example:</strong> A fake video call from your CEO asking for a wire transfer—real voice, real face, but totally fake.
+        <p class="text-light-gray text-sm">
+          <strong>Example:</strong> A fake video call from your CEO asking for a wire transfer—real voice, real face, but totally fake.
         </p>
-        <ul class="space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-purple">
-            <li>📧 Personalized scam emails made using AI + stolen data.</li>
-            <li>🎙️ Fake voices used in phone call scams ("vishing").</li>
-            <li>🎥 Deepfake videos used for high-stakes impersonation.</li>
+        <ul class="mt-4 space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-purple">
+          <li>📧 Personalized scam emails made using AI + stolen data.</li>
+          <li>🎹 Fake voices used in phone call scams ("vishing").</li>
+          <li>🎥 Deepfake videos used for high-stakes impersonation.</li>
         </ul>
-    </div>
-    
-    <div class="content-card">
+      </div>
+
+      <!-- Card 2 -->
+      <div class="content-card h-full min-h-[300px] p-6 bg-dark-bg rounded-lg shadow-lg" data-taos="fade-up" data-taos-delay="100">
         <h3 class="text-xl font-semibold text-cyber-purple mb-3">🤖 Automation & Evasion</h3>
-        <p class="text-light-gray mb-4 leading-relaxed text-sm">
-            AI helps hackers work faster. It can scan for weak spots in systems, break passwords, and even create malware that changes shape to avoid getting caught by antivirus software. These smart attacks are harder to detect and more dangerous.
+        <p class="text-light-gray mb-4 text-sm">
+          AI helps hackers work faster. It can scan for weak spots in systems, break passwords, and even create malware that changes shape to avoid getting caught by antivirus software. These smart attacks are harder to detect and more dangerous.
         </p>
-        <p class="text-light-gray mb-4 leading-relaxed text-sm">
-            <strong>Example:</strong> A virus that updates itself every hour so antivirus tools never recognize it.
+        <p class="text-light-gray text-sm">
+          <strong>Example:</strong> A virus that updates itself every hour so antivirus tools never recognize it.
         </p>
-        <ul class="space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-purple">
-            <li>🔍 Finds software bugs and weaknesses fast.</li>
-            <li>🔓 Breaks passwords using AI-powered guessing tools.</li>
-            <li>🦠 Malware that evolves to avoid detection.</li>
+        <ul class="mt-4 space-y-2 text-sm list-disc list-inside text-light-gray marker:text-cyber-purple">
+          <li>🔍 Finds software bugs and weaknesses fast.</li>
+          <li>🔓 Breaks passwords using AI-powered guessing tools.</li>
+          <li>🦠 Malware that evolves to avoid detection.</li>
         </ul>
+      </div>
     </div>
-    
-    <div class="md:col-span-2 flex justify-center mt-6">
-        <div class="w-full max-w-2xl h-48 border border-cyber-purple/50 rounded-lg flex items-center justify-center text-medium-gray bg-dark-bg/50 shadow-lg text-center p-4">
-            🎯 <em>[Visual Placeholder: AI tool creating fake email ➝ fake voice ➝ scanning systems]</em>
-        </div>
+  </div>
+
+  <!-- Animated Flowchart Below -->
+  <div class="mt-10 md:col-span-3 flex flex-col items-center gap-4 text-light-gray text-sm animate-pulse">
+    <div class="flex flex-wrap justify-center items-center gap-4 text-center">
+      <div class="bg-cyber-purple/10 border border-cyber-purple p-3 rounded-lg shadow-md">🔎 <br> Reconnaissance</div>
+      <div class="text-cyber-purple">➔</div>
+      <div class="bg-cyber-purple/10 border border-cyber-purple p-3 rounded-lg shadow-md">🤖 <br> AI Cloning</div>
+      <div class="text-cyber-purple">➔</div>
+      <div class="bg-cyber-purple/10 border border-cyber-purple p-3 rounded-lg shadow-md">📧 <br> Phishing/Deepfake</div>
+      <div class="text-cyber-purple">➔</div>
+      <div class="bg-cyber-purple/10 border border-cyber-purple p-3 rounded-lg shadow-md">🧑‍💻 <br> User Deceived</div>
     </div>
-</div>
-        </section>
+  </div>
+</section>
+
 
         <section id="stats-news" class="mb-12">
             <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-8 text-center header-gradient">Stats, Trends & News</h2>
