@@ -103,25 +103,21 @@
 
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
         <div class="container mx-auto flex justify-between items-center px-4 py-3">
-            {/* Link back to landing page */}
             <a href="index.html" class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></a>
             <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">
                 ☰
             </button>
-            {/* Desktop Menu - Update active class */}
             <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
                 <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
                 <li><a href="dashboard.html" class="active hover:text-cyber-cyan">Dashboard</a></li> {/* Active page */}
                 <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
                 <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
-                {/* No Login/Logout needed for this version */}
             </ul>
         </div>
-         {/* Mobile Menu Panel */}
         <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
             <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
                 <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
-                <li><a href="dashboard.html" class="active hover:text-cyber-cyan">Dashboard</a></li> {/* Active page */}
+                <li><a href="dashboard.html" class="active hover:text-cyber-cyan">Dashboard</a></li>
                 <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
                 <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
             </ul>
@@ -201,20 +197,19 @@
         <section id="stats-news" class="mb-12">
             <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-8 text-center header-gradient">Stats, Trends & News</h2>
             <div class="grid md:grid-cols-3 gap-8">
-                {/* Charts Area */}
                 <div class="md:col-span-2 content-card">
                      <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron">Visualizing the Impact</h3>
                      <div class="flex flex-col xl:flex-row gap-6">
                          <div class="flex-1">
                              <h4 class="text-center text-medium-gray text-sm mb-1">Common AI Attack Vectors*</h4>
                             <div class="chart-container mx-auto max-w-sm">
-                                <canvas id="attackVectorChart"></canvas> {/* Changed ID */}
+                                <canvas id="attackVectorChart"></canvas>
                             </div>
                          </div>
                           <div class="flex-1">
                              <h4 class="text-center text-medium-gray text-sm mb-1">AI Detection Speed Trend*</h4>
                              <div class="chart-container mx-auto max-w-sm">
-                                <canvas id="detectionTrendChart"></canvas> {/* Changed ID */}
+                                <canvas id="detectionTrendChart"></canvas>
                              </div>
                           </div>
                      </div>
@@ -223,7 +218,7 @@
 
                 <div class="md:col-span-1 content-card">
                     <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron">Intel Feed (Simulated)</h3>
-                    <div class="space-y-4 max-h-96 overflow-y-auto pr-2"> {/* Added max-height and scroll */}
+                    <div class="space-y-4 max-h-96 overflow-y-auto pr-2">
                         <div class="news-snippet">
                              <time datetime="2025-05-05T14:00:00Z">May 5, 2025 - 14:00 UTC</time>
                              <p class="text-sm text-light-gray">AI model successfully identifies zero-day exploit in popular web server software, patch deployed proactively.</p>
