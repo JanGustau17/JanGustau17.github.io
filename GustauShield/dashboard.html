@@ -215,17 +215,16 @@
                      </div>
                      <p class="text-xs text-medium-gray mt-4 text-center">*Charts show illustrative, simulated data based on industry trends.</p>
                  </div>
-                 <div class="md:col-span-1 content-card">
-                    <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron glitch" data-text="Intel Feed (Simulated)">Intel Feed (Simulated)</h3>
-                    <div class="space-y-4 max-h-96 overflow-y-auto pr-2">
-                        {/* News snippets as before */}
-                        <div class="news-snippet"> <time datetime="2025-05-05T14:00:00Z">May 5, 2025 - 14:00 UTC</time> <p class="text-sm text-light-gray">AI model successfully identifies zero-day exploit in popular web server software, patch deployed proactively.</p> </div>
-                         <div class="news-snippet"> <time datetime="2025-05-05T11:30:00Z">May 5, 2025 - 11:30 UTC</time> <p class="text-sm text-light-gray"><strong class="text-yellow-400">[Warning]</strong> Spike detected in AI-generated phishing emails impersonating cloud service providers.</p> </div>
-                         <div class="news-snippet"> <time datetime="2025-05-04T20:15:00Z">May 4, 2025 - 20:15 UTC</time> <p class="text-sm text-light-gray">Research published on new technique using generative AI to create polymorphic malware undetectable by older AV engines.</p> </div>
-                         <div class="news-snippet"> <time datetime="2025-05-04T09:05:00Z">May 4, 2025 - 09:05 UTC</time> <p class="text-sm text-light-gray"><strong class="text-red-500">[Alert]</strong> Credential stuffing attack using AI-optimized password lists blocked against financial services client.</p> </div>
-                         <div class="news-snippet"> <time datetime="2025-05-03T16:40:00Z">May 3, 2025 - 16:40 UTC</time> <p class="text-sm text-light-gray">Deepfake voice analysis flagged incoming call to executive as synthetic; potential fraud averted.</p> </div>
+                 
+                <div class="md:col-span-1 content-card h-full flex flex-col"> {/* Added h-full and flex */}
+                    <h3 class="text-xl font-semibold text-cyber-cyan mb-4 font-orbitron glitch flex-shrink-0" data-text="Intel Feed (Simulated)">Intel Feed (Simulated)</h3>
+                    {/* Added ID here and flex-grow */}
+                    <div id="intel-feed-list" class="space-y-4 overflow-y-auto pr-2 flex-grow">
+                        {/* Initial content can be empty or have a loading message */}
+                        <p class="text-sm text-medium-gray italic">Initializing feed...</p>
                     </div>
-                 </div>
+                </div>
+
              </div>
         </section>
     </main>
