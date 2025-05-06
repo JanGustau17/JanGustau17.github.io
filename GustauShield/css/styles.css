@@ -93,4 +93,59 @@
       /* background-color: rgba(0, 255, 0, 0.3); */
       /* mix-blend-mode: screen; */
     }
-    ```
+
+.glitch-cipher {
+  position: relative;
+  display: inline-block;
+  color: #00fff7;
+  font-family: 'Orbitron', monospace;
+  font-weight: bold;
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
+}
+
+.glitch-cipher::before,
+.glitch-cipher::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  color: #ff00ff;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  animation: glitch-crypto 2s infinite linear alternate-reverse;
+  opacity: 0.6;
+  font-family: monospace;
+}
+
+.glitch-cipher::after {
+  color: #00ffff;
+  animation-delay: 0.3s;
+}
+
+@keyframes glitch-crypto {
+  0% {
+    clip: rect(0, 9999px, 0, 0);
+    transform: translate(0, 0);
+  }
+  10% {
+    clip: rect(5px, 9999px, 15px, 0);
+    transform: translate(-1px, -1px) rotate(0.3deg);
+  }
+  20% {
+    clip: rect(10px, 9999px, 20px, 0);
+    transform: translate(1px, 1px) rotate(-0.3deg);
+  }
+  30% {
+    clip: rect(15px, 9999px, 25px, 0);
+    transform: translate(-2px, 0);
+  }
+  40% {
+    clip: rect(0, 9999px, 10px, 0);
+    transform: translate(2px, -1px);
+  }
+  100% {
+    clip: rect(0, 9999px, 100%, 0);
+    transform: none;
+  }
+}
