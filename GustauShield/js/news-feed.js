@@ -148,7 +148,7 @@ function displayNewsItems() {
 
         newsElement.innerHTML = `
             <h4 class="text-sm font-semibold text-light-gray hover:text-cyber-cyan transition-colors">
-                <a href="article_view.html?${articleParams}" title="${item.title}">
+                <a href="blog.html?${articleParams}" title="${item.title}">
                     ${item.title.substring(0, 80)}${item.title.length > 80 ? '...' : ''}
                 </a>
             </h4>
