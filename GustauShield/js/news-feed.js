@@ -1,23 +1,10 @@
 // js/news-feed.js
 
 const RSS_FEEDS = [
-
-    'https://podcast.darknetdiaries.com/',
-    // 'https://grahamcluley.com/feed/',
-    // 'https://krebsonsecurity.com/feed/',
-    // 'https://isc.sans.edu/rssfeed_full.xml',
-    // 'https://www.schneier.com/feed/atom/',
-    // 'https://securelist.com/feed/',
-    // 'https://news.sophos.com/en-us/category/security-operations/feed/',
-    // 'https://feeds.feedburner.com/TheHackersNews?format=xml',
-    // 'https://news.sophos.com/en-us/category/threat-research/feed/',
-    // 'https://www.troyhunt.com/rss/',
-    // 'https://www.usom.gov.tr/rss/tehdit.rss',
-    // 'https://www.usom.gov.tr/rss/duyuru.rss',
-    // 'https://feeds.feedburner.com/eset/blog',
-    // 'https://podcast.darknetdiaries.com/',
-    // 'https://feeds.feedburner.com/TheHackersNews' // Using only The Hacker News
+    'https://podcast.darknetdiaries.com/'
 ];
+
+
 const CORS_PROXY_URL = "https://api.allorigins.win/raw?url=";
 const FEED_CONTAINER_ID = 'intel-feed-list';
 const COUNTDOWN_TIMER_ID = 'intel-feed-countdown';
