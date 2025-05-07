@@ -1,7 +1,10 @@
 // js/news-feed.js
 
 const RSS_FEEDS = [
-    'https://podcast.darknetdiaries.com/'
+    'https://grahamcluley.com/feed/',
+    'https://krebsonsecurity.com/feed/',
+    'https://securelist.com/feed/'
+    
 ];
 
 
