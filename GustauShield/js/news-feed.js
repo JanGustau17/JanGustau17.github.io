@@ -7,9 +7,7 @@ const RSS_FEEDS = [
     'https://securelist.com/feed/',
     'https://news.sophos.com/en-us/category/security-operations/feed/',
     'https://news.sophos.com/en-us/category/threat-research/feed/',
-    'https://www.troyhunt.com/rss/',
     'https://feeds.feedburner.com/eset/blog'
-    // Note: Removed podcast and Turkish language feeds from your list as they are less suitable
 ];
 console.log("news-feed.js loaded with updated feed list.");
 
