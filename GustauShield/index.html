@@ -16,13 +16,12 @@
             font-family: 'Poppins', sans-serif; 
             min-height: 100vh; 
             overflow-x: hidden;
-            display: flex; /* For centering content */
-            align-items: center; /* For centering content */
-            justify-content: center; /* For centering content */
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
         }
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
         
-        /* Original Brighter Header Gradient (for the title) */
         .header-gradient { 
             background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2); 
             -webkit-background-clip: text; 
@@ -36,7 +35,7 @@
             color: white; padding: 0.75rem 1.5rem; border-radius: 6px; 
             font-weight: 600; transition: all 0.3s ease; 
             box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3); 
-            display: inline-block; /* Ensure it behaves like a block for margin/padding */
+            display: inline-block; 
         }
         .cyber-button:hover { 
             transform: translateY(-2px); 
@@ -46,25 +45,90 @@
         #matrix-canvas { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             z-index: -10; 
-            opacity: 0.4; /* Matrix rain lightness/intensity control */
+            opacity: 0.3; /* Further reduced opacity for matrix rain */
         }
         
-        /* Content wrapper needs z-index if nav/footer were to overlap fixed canvas */
         main, footer { 
             position: relative; 
             z-index: 1; 
         }
         
-        /* Specific styles for landing page button */
         .enter-button { padding: 1rem 2.5rem; font-size: 1.1rem; }
+
+        /* --- DYNAMIC GLITCH TEXT STYLES --- */
+        .dynamic-glitch-text {
+            position: relative;
+            display: inline-block;
+            color: #00c0c0; /* A slightly less intense cyan for base text */
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+            font-size: 1.3rem; /* Adjusted size */
+            letter-spacing: 0.05em;
+            padding: 5px; /* Add some padding so pseudo-elements don't clip harshly */
+            line-height: 1.2; /* Adjust line height for multi-line phrases */
+            white-space: nowrap; /* Keep it on one line for now, adjust if needed */
+        }
+
+        .dynamic-glitch-text::before,
+        .dynamic-glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: transparent; /* Ensure parent background shows through */
+        }
+
+        .dynamic-glitch-text::before {
+            color: #505070; /* Dark, desaturated blue/purple */
+            left: 1px;
+            text-shadow: -1px 0 rgba(40, 0, 40, 0.5); /* Dark magenta shadow */
+            opacity: 0.75;
+            animation: simple-glitch-1 0.25s infinite steps(3, end) alternate-reverse;
+        }
+
+        .dynamic-glitch-text::after {
+            color: #306060; /* Dark, desaturated cyan/green */
+            left: -1px;
+            text-shadow: 1px 0 rgba(0, 40, 40, 0.5); /* Dark cyan shadow */
+            opacity: 0.75;
+            animation: simple-glitch-2 0.3s infinite steps(4, start) alternate-reverse;
+        }
+
+        @keyframes simple-glitch-1 {
+            0% { clip-path: inset(10% 0 85% 0); transform: translate(-2px, 1px); }
+            33% { clip-path: inset(40% 0 15% 0); transform: translate(1px, -1px); }
+            66% { clip-path: inset(75% 0 5% 0); transform: translate(2px, 2px); }
+            100% { clip-path: inset(5% 0 70% 0); transform: translate(-1px, 0px); }
+        }
+
+        @keyframes simple-glitch-2 {
+            0% { clip-path: inset(90% 0 2% 0); transform: translate(2px, -1px); }
+            25% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
+            50% { clip-path: inset(55% 0 30% 0); transform: translate(1px, 2px); }
+            75% { clip-path: inset(20% 0 60% 0); transform: translate(2px, -2px); }
+            100% { clip-path: inset(40% 0 45% 0); transform: translate(-1px, 0px); }
+        }
+        /* --- END DYNAMIC GLITCH TEXT STYLES --- */
     </style>
 </head>
 <body class="font-poppins">
 
     <canvas id="matrix-canvas"></canvas>
 
-    <main class="text-center px-4 py-8"> 
-        <div class="max-w-3xl">
+    <main class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 pt-16 sm:pt-0">
+        {/* Wrapper for top-left positioned glitch text */}
+        <div class="absolute top-16 sm:top-4 left-4 right-4 sm:left-4 sm:right-auto z-20 text-left">
+            {/* ID added, class changed to dynamic-glitch-text */}
+            <span id="cipherText" class="dynamic-glitch-text" data-text="Don't Get Pwned, Get Informed">
+                Don't Get Pwned, Get Informed
+            </span>
+        </div>
+    
+        {/* Main hero content */}
+        <div class="relative z-10 max-w-3xl mt-16 sm:mt-24">
             <h1 class="text-4xl md:text-6xl font-bold font-orbitron mb-4 header-gradient">
                 GustauShield
             </h1>
@@ -76,7 +140,7 @@
             </p>
             <p class="text-light-gray italic text-sm md:text-base">“Red Pill or Blue Pill?”</p>
             
-            <a href="dashboard.html" class="cyber-button enter-button mt-8">
+            <a href="dashboard.html" class="cyber-button enter-button mt-6">
                 Explore the Battlefield →
             </a>
         </div>
@@ -95,9 +159,66 @@
             } else {
                 console.error("Matrix script (js/matrix.js) not loaded or initRainbowMatrix function is missing.");
             }
+
+            // --- Dynamic Language Switching Glitch Text ---
+            const cipherSpan = document.getElementById('cipherText');
+            if (cipherSpan) {
+                const phrases = [
+                    { lang: 'en', text: "Don't Get Pwned, Get Informed" },
+                    { lang: 'ja', text: "情報を守れ、知識を得よ" },          // Protect info, gain knowledge
+                    { lang: 'ar', text: "لا تُخترق، كن على علم" },          // Don't be breached, be informed
+                    { lang: 'zh', text: "获取信息，免遭入侵" },            // Get information, avoid intrusion
+                    { lang: 'ru', text: "Будь в курсе, не будь взломан" }, // Be aware, don't be hacked
+                    { lang: 'es', text: "Infórmate, Evita el hackeo" },    // Get informed, Avoid hacking
+                    { lang: 'fr', text: "Informez-vous, Évitez le piratage" } // Get informed, Avoid hacking
+                ];
+                let currentPhraseIndex = 0;
+                let isDisplayingOriginal = true;
+                let switchInterval;
+
+                const updateGlitchText = () => {
+                    isDisplayingOriginal = !isDisplayingOriginal; // Toggle state
+
+                    if (isDisplayingOriginal) {
+                        // Display the original English text for a longer duration
+                        cipherSpan.innerText = phrases[0].text;
+                        cipherSpan.dataset.text = phrases[0].text;
+                        // clearInterval(switchInterval); // Clear previous interval
+                        // switchInterval = setInterval(updateGlitchText, 4000 + Math.random() * 2000); // 4-6 seconds
+                    } else {
+                        // Display a random non-English phrase for a shorter duration
+                        currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                        if (currentPhraseIndex === 0) currentPhraseIndex = 1; // Skip English if just showed it
+                        
+                        const phraseObj = phrases[currentPhraseIndex];
+                        cipherSpan.innerText = phraseObj.text;
+                        cipherSpan.dataset.text = phraseObj.text;
+                        // Adjust font size slightly if needed for certain languages (can be complex)
+                        // For example, CJK characters might appear larger
+                        // if (['ja', 'zh'].includes(phraseObj.lang)) {
+                        //     cipherSpan.style.fontSize = "1.1rem"; 
+                        // } else {
+                        //     cipherSpan.style.fontSize = "1.3rem";
+                        // }
+                        // clearInterval(switchInterval); // Clear previous interval
+                        // switchInterval = setInterval(updateGlitchText, 1500 + Math.random() * 1000); // 1.5-2.5 seconds
+                    }
+                };
+                
+                // Start the cycle
+                switchInterval = setInterval(updateGlitchText, 3000 + Math.random() * 2000); // Initial interval
+                console.log("Dynamic glitch text initialized.");
+
+            } else {
+                console.error("Cipher text span (#cipherText) not found.");
+            }
+            // --- End Dynamic Language Switching ---
+
             console.log("Landing Page Initialized.");
         });
     </script>
 
+    {/* TAOS - Not used in this simplified version, can be removed if you don't use data-taos attributes */}
+    {/* <script src="https://cdn.jsdelivr.net/npm/taos@1.0.3/dist/taos.min.js" defer></script> */}
 </body>
 </html>
