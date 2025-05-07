@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GustauShield - Blog & Articles</title> {/* Dynamic title possible */}
+
+    {/* === PASTE COMMON BASE STYLING (Fonts, Tailwind, Font Awesome, CSS) HERE === */}
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%); color: #cccccc; font-family: 'Poppins', sans-serif; min-height: 100vh; overflow-x: hidden; padding-top: 64px; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .header-gradient { background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
+        nav { background-color: rgba(10, 10, 26, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0, 255, 255, 0.15); }
+        nav a, nav button { transition: color 0.2s ease, text-shadow 0.2s ease; }
+        nav a:hover, nav button:hover { color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        nav a.active { color: #00ffff; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        .cyber-button { background: linear-gradient(to right, #0077ff, #8a2be2); color: white; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3); }
+        .cyber-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4); }
+        .content-card { background-color: rgba(25, 35, 45, 0.8); border: 1px solid rgba(0, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: 8px; padding: 1.5rem; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.4; }
+        main, nav, footer { position: relative; z-index: 1; }
+        section { padding: 3rem 1rem; }
+        .article-meta { font-size: 0.8rem; color: #888888; margin-bottom: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+        .article-image { max-width: 100%; height: auto; max-height: 350px; object-fit: cover; border-radius: 6px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        /* Styling for the main article display area */
+        #blog-main-content article { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(0, 255, 255, 0.1); }
+        #blog-main-content article:last-child { border-bottom: none; margin-bottom: 0; }
+        #blog-main-content h2 { font-size: 1.75rem; line-height: 1.3; } /* Slightly smaller than article_view H1 */
+        #blog-main-content .summary-content p { margin-bottom: 1rem; line-height: 1.7; color: #e0e0e0; } /* Slightly brighter paragraph text */
+        /* Styling for Suggestions List */
+        #blog-suggestions h3 { font-size: 1.25rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 0.5rem; }
+        #blog-suggestions ul li { border-bottom: 1px solid rgba(255, 255, 255, 0.07); padding: 0.75rem 0; }
+        #blog-suggestions ul li:last-child { border-bottom: none; }
+        #blog-suggestions a { display: block; color: #cccccc; font-weight: 500; font-size: 0.9rem; line-height: 1.4; transition: color 0.2s ease; }
+        #blog-suggestions a:hover { color: #00ffff; }
+        #blog-suggestions .suggestion-meta { font-size: 0.7rem; color: #888888; margin-top: 0.25rem; }
+    </style>
+    {/* === END COMMON BASE STYLING === */}
+</head>
+<body class="font-poppins">
+    <canvas id="matrix-canvas"></canvas>
+
+    {/* --- Navigation Bar --- */}
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
+        <div class="container mx-auto flex justify-between items-center px-4 py-3">
+            <a href="index.html" class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></a>
+            <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">☰</button>
+            <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
+                <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
+                <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
+                <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
+                <li><a href="blogs.html" class="active hover:text-cyber-cyan">Blogs</a></li> {/* Active Link */}
+                <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
+            </ul>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
+            <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
+                <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
+                <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
+                <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
+                <li><a href="blogs.html" class="active hover:text-cyber-cyan">Blogs</a></li> {/* Active Link */}
+                <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {/* --- Main Content --- */}
+    <main class="container mx-auto px-4 py-8">
+        {/* Layout: Main content area and sidebar for suggestions */}
+        <div class="grid lg:grid-cols-3 lg:gap-12">
+
+            {/* Main Content Area (Articles) */}
+            <div id="blog-main-content" class="lg:col-span-2 space-y-12">
+                {/* Article(s) will be loaded here by JS */}
+                <p class="text-center text-medium-gray italic py-10">Loading articles...</p>
+            </div>
+
+            {/* Sidebar (Suggestions) */}
+            <aside id="blog-suggestions" class="lg:col-span-1 mt-12 lg:mt-0">
+                <h3 class="font-orbitron text-cyber-cyan">More News</h3>
+                <ul id="blog-suggestions-list">
+                    {/* Suggestion links will be loaded here by JS */}
+                    <li class="text-medium-gray italic text-sm py-2">Loading suggestions...</li>
+                </ul>
+            </aside>
+
+        </div>
+    </main>
+
+    {/* --- Footer --- */}
+    <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-16">
+        GustauShield Insights | English Project | AI in Cybersecurity Analysis
+    </footer>
+
+    {/* --- Scripts --- */}
+    <script src="js/matrix.js" defer></script>
+    <script src="js/main.js" defer></script>
+    {/* <script src="js/news-feed.js" defer></script> <-- Not strictly needed here, data comes from sessionStorage */}
+
+    {/* Inline script for Blogs page logic */}
+    <script>
+        /**
+         * Formats plain text description into paragraphs.
+         * Tries to split by double newlines first, then by sentences.
+         * Also performs basic sanitization (removes script/style).
+         */
+        function formatDescription(descText) {
+            if (!descText) return '<p>Summary not available.</p>';
+
+            // Basic sanitization
+            const SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+            const STYLE_REGEX = /<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi;
+            let cleanText = descText.replace(SCRIPT_REGEX, "").replace(STYLE_REGEX, "");
+
+            // If it looks like HTML already (has <p> or <br>), use it mostly as is
+            if (cleanText.match(/<\/?(p|br)\b/i)) {
+                 // Still wrap the whole thing in a container for safety, maybe replace just \n with <br> if needed
+                 // For simplicity, we'll just return the cleaned HTML for now
+                 return cleanText;
+            } else {
+                 // Treat as plain text: split into paragraphs roughly
+                 return cleanText
+                    .split(/\n\s*\n/) // Split by blank lines first
+                    .map(p => p.trim())
+                    .filter(p => p.length > 0)
+                    .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`) // Convert single newlines to <br> within paragraphs
+                    .join('') || `<p>${cleanText}</p>`; // Fallback if no double newlines
+            }
+        }
+
+        /**
+         * Calculates estimated reading time in minutes.
+         */
+        function calculateReadingTime(text) {
+            if (!text) return '';
+            const wordsPerMinute = 225; // Average reading speed
+            const words = text.split(/\s+/).filter(Boolean).length;
+            const minutes = Math.ceil(words / wordsPerMinute);
+            return `Approx. ${minutes < 1 ? '1' : minutes} min read`;
+        }
+
+        /**
+         * Displays full article details in a specified container.
+         */
+        function displayFullArticle(articleData, containerElement) {
+             if (!articleData || !containerElement) return;
+
+             const readingTime = calculateReadingTime(articleData.description);
+             const formattedDescription = formatDescription(articleData.description);
+             let displayDate = articleData.pubDateStr;
+             try { displayDate = new Date(articleData.pubDateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); } catch(e) {}
+
+             const articleHTML = `
+                <article class="content-card" data-guid="${articleData.guid}">
+                    <div class="mb-4 border-b border-cyber-cyan/20 pb-4">
+                        <h2 class="text-2xl md:text-3xl font-bold font-orbitron header-gradient mb-3 leading-tight">${articleData.title}</h2>
+                        <div class="article-meta">
+                            <span>
+                                Published by <strong class="text-light-gray">${articleData.sourceName || 'Unknown'}</strong>
+                                on <time datetime="${articleData.pubDateStr}" class="text-light-gray">${displayDate || 'Date Unknown'}</time>
+                            </span>
+                            <span class="text-cyber-cyan font-semibold">${readingTime}</span>
+                        </div>
+                        <div class="text-xs text-medium-gray mt-1">
+                            By <span class="italic">${articleData.author || 'Author Unknown'}</span>
+                        </div>
+                    </div>
+
+                    ${articleData.imageUrl ? `
+                    <img src="${articleData.imageUrl}" alt="${articleData.title || 'Article image'}" class="article-image float-right w-1/3 ml-6 mb-4 hidden md:block" onerror="this.style.display='none'; this.onerror=null;">
+                    ` : ''}
+
+                    <div class="summary-content text-light-gray leading-relaxed space-y-3 clear-both text-base">
+                         ${formattedDescription}
+                    </div>
+
+                    <div class="mt-8 pt-4 border-t border-cyber-cyan/20 text-right">
+                        <a href="${articleData.link || '#'}" target="_blank" rel="noopener noreferrer" class="text-cyber-blue hover:text-cyber-cyan hover:underline text-sm font-medium ${!articleData.link || articleData.link === '#' ? 'opacity-50 pointer-events-none' : ''}">
+                            ${articleData.link && articleData.link !== '#' ? 'Read the full original article &rarr;' : 'Original link not available'}
+                        </a>
+                    </div>
+                </article>
+            `;
+            // Use appendChild to add multiple articles in list view
+             const articleNode = document.createElement('div'); // Create a temporary div to parse the HTML string
+             articleNode.innerHTML = articleHTML;
+             containerElement.appendChild(articleNode.firstElementChild); // Append the actual article element
+        }
+
+        /**
+         * Displays a list of suggestion links.
+         */
+        function displaySuggestionsList(articlesArray, containerElement) {
+             if (!containerElement) return;
+             const listElement = containerElement.querySelector('ul'); // Find the UL inside
+             if (!listElement) return;
+
+             listElement.innerHTML = ''; // Clear loading/previous
+
+             if (!articlesArray || articlesArray.length === 0) {
+                 listElement.innerHTML = '<li class="text-medium-gray italic text-sm py-2">No other articles available.</li>';
+                 return;
+             }
+
+             articlesArray.forEach(item => {
+                 const articleGuid = encodeURIComponent(item.guid);
+                 let displayDate = '';
+                 try { displayDate = new Date(item.pubDateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } catch(e) {}
+                 const readingTime = calculateReadingTime(item.description);
+
+                 const li = document.createElement('li');
+                 li.innerHTML = `
+                     <a href="blogs.html?article=${articleGuid}" title="${item.title}">
+                         ${item.title.substring(0, 70)}${item.title.length > 70 ? '...' : ''}
+                     </a>
+                     <div class="suggestion-meta">
+                         ${item.sourceName} - ${displayDate} ${readingTime ? `• ${readingTime}` : ''}
+                     </div>
+                 `;
+                 listElement.appendChild(li);
+             });
+        }
+
+
+        // --- Main Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Blogs Page Initializing...");
+            if (typeof initRainbowMatrix === 'function') { initRainbowMatrix('matrix-canvas'); }
+
+            const mainContentContainer = document.getElementById('blog-main-content');
+            const suggestionsContainer = document.getElementById('blog-suggestions');
+            const suggestionsListElement = document.getElementById('blog-suggestions-list');
+
+            if (!mainContentContainer || !suggestionsContainer || !suggestionsListElement) {
+                console.error("Essential layout elements not found (blog-main-content or blog-suggestions).");
+                if (mainContentContainer) mainContentContainer.innerHTML = "<p class='text-red-500 text-center py-10'>Error: Page layout structure missing.</p>";
+                return;
+            }
+
+            // Retrieve all articles from sessionStorage
+            let allNewsItems = [];
+            try {
+                const storedItemsJson = sessionStorage.getItem('allFetchedNewsItems');
+                if (storedItemsJson) {
+                    allNewsItems = JSON.parse(storedItemsJson);
+                    // Sort by date just in case they aren't already
+                    allNewsItems.sort((a, b) => new Date(b.pubDateStr) - new Date(a.pubDateStr));
+                }
+            } catch (e) {
+                console.error("Error retrieving/parsing news items from sessionStorage:", e);
+                 mainContentContainer.innerHTML = "<p class='text-red-500 text-center py-10'>Error loading article data. Please visit the Dashboard first.</p>";
+                suggestionsListElement.innerHTML = '';
+                return;
+            }
+
+            if (!allNewsItems || allNewsItems.length === 0) {
+                 mainContentContainer.innerHTML = "<p class='text-medium-gray italic text-center py-10'>No articles found. Please visit the Dashboard to load the feed.</p>";
+                 suggestionsListElement.innerHTML = '';
+                return;
+            }
+
+
+            // Check URL parameters for a specific article GUID
+            const params = new URLSearchParams(window.location.search);
+            const articleGuidParam = params.get('article'); // GUID is expected to be the article link/unique ID
+
+            mainContentContainer.innerHTML = ''; // Clear loading message
+
+            if (articleGuidParam) {
+                // --- Mode 2: Display Single Article ---
+                console.log("Displaying single article:", articleGuidParam);
+                const targetArticle = allNewsItems.find(item => item.guid === articleGuidParam);
+
+                if (targetArticle) {
+                    // Display the target article in the main area
+                    displayFullArticle(targetArticle, mainContentContainer);
+                    document.title = `${targetArticle.title} - GustauShield`; // Update page title
+
+                    // Prepare suggestions (all *other* articles)
+                    const otherArticles = allNewsItems.filter(item => item.guid !== articleGuidParam);
+                    displaySuggestionsList(otherArticles, suggestionsContainer);
+                } else {
+                    // Article specified in URL not found in stored data
+                     mainContentContainer.innerHTML = `<p class='text-red-500 text-center py-10'>Error: The requested article could not be found. It might be outdated.</p>`;
+                     // Show all articles as suggestions
+                    displaySuggestionsList(allNewsItems, suggestionsContainer);
+                }
+
+            } else {
+                // --- Mode 1: Display Blog Listing (Top 5 + Suggestions) ---
+                console.log("Displaying blog listing (Top 5).");
+                document.title = "GustauShield - Blog & Articles"; // Default title
+
+                const top5Articles = allNewsItems.slice(0, 5);
+                const remainingArticles = allNewsItems.slice(5);
+
+                // Display top 5 articles in the main area
+                if (top5Articles.length > 0) {
+                    top5Articles.forEach(article => {
+                        displayFullArticle(article, mainContentContainer);
+                    });
+                } else {
+                     mainContentContainer.innerHTML = "<p class='text-medium-gray italic text-center py-10'>No articles available to display.</p>";
+                }
+
+                // Display remaining articles as suggestions
+                displaySuggestionsList(remainingArticles, suggestionsContainer);
+            }
+
+            console.log("Blogs Page initialization complete.");
+        });
+    </script>
+
+</body>
+</html>
