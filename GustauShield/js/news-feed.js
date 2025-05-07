@@ -1,10 +1,7 @@
 // js/news-feed.js
 
-// RSS_FEEDS, CORS_PROXY_URL, FEED_CONTAINER_ID, COUNTDOWN_TIMER_ID, REFRESH_INTERVAL_MINUTES, REFRESH_INTERVAL_MS - (Keep these as before)
 const RSS_FEEDS = [
-    'https://www.wired.com/feed/tag/ai/latest/rss',
-    'https://www.wired.com/feed/category/security/latest/rss',
-    'https://feeds.feedburner.com/TheHackersNews'
+    'https://feeds.feedburner.com/TheHackersNews' // Using only The Hacker News
 ];
 const CORS_PROXY_URL = "https://api.allorigins.win/raw?url=";
 const FEED_CONTAINER_ID = 'intel-feed-list';
@@ -12,35 +9,34 @@ const COUNTDOWN_TIMER_ID = 'intel-feed-countdown';
 const REFRESH_INTERVAL_MINUTES = 5;
 const REFRESH_INTERVAL_MS = REFRESH_INTERVAL_MINUTES * 60 * 1000;
 
-let allFetchedItems = [];
-let displayedItemsGuids = new Set(); // To track GUIDs of items to avoid immediate visual repetition in one batch
+let allFetchedItems = []; // Stores all unique items from the last successful fetch
+let displayedItemsGuids = new Set(); // Tracks GUIDs of items to avoid immediate visual repetition
 let countdownIntervalId = null;
 
-const RELEVANT_KEYWORDS = [
+const RELEVANT_KEYWORDS = [ // Customize these for filtering
     'ai', 'artificial intelligence', 'cybersecurity', 'phishing', 'malware',
     'deepfake', 'hacking', 'vulnerability', 'ransomware', 'threat',
     'breach', 'exploit', 'defense', 'attack', 'secure', 'security', 'data protection'
 ];
 
-// fetchSingleFeed function (Keep as before, no changes needed here if it was working)
 async function fetchSingleFeed(feedUrl) {
     const urlToFetch = `${CORS_PROXY_URL}${encodeURIComponent(feedUrl)}`;
-    // console.log(`Workspaceing: ${feedUrl.substring(0, 50)}... via proxy`); // Less verbose logging
     try {
         const response = await fetch(urlToFetch);
         if (!response.ok) {
-            let errorText = `HTTP error for ${feedUrl.substring(0,30)}! Status: ${response.status}`;
+            let errorText = `HTTP error for ${new URL(feedUrl).hostname}! Status: ${response.status}`;
             try { const proxyError = await response.text(); errorText += ` - ${proxyError.substring(0, 100)}`;} catch (e) {/*ignore*/}
             throw new Error(errorText);
         }
         const data = await response.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(data, "text/xml");
-        const parseError = xmlDoc.querySelector("parsererror");
-        if (parseError) {
-            console.error("XML Parsing Error for " + feedUrl + ":", parseError.textContent); // Log error content
+        const parseErrorNode = xmlDoc.querySelector("parsererror"); // For Firefox
+        if (parseErrorNode) {
+            console.error("XML Parsing Error for " + feedUrl + ":", parseErrorNode.textContent);
             return [];
         }
+
         const items = [];
         xmlDoc.querySelectorAll("item, entry").forEach(itemNode => {
             const title = itemNode.querySelector("title")?.textContent.trim() || 'No Title';
@@ -49,8 +45,15 @@ async function fetchSingleFeed(feedUrl) {
                 link = itemNode.querySelector("link")?.getAttribute('href').trim();
             }
             const pubDateStr = itemNode.querySelector("pubDate")?.textContent || itemNode.querySelector("published")?.textContent || itemNode.querySelector("updated")?.textContent || new Date().toISOString();
-            const description = itemNode.querySelector("description")?.textContent.trim().replace(/<[^>]+>/g, '') || itemNode.querySelector("summary")?.textContent.trim().replace(/<[^>]+>/g, '') || 'No summary.';
-            const author = itemNode.querySelector("author > name")?.textContent.trim() || itemNode.querySelector("dc\\:creator")?.textContent.trim() || 'Unknown';
+            // Strip HTML tags from description more carefully
+            let description = itemNode.querySelector("description")?.textContent || itemNode.querySelector("summary")?.textContent || 'No summary.';
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = description;
+            description = tempDiv.textContent || tempDiv.innerText || "";
+            description = description.trim();
+
+            const author = itemNode.querySelector("author > name")?.textContent.trim() || itemNode.querySelector("dc\\:creator")?.textContent.trim() || 'Unknown Author';
+            
             let imageUrl = null;
             const enclosure = itemNode.querySelector("enclosure[url*='.jpg'], enclosure[url*='.png'], enclosure[url*='.jpeg']");
             if (enclosure) { imageUrl = enclosure.getAttribute('url');
@@ -73,7 +76,6 @@ async function fetchSingleFeed(feedUrl) {
     }
 }
 
-// filterRelevantItems function (Keep as before)
 function filterRelevantItems(items) {
     return items.filter(item => {
         const contentToCheck = `${item.title.toLowerCase()} ${item.description.toLowerCase()}`;
@@ -81,31 +83,18 @@ function filterRelevantItems(items) {
     });
 }
 
-/**
- * MODIFIED: Determines the total number of items to attempt to render in the scroll list.
- */
 function getTargetTotalItemCount() {
-    if (window.innerWidth < 768) return 12; // Small screens: 6 visible + 6 scrollable (approx)
-    if (window.innerWidth < 1280) return 16; // Medium screens (up to lg): 8 visible + 8 scrollable (approx)
-    return 20; // Large screens: 10 visible + 10 scrollable (approx)
+    if (window.innerWidth < 768) return 12;
+    if (window.innerWidth < 1280) return 16;
+    return 20;
 }
 
-/**
- * MODIFIED: Displays news items in the feed container based on screen size.
- */
 function displayNewsItems() {
     const feedContainer = document.getElementById(FEED_CONTAINER_ID);
-    if (!feedContainer) {
-        console.error("Feed container not found for displaying news.");
-        return;
-    }
-
-    feedContainer.innerHTML = ''; // Clear current items
+    if (!feedContainer) { console.error("Feed container not found."); return; }
+    feedContainer.innerHTML = '';
 
     const targetTotalItemCount = getTargetTotalItemCount();
-
-    // Get unique, filtered items, sort by date (newest first)
-    // Ensure we only process items not recently shown to fill the target count
     let potentialItems = filterRelevantItems(allFetchedItems)
         .sort((a, b) => new Date(b.pubDateStr) - new Date(a.pubDateStr));
     
@@ -114,20 +103,16 @@ function displayNewsItems() {
 
     for (const item of potentialItems) {
         if (itemsToDisplay.length >= targetTotalItemCount) break;
-        if (!displayedItemsGuids.has(item.guid)) { // Avoid items shown in *previous* batches
+        if (!displayedItemsGuids.has(item.guid)) {
             itemsToDisplay.push(item);
             newGuidsForThisBatch.add(item.guid);
         }
     }
     
-    // If not enough new items, fill with older (but still relevant and sorted) items,
-    // even if they were in displayedItemsGuids, to meet the target count.
-    // This ensures the list is always full if enough relevant content exists.
     if (itemsToDisplay.length < targetTotalItemCount) {
         let fallbackIndex = 0;
         while (itemsToDisplay.length < targetTotalItemCount && fallbackIndex < potentialItems.length) {
             const item = potentialItems[fallbackIndex];
-            // Add if not already in the current batch to display
             if (!itemsToDisplay.find(displayedItem => displayedItem.guid === item.guid)) {
                  itemsToDisplay.push(item);
             }
@@ -135,9 +120,8 @@ function displayNewsItems() {
         }
     }
 
-
     if (itemsToDisplay.length === 0) {
-        feedContainer.innerHTML = '<p class="text-sm text-medium-gray italic p-4 text-center">No new relevant articles found. Check back soon!</p>';
+        feedContainer.innerHTML = '<p class="text-sm text-medium-gray italic p-4 text-center">No new relevant articles found from The Hacker News.</p>';
         return;
     }
 
@@ -150,7 +134,7 @@ function displayNewsItems() {
             pubDate: item.pubDateStr,
             source: item.sourceName,
             author: item.author,
-            desc: item.description.substring(0, 400) + (item.description.length > 400 ? '...' : ''), // Longer desc for article page
+            desc: item.description.substring(0, 400) + (item.description.length > 400 ? '...' : ''),
             image: item.imageUrl || ''
         }).toString();
 
@@ -163,44 +147,53 @@ function displayNewsItems() {
             <p class="text-xs text-medium-gray">${item.sourceName} - ${new Date(item.pubDateStr).toLocaleDateString()}</p>
         `;
         feedContainer.appendChild(newsElement);
-        setTimeout(() => newsElement.classList.remove('opacity-0'), 50); // Trigger fade-in
+        setTimeout(() => newsElement.classList.remove('opacity-0'), 50);
     });
 
-    // Update the global set of displayed GUIDs with new items from this batch
     newGuidsForThisBatch.forEach(guid => displayedItemsGuids.add(guid));
-    
-    // Prune the displayedItemsGuids set if it gets too large (e.g., keep the last 100 unique GUIDs)
-    // This helps manage memory and ensures older items can reappear eventually.
     if (displayedItemsGuids.size > 100) {
         const guidsArray = Array.from(displayedItemsGuids);
-        const guidsToDelete = guidsArray.slice(0, displayedItemsGuids.size - 70); // Keep approx 70 freshest
+        const guidsToDelete = guidsArray.slice(0, displayedItemsGuids.size - 70);
         guidsToDelete.forEach(guid => displayedItemsGuids.delete(guid));
     }
-    
-    console.log(`Displayed ${itemsToDisplay.length} news items. Total unique items fetched: ${allFetchedItems.length}`);
+    console.log(`Displayed ${itemsToDisplay.length} news items.`);
 }
 
-
-// refreshAllFeeds function (Keep as before, no changes needed here)
 async function refreshAllFeeds() {
-    console.log("Refreshing all news feeds...");
+    console.log("Refreshing news feed from The Hacker News...");
+    const feedContainer = document.getElementById(FEED_CONTAINER_ID);
+    if (feedContainer && !feedContainer.querySelector('.text-red-400')) { // Avoid overwriting persistent error messages
+        feedContainer.innerHTML = '<p class="text-sm text-medium-gray italic p-4 text-center">Fetching latest intel from The Hacker News...</p>';
+    }
+
     const feedPromises = RSS_FEEDS.map(feedUrl => fetchSingleFeed(feedUrl));
     const results = await Promise.allSettled(feedPromises);
-    allFetchedItems = [];
+    let newFetchedItems = [];
     results.forEach(result => {
         if (result.status === 'fulfilled' && Array.isArray(result.value)) {
-            allFetchedItems.push(...result.value);
-        } else if (result.status === 'rejected') { console.error("A feed failed to load:", result.reason); }
+            newFetchedItems.push(...result.value);
+        } else if (result.status === 'rejected') { 
+            console.error("The feed failed to load:", result.reason);
+            if(feedContainer) feedContainer.innerHTML = `<div class="news-snippet text-red-400 italic"><p>Error loading live feed:</p><p class="text-xs mt-1">${result.reason.message || 'Source or proxy unavailable.'}</p></div>`;
+        }
     });
+    
     const uniqueItemsMap = new Map();
-    allFetchedItems.forEach(item => { if (!uniqueItemsMap.has(item.guid)) { uniqueItemsMap.set(item.guid, item); } });
+    newFetchedItems.forEach(item => { if (!uniqueItemsMap.has(item.guid)) { uniqueItemsMap.set(item.guid, item); } });
     allFetchedItems = Array.from(uniqueItemsMap.values());
-    console.log(`Total unique items fetched across all feeds: ${allFetchedItems.length}`);
+
+    // **Store allFetchedItems in sessionStorage**
+    try {
+        sessionStorage.setItem('allFetchedNewsItems', JSON.stringify(allFetchedItems));
+        console.log(`Stored ${allFetchedItems.length} unique news items in sessionStorage.`);
+    } catch (e) {
+        console.error("Error saving news items to sessionStorage:", e);
+    }
+
     displayNewsItems();
     startCountdown();
 }
 
-// startCountdown and formatTime functions (Keep as before)
 function startCountdown() {
     const countdownElement = document.getElementById(COUNTDOWN_TIMER_ID);
     if (!countdownElement) return;
@@ -209,10 +202,11 @@ function startCountdown() {
     countdownElement.innerHTML = `Next update in: <span class="font-orbitron">${formatTime(timeLeft)}</span>`;
     countdownIntervalId = setInterval(() => {
         timeLeft -= 1000;
-        if (timeLeft < 0) { timeLeft = 0; /* Should be cleared by refresh */ }
+        if (timeLeft < 0) { timeLeft = 0; }
         countdownElement.innerHTML = `Next update in: <span class="font-orbitron">${formatTime(timeLeft)}</span>`;
     }, 1000);
 }
+
 function formatTime(ms) {
     const totalSeconds = Math.max(0, Math.floor(ms / 1000));
     const minutes = Math.floor(totalSeconds / 60);
@@ -220,8 +214,6 @@ function formatTime(ms) {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
-
-// initNewsFeed function (Keep as before)
 function initNewsFeed() {
     const feedContainer = document.getElementById(FEED_CONTAINER_ID);
     const countdownElement = document.getElementById(COUNTDOWN_TIMER_ID);
