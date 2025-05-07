@@ -129,7 +129,7 @@ function displayNewsItems() {
     }
 
     if (itemsToDisplay.length === 0) {
-        feedContainer.innerHTML = '<p class="text-sm text-medium-gray italic p-4 text-center">No new relevant articles found from The Hacker News.</p>';
+        feedContainer.innerHTML = '<p class="text-sm text-medium-gray italic p-4 text-center">No new relevant articles found from GustauShield News.</p>';
         return;
     }
 
@@ -168,7 +168,7 @@ function displayNewsItems() {
 }
 
 async function refreshAllFeeds() {
-    console.log("Refreshing news feed from The Hacker News...");
+    console.log("Refreshing news feed from GustauShield News...");
     const feedContainer = document.getElementById(FEED_CONTAINER_ID);
     if (feedContainer && !feedContainer.querySelector('.text-red-400')) { // Avoid overwriting persistent error messages
         feedContainer.innerHTML = '<p class="text-sm text-medium-gray italic p-4 text-center">Fetching latest intel from The Hacker News...</p>';
