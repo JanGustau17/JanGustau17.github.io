@@ -25,11 +25,11 @@
         .content-card { background-color: rgba(25, 35, 45, 0.6); border: 1px solid rgba(0, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: 8px; padding: 1.5rem; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); }
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.4; }
         main, nav, footer { position: relative; z-index: 1; }
-        section { padding: 3rem 1rem; } /* Adjusted section padding */
-        .chart-container { position: relative; height: 320px; width: 100%; margin-top: 1rem; } /* Adjusted chart height */
-        .news-snippet { border-left: 3px solid #0077ff; padding-left: 1rem; margin-bottom: 0.75rem; } /* Reduced margin for news */
+        section { padding: 3rem 1rem; }
+        .chart-container { position: relative; height: 320px; width: 100%; margin-top: 1rem; } 
+        .news-snippet { border-left: 3px solid #0077ff; padding-left: 1rem; margin-bottom: 0.75rem; }
         .news-snippet time { font-size: 0.75rem; color: #888888; display: block; margin-bottom: 0.15rem; }
-        /* Custom scrollbar for Intel Feed */
+     
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(25, 35, 45, 0.3); border-radius: 10px;}
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #0077ff; border-radius: 10px;}
@@ -42,7 +42,7 @@
 
     <canvas id="matrix-canvas"></canvas>
 
-    <!--Navigation Bar (Same as before)-->
+
     
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
         <div class="container mx-auto flex justify-between items-center px-4 py-3">
@@ -67,7 +67,7 @@
         </div>
     </nav>
 
-    <!--Main Content-->
+
     <main class="container mx-auto px-4 py-8">
          <h1 class="text-3xl md:text-4xl font-bold neon-text-cyan font-orbitron mb-10 text-center">The AI Cybersecurity Landscape</h1>
 
