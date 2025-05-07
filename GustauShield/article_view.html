@@ -39,12 +39,11 @@
 <body class="font-poppins">
     <canvas id="matrix-canvas"></canvas>
 
-    {/* --- Updated Navigation Bar --- */}
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
         <div class="container mx-auto flex justify-between items-center px-4 py-3">
             <a href="index.html" class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></a>
             <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">☰</button>
-            {/* Desktop Menu - Added Blogs link */}
+            
             <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
                 <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
                 <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
@@ -53,7 +52,7 @@
                 <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
             </ul>
         </div>
-         {/* Mobile Menu Panel - Added Blogs link */}
+
         <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
             <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
                  <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
@@ -254,7 +253,7 @@
                 articleElement.innerHTML = `
                     <div>
                         <h4 class="text-light-gray hover:text-cyber-cyan transition-colors mb-2">
-                            <a href="article_view.html?${articleParams}" title="${item.title}" class="font-semibold leading-tight text-base"> {/* Increased font size */}
+                            <a href="article_view.html?${articleParams}" title="${item.title}" class="font-semibold leading-tight text-base">
                                 ${item.title.substring(0, 65)}${item.title.length > 65 ? '...' : ''}
                             </a>
                         </h4>
