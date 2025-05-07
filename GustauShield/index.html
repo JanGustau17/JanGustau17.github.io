@@ -192,13 +192,13 @@
                         cipherSpan.dataset.text = phraseObj.text;
                         // Adjust font size slightly if needed for certain languages (can be complex)
                         // For example, CJK characters might appear larger
-                        // if (['ja', 'zh'].includes(phraseObj.lang)) {
-                        //     cipherSpan.style.fontSize = "1.1rem"; 
-                        // } else {
-                        //     cipherSpan.style.fontSize = "1.3rem";
-                        // }
-                        // clearInterval(switchInterval); // Clear previous interval
-                        // switchInterval = setInterval(updateGlitchText, 1500 + Math.random() * 1000); // 1.5-2.5 seconds
+                        if (['ja', 'zh'].includes(phraseObj.lang)) {
+                            cipherSpan.style.fontSize = "1.1rem"; 
+                        } else {
+                            cipherSpan.style.fontSize = "1.3rem";
+                        }
+                        clearInterval(switchInterval); // Clear previous interval
+                        switchInterval = setInterval(updateGlitchText, 1500 + Math.random() * 1000); // 1.5-2.5 seconds
                     }
                 };
                 
