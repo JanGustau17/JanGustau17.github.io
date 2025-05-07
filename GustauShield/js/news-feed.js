@@ -1,8 +1,10 @@
 // js/news-feed.js
 
 const RSS_FEEDS = [
-    'https://krebsonsecurity.com/feed/',
-    'https://securelist.com/feed/'
+    'https://news.sophos.com/en-us/category/security-operations/feed/',
+    'https://news.sophos.com/en-us/category/threat-research/feed/',
+    'https://www.troyhunt.com/rss/', 
+    'https://feeds.feedburner.com/eset/blog' 
     
 ];
 
