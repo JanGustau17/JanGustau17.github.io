@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {/* Title will be set dynamically */}
     <title>GustauShield - Article View</title>
+
+    {/* === PASTE COMMON BASE STYLING (Fonts, Tailwind, Font Awesome, CSS) HERE === */}
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -22,65 +25,99 @@
         .content-card { background-color: rgba(25, 35, 45, 0.8); border: 1px solid rgba(0, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: 8px; padding: 2rem; box-shadow: 0 0 20px rgba(0, 255, 255, 0.15); }
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.4; }
         main, nav, footer { position: relative; z-index: 1; }
-        section { padding: 4rem 1rem; }
-        .article-meta { font-size: 0.8rem; color: #888888; margin-bottom: 1rem; }
-        .article-image { max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        section { padding: 3rem 1rem; } /* Adjusted section padding */
+        .article-meta { font-size: 0.8rem; color: #888888; margin-bottom: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+        .article-image { max-width: 100%; height: auto; max-height: 400px; /* Limit image height */ object-fit: cover; /* Crop image nicely */ border-radius: 6px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        #article-summary p { margin-bottom: 1rem; line-height: 1.7; /* Improve readability */ }
+         .related-article-item { padding: 1.25rem; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+         .related-article-item:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(0, 255, 255, 0.2); }
+         .related-article-item h4 a { font-size: 1.05rem; line-height: 1.4; }
     </style>
-    </head>
+    {/* === END COMMON BASE STYLING === */}
+</head>
 <body class="font-poppins">
     <canvas id="matrix-canvas"></canvas>
 
+    {/* --- Updated Navigation Bar --- */}
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
         <div class="container mx-auto flex justify-between items-center px-4 py-3">
             <a href="index.html" class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></a>
             <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">☰</button>
+            {/* Desktop Menu - Added Blogs link */}
             <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
                 <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
                 <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
                 <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
+                <li><a href="#" class="hover:text-cyber-cyan">Blogs</a></li> {/* New Blogs Link (href="#" for now) */}
                 <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
             </ul>
         </div>
+         {/* Mobile Menu Panel - Added Blogs link */}
         <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
             <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
                  <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
                 <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
                 <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
+                 <li><a href="#" class="hover:text-cyber-cyan">Blogs</a></li> {/* New Blogs Link */}
                 <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
             </ul>
         </div>
     </nav>
 
     <main class="container mx-auto px-4 py-8">
-        <article class="content-card max-w-3xl mx-auto">
-            <h1 id="article-title" class="text-2xl md:text-3xl font-bold font-orbitron header-gradient mb-3">Loading Article...</h1>
-            <div class="article-meta">
-                Published by <span id="article-source" class="font-semibold">Unknown</span>
-                on <time id="article-date" datetime="">Unknown Date</time>
-                {/* Author can be optional */}
-                | By <span id="article-author" class="italic">Unknown Author</span>
+        <article class="content-card max-w-4xl mx-auto"> {/* Slightly wider max-width */}
+            {/* Article Header */}
+            <div class="mb-4 border-b border-cyber-cyan/20 pb-4">
+                 <h1 id="article-title" class="text-2xl md:text-3xl lg:text-4xl font-bold font-orbitron header-gradient mb-3 leading-tight">Loading Article...</h1>
+                 <div class="article-meta">
+                    <span>
+                        Published by <strong id="article-source" class="text-light-gray">Unknown</strong>
+                        on <time id="article-date" datetime="" class="text-light-gray">Unknown Date</time>
+                    </span>
+                     {/* Reading time added here */}
+                    <span id="reading-time" class="text-cyber-cyan font-semibold"></span>
+                 </div>
+                 <div id="author-info" class="text-xs text-medium-gray mt-1">
+                     By <span id="article-author" class="italic">Unknown Author</span>
+                 </div>
             </div>
 
-            <img id="article-image" src="" alt="Article image" class="article-image hidden" onerror="this.style.display='none';">
-            
-            <div id="article-summary" class="text-light-gray leading-relaxed space-y-4">
-                <p>Loading summary...</p>
+            {/* Article Image */}
+            <img id="article-image" src="" alt="Article image" class="article-image hidden float-right w-1/3 ml-6 mb-4" onerror="this.style.display='none';">
+
+            {/* Article Summary (from RSS Description) */}
+            <div id="article-summary" class="text-light-gray leading-relaxed space-y-3 clear-both text-base"> {/* Increased text size, clear float */}
+                <p class="italic">Loading summary...</p>
             </div>
 
-            <div class="mt-6 pt-4 border-t border-cyber-cyan/20">
-                <a id="article-original-link" href="#" target="_blank" rel="noopener noreferrer" class="text-cyber-blue hover:text-cyber-cyan underline text-sm">
+            {/* Link to Original */}
+            <div class="mt-8 pt-4 border-t border-cyber-cyan/20 text-right">
+                <a id="article-original-link" href="#" target="_blank" rel="noopener noreferrer" class="text-cyber-blue hover:text-cyber-cyan hover:underline text-sm font-medium">
                     Read the full original article &rarr;
                 </a>
             </div>
         </article>
+
+        {/* Related Articles Section */}
+        <section id="related-articles-section" class="mt-16 pt-8 border-t border-cyber-cyan/20 max-w-5xl mx-auto">
+            <h2 class="text-2xl font-orbitron text-cyber-cyan mb-8 text-center">You Might Also Be Interested In...</h2>
+            <div id="related-articles-list" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <p class="text-sm text-medium-gray italic md:col-span-3 text-center py-4">Loading related articles...</p>
+            </div>
+        </section>
+
     </main>
 
+    {/* --- Footer (Same as before) --- */}
     <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
         GustauShield Insights | English Project | AI in Cybersecurity Analysis
     </footer>
 
+    {/* External JS */}
     <script src="js/matrix.js" defer></script>
     <script src="js/main.js" defer></script>
+
+    {/* Inline JS for Article View */}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             console.log("Article View Page Initializing...");
@@ -88,56 +125,155 @@
 
             const params = new URLSearchParams(window.location.search);
 
-            document.getElementById('article-title').textContent = params.get('title') || 'Title Not Found';
-            document.getElementById('article-source').textContent = params.get('source') || 'Source Unknown';
-            
-            let pubDate = params.get('pubDate');
+            // --- Populate Main Article Content ---
+            const title = params.get('title') || 'Article Not Found';
+            const source = params.get('source') || 'Source Unknown';
+            const pubDate = params.get('pubDate');
+            const author = params.get('author') || 'Author Unknown';
+            let descriptionHTML = params.get('desc') || '<p>Summary not available.</p>';
+            const imageUrl = params.get('image');
+            const originalLink = params.get('link');
+
+            // Set page title
+            document.title = `${title} - GustauShield`;
+
+            // Populate elements
+            document.getElementById('article-title').textContent = title;
+            document.getElementById('article-source').textContent = source;
+            document.getElementById('article-author').textContent = author;
+
+            // Format and set date
+            const dateElement = document.getElementById('article-date');
             if (pubDate) {
                 try {
                     const dateObj = new Date(pubDate);
-                    document.getElementById('article-date').textContent = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                    document.getElementById('article-date').setAttribute('datetime', dateObj.toISOString());
-                } catch(e) { document.getElementById('article-date').textContent = pubDate; } // Show raw if parsing fails
+                    dateElement.textContent = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    dateElement.setAttribute('datetime', dateObj.toISOString());
+                } catch(e) { dateElement.textContent = pubDate; }
             } else {
-                 document.getElementById('article-date').textContent = 'Date Unknown';
+                 dateElement.textContent = 'Date Unknown';
             }
-            
-            document.getElementById('article-author').textContent = params.get('author') || 'Author Unknown';
-            
-            // Sanitize description HTML before inserting (basic removal of script/style tags)
-            let descriptionHTML = params.get('desc') || '<p>Summary not available.</p>';
+
+            // Sanitize and format description/summary
+            const summaryContainer = document.getElementById('article-summary');
             const SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
             const STYLE_REGEX = /<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi;
-            descriptionHTML = descriptionHTML.replace(SCRIPT_REGEX, "");
-            descriptionHTML = descriptionHTML.replace(STYLE_REGEX, "");
-            // To make paragraphs from simple text description:
-            // If description doesn't seem to contain HTML, wrap it in <p> tags
-            if (!descriptionHTML.match(/<\w+[^>]*>/)) { 
-                descriptionHTML = descriptionHTML.split('\n').map(p => `<p>${p}</p>`).join('');
+            descriptionHTML = descriptionHTML.replace(SCRIPT_REGEX, "").replace(STYLE_REGEX, "");
+
+            // Attempt to structure plain text into paragraphs
+            // Only apply if it doesn't look like it already contains block elements like <p> or <div>
+             if (!descriptionHTML.match(/<\/?(p|div|ul|ol|h[1-6])\b/i)) {
+                descriptionHTML = descriptionHTML
+                    .split(/\n\s*\n/) // Split by blank lines
+                    .map(paragraph => paragraph.trim())
+                    .filter(paragraph => paragraph.length > 0) // Remove empty paragraphs
+                    .map(paragraph => `<p>${paragraph}</p>`) // Wrap each in <p>
+                    .join('');
+            }
+            // Set the structured content safely (ensure it's not empty)
+            summaryContainer.innerHTML = descriptionHTML || '<p>Summary not available.</p>';
+
+
+            // Calculate and display reading time (based on description text)
+            const readingTimeElement = document.getElementById('reading-time');
+            if (readingTimeElement) {
+                 const textForReadingTime = summaryContainer.textContent || ""; // Get text content after HTML parsing
+                 const words = textForReadingTime.split(/\s+/).filter(Boolean).length;
+                 const wpm = 225; // Average reading speed
+                 const minutes = Math.ceil(words / wpm);
+                 readingTimeElement.textContent = `Approx. ${minutes < 1 ? '1' : minutes} min read`;
             }
 
-            document.getElementById('article-summary').innerHTML = descriptionHTML; // Use innerHTML for potential RSS description HTML
-            
-            const imageUrl = params.get('image');
+
+            // Display image if URL exists
             const articleImageElement = document.getElementById('article-image');
-            if (imageUrl && imageUrl !== 'null' && imageUrl !== 'undefined') {
+            if (imageUrl && imageUrl !== 'null' && imageUrl !== 'undefined' && imageUrl.startsWith('http')) {
                 articleImageElement.src = imageUrl;
-                articleImageElement.alt = params.get('title') || 'Article image';
+                articleImageElement.alt = title || 'Article image';
                 articleImageElement.classList.remove('hidden');
             } else {
-                articleImageElement.style.display = 'none';
+                articleImageElement.remove(); // Remove image element entirely if no src
             }
 
+            // Set original link
             const originalLinkElement = document.getElementById('article-original-link');
-            const originalLink = params.get('link');
             if (originalLink && originalLink !== '#') {
                 originalLinkElement.href = originalLink;
             } else {
                 originalLinkElement.textContent = 'Original article link not available';
                 originalLinkElement.removeAttribute('href');
+                originalLinkElement.style.pointerEvents = 'none'; // Make it non-clickable
+                 originalLinkElement.style.opacity = '0.5';
             }
+
+            // --- Populate Related Articles ---
+            displayRelatedArticles(originalLink); // Pass current article link to exclude it
+
             console.log("Article View Page Initialized.");
         });
+
+        /**
+         * Fetches related articles from sessionStorage and displays them.
+         * @param {string} currentArticleLink - The link of the article currently being viewed.
+         */
+        function displayRelatedArticles(currentArticleLink) {
+            const relatedListContainer = document.getElementById('related-articles-list');
+            if (!relatedListContainer) return;
+
+            let allNewsItems = [];
+            try {
+                const storedItemsJson = sessionStorage.getItem('allFetchedNewsItems');
+                if (storedItemsJson) allNewsItems = JSON.parse(storedItemsJson);
+            } catch (e) { console.error("Error retrieving/parsing news items from sessionStorage:", e); }
+
+            if (!allNewsItems || allNewsItems.length <= 1) {
+                relatedListContainer.innerHTML = '<p class="text-sm text-medium-gray italic md:col-span-3 text-center">No related articles available.</p>';
+                return;
+            }
+
+            // Filter, shuffle, and select 3 related articles
+            const relatedArticles = allNewsItems
+                .filter(item => item.link !== currentArticleLink && item.title) // Exclude current, ensure title exists
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+
+            relatedListContainer.innerHTML = ''; // Clear loading
+
+            if (relatedArticles.length === 0) {
+                relatedListContainer.innerHTML = '<p class="text-sm text-medium-gray italic md:col-span-3 text-center">No other relevant articles found.</p>';
+                return;
+            }
+
+            relatedArticles.forEach(item => {
+                const articleParams = new URLSearchParams({
+                    title: item.title, link: item.link, pubDate: item.pubDateStr,
+                    source: item.sourceName, author: item.author,
+                    desc: item.description.substring(0, 400) + (item.description.length > 400 ? '...' : ''),
+                    image: item.imageUrl || ''
+                }).toString();
+                let displayDate = item.pubDateStr;
+                try { displayDate = new Date(item.pubDateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); } catch(e) {}
+
+                const articleElement = document.createElement('div');
+                articleElement.className = 'content-card related-article-item flex flex-col justify-between p-4';
+                articleElement.innerHTML = `
+                    <div>
+                        <h4 class="text-light-gray hover:text-cyber-cyan transition-colors mb-2">
+                            <a href="article_view.html?${articleParams}" title="${item.title}" class="font-semibold leading-tight text-base"> {/* Increased font size */}
+                                ${item.title.substring(0, 65)}${item.title.length > 65 ? '...' : ''}
+                            </a>
+                        </h4>
+                        <p class="text-xs text-medium-gray mb-3">${item.sourceName} - ${displayDate}</p>
+                    </div>
+                    <a href="article_view.html?${articleParams}" class="text-xs text-cyber-blue hover:underline self-start mt-auto">
+                        View Summary &rarr;
+                    </a>
+                `;
+                relatedListContainer.appendChild(articleElement);
+            });
+            console.log("Related articles section populated.");
+        }
     </script>
+
 </body>
 </html>
