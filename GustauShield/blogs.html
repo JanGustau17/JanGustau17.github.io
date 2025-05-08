@@ -222,71 +222,93 @@
 
 
         // --- Main Logic ---
-        // --- Main Logic ---
+        
     document.addEventListener('DOMContentLoaded', () => {
-        console.log("Blogs Page Initializing...");
-        if (typeof initRainbowMatrix === 'function') { initRainbowMatrix('matrix-canvas'); }
+            console.log("Blogs Page Initializing...");
+            if (typeof initRainbowMatrix === 'function') { initRainbowMatrix('matrix-canvas'); }
 
-        const mainContentContainer = document.getElementById('blog-main-content');
-        const suggestionsContainer = document.getElementById('blog-suggestions');
-        const suggestionsListElement = document.getElementById('blog-suggestions-list');
+            const mainContentContainer = document.getElementById('blog-main-content');
+            const suggestionsContainer = document.getElementById('blog-suggestions');
+            const suggestionsListElement = document.getElementById('blog-suggestions-list');
 
-        // ... (Error checks for containers) ...
-
-        // Retrieve all articles from sessionStorage
-        let allNewsItems = [];
-        try {
-            const storedItemsJson = sessionStorage.getItem('allFetchedNewsItems');
-            if (storedItemsJson) {
-                allNewsItems = JSON.parse(storedItemsJson);
-                // Sort by date just in case they aren't already
-                allNewsItems.sort((a, b) => new Date(b.pubDateStr) - new Date(a.pubDateStr));
+            if (!mainContentContainer || !suggestionsContainer || !suggestionsListElement) {
+                console.error("Essential layout elements not found (blog-main-content or blog-suggestions).");
+                if (mainContentContainer) mainContentContainer.innerHTML = "<p class='text-red-500 text-center py-10'>Error: Page layout structure missing.</p>";
+                return;
             }
-            // ***** ADD THIS LINE *****
-            console.log("Retrieved from sessionStorage ('allFetchedNewsItems'):", allNewsItems);
 
-        } catch (e) {
-            console.error("Error retrieving/parsing news items from sessionStorage:", e);
-            // ... (error handling) ...
-            return;
-        }
+            // Retrieve all articles from sessionStorage
+            let allNewsItems = [];
+            try {
+                const storedItemsJson = sessionStorage.getItem('allFetchedNewsItems');
+                if (storedItemsJson) {
+                    allNewsItems = JSON.parse(storedItemsJson);
+                    // Sort by date just in case they aren't already
+                    allNewsItems.sort((a, b) => new Date(b.pubDateStr) - new Date(a.pubDateStr));
+                }
+            } catch (e) {
+                console.error("Error retrieving/parsing news items from sessionStorage:", e);
+                 mainContentContainer.innerHTML = "<p class='text-red-500 text-center py-10'>Error loading article data. Please visit the Dashboard first.</p>";
+                suggestionsListElement.innerHTML = '';
+                return;
+            }
 
-        // ... (check if allNewsItems is empty) ...
-
-        // Check URL parameters for a specific article GUID
-        const params = new URLSearchParams(window.location.search);
-        const articleGuidParam = params.get('article');
-        // ***** ADD THIS LINE *****
-        console.log("GUID from URL parameter ('article'):", articleGuidParam);
+            if (!allNewsItems || allNewsItems.length === 0) {
+                 mainContentContainer.innerHTML = "<p class='text-medium-gray italic text-center py-10'>No articles found. Please visit the Dashboard to load the feed.</p>";
+                 suggestionsListElement.innerHTML = '';
+                return;
+            }
 
 
-        mainContentContainer.innerHTML = ''; // Clear loading message
+            // Check URL parameters for a specific article GUID
+            const params = new URLSearchParams(window.location.search);
+            const articleGuidParam = params.get('article'); // GUID is expected to be the article link/unique ID
 
-        if (articleGuidParam) {
-            // --- Mode 2: Display Single Article ---
-            const targetArticle = allNewsItems.find(item => item.guid === articleGuidParam);
+            mainContentContainer.innerHTML = ''; // Clear loading message
 
-             // ***** ADD THIS LINE *****
-             console.log("Found Target Article Object based on GUID:", targetArticle);
+            if (articleGuidParam) {
+                // --- Mode 2: Display Single Article ---
+                console.log("Displaying single article:", articleGuidParam);
+                const targetArticle = allNewsItems.find(item => item.guid === articleGuidParam);
 
-            if (targetArticle) {
-                 // ***** ADD THIS LINE inside displayFullArticle OR log here *****
-                 console.log("Raw description passed to displayFullArticle:", targetArticle.description);
+                if (targetArticle) {
+                    // Display the target article in the main area
+                    displayFullArticle(targetArticle, mainContentContainer);
+                    document.title = `${targetArticle.title} - GustauShield`; // Update page title
 
-                displayFullArticle(targetArticle, mainContentContainer);
-                document.title = `${targetArticle.title} - GustauShield`;
+                    // Prepare suggestions (all *other* articles)
+                    const otherArticles = allNewsItems.filter(item => item.guid !== articleGuidParam);
+                    displaySuggestionsList(otherArticles, suggestionsContainer);
+                } else {
+                    // Article specified in URL not found in stored data
+                     mainContentContainer.innerHTML = `<p class='text-red-500 text-center py-10'>Error: The requested article could not be found. It might be outdated.</p>`;
+                     // Show all articles as suggestions
+                    displaySuggestionsList(allNewsItems, suggestionsContainer);
+                }
 
-                const otherArticles = allNewsItems.filter(item => item.guid !== articleGuidParam);
-                displaySuggestionsList(otherArticles, suggestionsContainer);
             } else {
-                 // ... (error handling if article not found) ...
+                // --- Mode 1: Display Blog Listing (Top 5 + Suggestions) ---
+                console.log("Displaying blog listing (Top 5).");
+                document.title = "GustauShield - Blog & Articles"; // Default title
+
+                const top5Articles = allNewsItems.slice(0, 5);
+                const remainingArticles = allNewsItems.slice(5);
+
+                // Display top 5 articles in the main area
+                if (top5Articles.length > 0) {
+                    top5Articles.forEach(article => {
+                        displayFullArticle(article, mainContentContainer);
+                    });
+                } else {
+                     mainContentContainer.innerHTML = "<p class='text-medium-gray italic text-center py-10'>No articles available to display.</p>";
+                }
+
+                // Display remaining articles as suggestions
+                displaySuggestionsList(remainingArticles, suggestionsContainer);
             }
-        } else {
-           // --- Mode 1: Display Blog Listing ---
-           // ... (rest of the code) ...
-        }
-        console.log("Blogs Page initialization complete.");
-    });
+
+            console.log("Blogs Page initialization complete.");
+        });
     </script>
 
 </body>
