@@ -196,7 +196,12 @@
                  return;
              }
 
-             articlesArray.forEach(item => {
+             // --- ADD THIS LINE to limit the array ---
+             const limitedArticles = articlesArray.slice(0, 15);
+             // ------------------------------------------
+
+             // Now loop through the LIMITED array
+             limitedArticles.forEach(item => {
                  const articleGuid = encodeURIComponent(item.guid);
                  let displayDate = '';
                  try { displayDate = new Date(item.pubDateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } catch(e) {}
@@ -204,7 +209,7 @@
 
                  const li = document.createElement('li');
                  li.innerHTML = `
-                     <a href="blogs.html?article=${articleGuid}" title="${item.title}">
+                     <a href="blog.html?article=${articleGuid}" title="${item.title}">
                          ${item.title.substring(0, 70)}${item.title.length > 70 ? '...' : ''}
                      </a>
                      <div class="suggestion-meta">
@@ -213,6 +218,7 @@
                  `;
                  listElement.appendChild(li);
              });
+             console.log(`Displayed ${limitedArticles.length} suggestion items.`); // Log the limited count
         }
 
 
