@@ -1,6 +1,4 @@
-// js/news-feed.js
 
-// --- Configuration ---
 const RSS_FEEDS = [
     'https://feeds.feedburner.com/TheHackersNews',
     'https://grahamcluley.com/feed/',
