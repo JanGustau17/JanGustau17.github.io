@@ -1,9 +1,4 @@
 
-// js/main.js
-
-/**
- * Initializes common functionalities like mobile menu toggle.
- */
 function initCommon() {
     console.log("Initializing common scripts...");
 
