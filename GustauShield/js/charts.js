@@ -1,18 +1,5 @@
 
-// js/charts.js
 
-/**
- * ======================================
- * DASHBOARD CHART INITIALIZATION (Chart.js)
- * ======================================
- * Defines functions to create and render charts on the dashboard.
- */
-
-// Make sure Chart.js is loaded before this script runs (using 'defer' on the CDN script tag helps)
-
-/**
- * Main function called by dashboard.html to initialize all charts on the page.
- */
 function initDashboardCharts() {
     console.log("Attempting to initialize dashboard charts...");
     // Call individual chart creation functions
