@@ -79,7 +79,14 @@ async function fetchSingleFeed(feedUrl) {
             }
             const pubDateStr = itemNode.querySelector("pubDate")?.textContent || itemNode.querySelector("published")?.textContent || itemNode.querySelector("updated")?.textContent || new Date().toISOString();
 
-            let description = itemNode.querySelector("description")?.innerHTML || itemNode.querySelector("summary")?.innerHTML || itemNode.querySelector("content")?.innerHTML || 'No summary.'; // Keep potential HTML for image extraction later
+
+            let description = itemNode.querySelector("content\\:encoded")?.innerHTML
+                || itemNode.querySelector("description")?.innerHTML
+                || itemNode.querySelector("summary")?.innerHTML
+                || 'No summary.';
+            // let description = itemNode.querySelector("description")?.innerHTML || itemNode.querySelector("summary")?.innerHTML || itemNode.querySelector("content")?.innerHTML || 'No summary.'; 
+            
+            // Keep potential HTML for image extraction later
             const tempDiv = document.createElement("div"); // Use temp element to parse and get text content safely
             tempDiv.innerHTML = description;
             const descriptionText = (tempDiv.textContent || tempDiv.innerText || "").trim();
