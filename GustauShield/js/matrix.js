@@ -1,4 +1,3 @@
-
 // js/matrix.js
 /**
  * Creates a rainbow Matrix-style animation on a canvas element.
@@ -19,40 +18,49 @@ function initRainbowMatrix(canvasId) {
     let columns;
     let drops = [];
     const fontSize = 14;
-    // Extended character set for visual variety
-    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%+-=<>[]{}|;:/?.<>{}[]|";
-    let animationIntervalId = null; // Store interval ID
+    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%+-=<>[]{}|"; // Adjusted char set
+    let animationIntervalId = null;
 
-    // Function to set canvas size and initialize drops
     function setup() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        columns = Math.floor(canvas.width / fontSize);
-        drops = []; // Reset drops array
-        for (let i = 0; i < columns; i++) {
-            // Start drops at random heights for immediate visual effect
-            drops[i] = Math.floor(Math.random() * (canvas.height / fontSize));
-        }
-        ctx.font = `${fontSize}px monospace`; // Set font once after resize
-        console.log(`Matrix resized: ${canvas.width}x${canvas.height}, Columns: ${columns}`);
+        // Debounce resize event slightly
+        let resizeTimeout;
+        const handleResize = () => {
+             canvas.width = window.innerWidth;
+             canvas.height = window.innerHeight;
+             columns = Math.floor(canvas.width / fontSize);
+             // Ensure drops array is resized correctly, maintaining positions if possible
+             const newDrops = Array(columns);
+             for(let i=0; i<columns; i++) {
+                  // Start drops at random heights initially or after resize makes array longer
+                 newDrops[i] = (drops && drops[i] !== undefined && i < drops.length) ? drops[i] : Math.floor(Math.random() * (canvas.height / fontSize));
+             }
+             drops = newDrops;
+             ctx.font = `${fontSize}px monospace`;
+             console.log(`Matrix resized: ${canvas.width}x${canvas.height}, Columns: ${columns}`);
+        };
+
+        // Clear previous resize listener if any
+        window.removeEventListener('resize', setup); // Use setup directly or a debounced handler
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(handleResize, 100); // Adjust debounce delay (ms)
+        });
+
+        handleResize(); // Initial setup
     }
 
-    // Function to draw a single frame
     function draw() {
-        // Use the body background color with low alpha for fading effect
-        // Assumes body background is set via CSS
-        ctx.fillStyle = "rgba(10, 10, 26, 0.06)"; // Match dark-bg-start color
+        // Use body background color with low alpha for fading effect
+        ctx.fillStyle = "rgba(10, 10, 26, 0.06)"; // Match dark-bg-start color from CSS
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < drops.length; i++) {
             const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
             const yPos = drops[i] * fontSize;
 
-            // Calculate Hue based on Y position, cycling through 360 degrees
-            // Multiplier (0.3) controls color change speed down the screen
+            // Rainbow Logic: Calculate Hue based on Y position
             const hue = (yPos * 0.3) % 360;
-            // Use HSL: Full Saturation (100%), Adjusted Lightness (60-70%)
-            ctx.fillStyle = `hsl(${hue}, 100%, 65%)`;
+            ctx.fillStyle = `hsl(${hue}, 100%, 65%)`; // HSL: Hue, Saturation, Lightness
 
             ctx.fillText(text, i * fontSize, yPos);
 
@@ -64,18 +72,11 @@ function initRainbowMatrix(canvasId) {
         }
     }
 
-    // Initial setup
-    setup();
+    setup(); // Initial setup
 
-    // Clear any existing interval before starting a new one
-    if (animationIntervalId) {
-        clearInterval(animationIntervalId);
-    }
-    // Start the animation loop
-    animationIntervalId = setInterval(draw, 55); // Adjust interval (milliseconds) for speed
-
-    // Re-setup on window resize
-    window.addEventListener('resize', setup);
+    if (animationIntervalId) clearInterval(animationIntervalId);
+    // Adjust interval for desired speed (milliseconds)
+    animationIntervalId = setInterval(draw, 55);
 
     console.log("Rainbow Matrix background initialized.");
 }
