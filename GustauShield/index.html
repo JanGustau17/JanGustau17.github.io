@@ -3,141 +3,84 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GustauShield - AI & Cybersecurity Insights</title>
+    {/* The <title> tag will be different for each page */}
 
+    {/* Fonts: Orbitron & Poppins */}
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    {/* Tailwind CSS CDN */}
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    {/* Font Awesome CDN (for icons on About page, etc.) */}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {/* Base Styles and Theme */}
     <style>
         html { scroll-behavior: smooth; }
-        body { 
-            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%); 
-            color: #cccccc; /* light-gray */
-            font-family: 'Poppins', sans-serif; 
-            min-height: 100vh; 
+        body {
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%);
+            color: #cccccc; /* default light-gray */
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
             overflow-x: hidden;
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            /* Add padding-top ONLY on pages WITH the fixed navbar */
         }
+        /* Helper classes */
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        
-        .header-gradient { 
-            background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2); 
-            -webkit-background-clip: text; 
-            background-clip: text; 
-            color: transparent; 
-        }
+        .header-gradient { background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
-        
-        .cyber-button { 
-            background: linear-gradient(to right, #0077ff, #8a2be2); 
-            color: white; padding: 0.75rem 1.5rem; border-radius: 6px; 
-            font-weight: 600; transition: all 0.3s ease; 
-            box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3); 
-            display: inline-block; 
-        }
-        .cyber-button:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4); 
-        }
-        
-        #matrix-canvas { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: -10; 
-            opacity: 0.3; /* Further reduced opacity for matrix rain */
-        }
-        
-        main, footer { 
-            position: relative; 
-            z-index: 1; 
-        }
-        
-        .enter-button { padding: 1rem 2.5rem; font-size: 1.1rem; }
 
-        /* --- DYNAMIC GLITCH TEXT STYLES --- */
-        .dynamic-glitch-text {
-            position: relative;
-            display: inline-block;
-            color: #00c0c0; /* A slightly less intense cyan for base text */
-            font-family: 'Orbitron', monospace;
-            font-weight: bold;
-            font-size: 1.3rem; /* Adjusted size */
-            letter-spacing: 0.05em;
-            padding: 5px; /* Add some padding so pseudo-elements don't clip harshly */
-            line-height: 1.2; /* Adjust line height for multi-line phrases */
-            white-space: nowrap; /* Keep it on one line for now, adjust if needed */
-        }
+        /* Navbar Styling */
+        nav { background-color: rgba(10, 10, 26, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 255, 255, 0.15); z-index: 50; }
+        nav a, nav button { transition: color 0.2s ease, text-shadow 0.2s ease; }
+        nav a:hover, nav button:hover { color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        nav a.active { color: #00ffff; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
 
-        .dynamic-glitch-text::before,
-        .dynamic-glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: transparent; /* Ensure parent background shows through */
-        }
+        /* Button Styling */
+        .cyber-button { background: linear-gradient(to right, #0077ff, #8a2be2); color: white; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3); display: inline-block; }
+        .cyber-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4); }
+        .enter-button { padding: 1rem 2.5rem; font-size: 1.1rem; } /* Specific to landing page button */
 
-        .dynamic-glitch-text::before {
-            color: #505070; /* Dark, desaturated blue/purple */
-            left: 1px;
-            text-shadow: -1px 0 rgba(40, 0, 40, 0.5); /* Dark magenta shadow */
-            opacity: 0.75;
-            animation: simple-glitch-1 0.25s infinite steps(3, end) alternate-reverse;
-        }
+        /* Content Card */
+        .content-card { background-color: rgba(25, 35, 45, 0.7); border: 1px solid rgba(0, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: 8px; padding: 1.5rem; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
 
-        .dynamic-glitch-text::after {
-            color: #306060; /* Dark, desaturated cyan/green */
-            left: -1px;
-            text-shadow: 1px 0 rgba(0, 40, 40, 0.5); /* Dark cyan shadow */
-            opacity: 0.75;
-            animation: simple-glitch-2 0.3s infinite steps(4, start) alternate-reverse;
-        }
+        /* Matrix Canvas */
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.35; /* Adjusted opacity */ }
 
-        @keyframes simple-glitch-1 {
-            0% { clip-path: inset(10% 0 85% 0); transform: translate(-2px, 1px); }
-            33% { clip-path: inset(40% 0 15% 0); transform: translate(1px, -1px); }
-            66% { clip-path: inset(75% 0 5% 0); transform: translate(2px, 2px); }
-            100% { clip-path: inset(5% 0 70% 0); transform: translate(-1px, 0px); }
-        }
+        /* Stacking context */
+        main, nav, footer { position: relative; z-index: 1; }
+        section { padding: 4rem 1rem; } /* Standard section padding */
 
-        @keyframes simple-glitch-2 {
-            0% { clip-path: inset(90% 0 2% 0); transform: translate(2px, -1px); }
-            25% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
-            50% { clip-path: inset(55% 0 30% 0); transform: translate(1px, 2px); }
-            75% { clip-path: inset(20% 0 60% 0); transform: translate(2px, -2px); }
-            100% { clip-path: inset(40% 0 45% 0); transform: translate(-1px, 0px); }
-        }
-        /* --- END DYNAMIC GLITCH TEXT STYLES --- */
+        /* Add other common component styles if needed */
+         .news-snippet { border-left: 3px solid #0077ff; padding-left: 1rem; margin-bottom: 0.75rem; }
+         .news-snippet time { font-size: 0.75rem; color: #888888; display: block; margin-bottom: 0.15rem; }
+         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(25, 35, 45, 0.3); border-radius: 10px;}
+         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #0077ff; border-radius: 10px;}
+         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: #00ffff; }
+         .custom-scrollbar { scrollbar-width: thin; scrollbar-color: #0077ff rgba(25, 35, 45, 0.3); }
     </style>
+
+
+
+    
 </head>
 <body class="font-poppins">
 
     <canvas id="matrix-canvas"></canvas>
 
-    <main class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 pt-16 sm:pt-0">
-        <div class="absolute top-16 sm:top-4 left-4 right-4 sm:left-4 sm:right-auto z-20 text-left">
-            <span id="cipherText" class="dynamic-glitch-text" data-text="Don't Get Pwned, Get Informed">
-                Don't Get Pwned, Get Informed
-            </span>
-        </div>
-    
-        <div class="relative z-10 max-w-3xl mt-16 sm:mt-24">
-            <h1 class="text-4xl md:text-6xl font-bold font-orbitron mb-8 header-gradient">
+    <main class="text-center px-4 py-8">
+        <div class="max-w-3xl">
+            <h1 class="text-4xl md:text-6xl font-bold font-orbitron mb-4 header-gradient">
                 GustauShield
             </h1>
             <h2 class="text-2xl md:text-3xl font-semibold text-cyber-cyan mb-6 neon-text-cyan">
-                AI: The Double-Edged Sword
+                AI & Cybersecurity: The Double-Edged Sword
             </h2>
             <p class="text-lg text-light-gray mb-10 leading-relaxed">
                 Artificial Intelligence is revolutionizing digital security - enhancing defenses while simultaneously creating sophisticated new threats. Explore how AI is reshaping the cybersecurity landscape for everyone.
             </p>
-            <p class="text-light-gray italic text-sm md:text-base">“Red Pill or Blue Pill?”</p>
-            
-            <a href="dashboard.html" class="cyber-button enter-button mt-6">
+             <p class="text-light-gray italic text-sm md:text-base mb-6">“Red Pill or Blue Pill?”</p> {/* Added margin bottom */}
+
+            {/* Button links directly to the dashboard page */}
+            <a href="dashboard.html" class="cyber-button enter-button">
                 Explore the Battlefield →
             </a>
         </div>
@@ -147,7 +90,9 @@
         AI Cybersecurity Insights by Gustau
     </footer>
 
+    {/* Load Matrix Script */}
     <script src="js/matrix.js" defer></script>
+    {/* Initialize Matrix */}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             console.log("Landing Page Initializing...");
@@ -156,65 +101,9 @@
             } else {
                 console.error("Matrix script (js/matrix.js) not loaded or initRainbowMatrix function is missing.");
             }
-
-            // --- Dynamic Language Switching Glitch Text ---
-            const cipherSpan = document.getElementById('cipherText');
-            if (cipherSpan) {
-                const phrases = [
-                    { lang: 'en', text: "Don't Get Pwned, Get Informed" },
-                    { lang: 'ja', text: "情報を守れ、知識を得よ" },          // Protect info, gain knowledge
-                    { lang: 'ar', text: "لا تُخترق، كن على علم" },          // Don't be breached, be informed
-                    { lang: 'zh', text: "获取信息，免遭入侵" },            // Get information, avoid intrusion
-                    { lang: 'ru', text: "Будь в курсе, не будь взломан" }, // Be aware, don't be hacked
-                    { lang: 'es', text: "Infórmate, Evita el hackeo" },    // Get informed, Avoid hacking
-                    { lang: 'fr', text: "Informez-vous, Évitez le piratage" } // Get informed, Avoid hacking
-                ];
-                let currentPhraseIndex = 0;
-                let isDisplayingOriginal = true;
-                let switchInterval;
-
-                const updateGlitchText = () => {
-                    isDisplayingOriginal = !isDisplayingOriginal; // Toggle state
-
-                    if (isDisplayingOriginal) {
-                        // Display the original English text for a longer duration
-                        cipherSpan.innerText = phrases[0].text;
-                        cipherSpan.dataset.text = phrases[0].text;
-                        // clearInterval(switchInterval); // Clear previous interval
-                        // switchInterval = setInterval(updateGlitchText, 4000 + Math.random() * 2000); // 4-6 seconds
-                    } else {
-                        // Display a random non-English phrase for a shorter duration
-                        currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
-                        if (currentPhraseIndex === 0) currentPhraseIndex = 1; // Skip English if just showed it
-                        
-                        const phraseObj = phrases[currentPhraseIndex];
-                        cipherSpan.innerText = phraseObj.text;
-                        cipherSpan.dataset.text = phraseObj.text;
-                        // Adjust font size slightly if needed for certain languages (can be complex)
-                        // For example, CJK characters might appear larger
-                        if (['ja', 'zh'].includes(phraseObj.lang)) {
-                            cipherSpan.style.fontSize = "1.1rem"; 
-                        } else {
-                            cipherSpan.style.fontSize = "1.3rem";
-                        }
-                        clearInterval(switchInterval); // Clear previous interval
-                        switchInterval = setInterval(updateGlitchText, 1500 + Math.random() * 1000); // 1.5-2.5 seconds
-                    }
-                };
-                
-                // Start the cycle
-                switchInterval = setInterval(updateGlitchText, 3000 + Math.random() * 2000); // Initial interval
-                console.log("Dynamic glitch text initialized.");
-
-            } else {
-                console.error("Cipher text span (#cipherText) not found.");
-            }
-            // --- End Dynamic Language Switching ---
-
             console.log("Landing Page Initialized.");
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/taos@1.0.3/dist/taos.min.js" defer></script> 
 </body>
 </html>
