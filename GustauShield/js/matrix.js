@@ -1,9 +1,4 @@
 
-// js/matrix.js
-/**
- * Creates a rainbow Matrix-style animation on a canvas element.
- * @param {string} canvasId The ID of the canvas element.
- */
 function initRainbowMatrix(canvasId) {
     const canvas = document.getElementById(canvasId);
     if (!canvas) {
