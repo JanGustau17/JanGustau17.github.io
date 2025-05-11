@@ -324,5 +324,5 @@ export const ARTICLES = [
       <p>Question default settings, challenge opaque policies, and code new pathways for user control. The digital world is ours to reshape.</p>
       <p>The choice is yours: stay comfortable with the blue pill and accept the illusion, or take the red pill and fight for true digital freedom.</p>
     `
-},
+}
 ];
