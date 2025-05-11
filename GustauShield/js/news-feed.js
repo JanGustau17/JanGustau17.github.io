@@ -1,13 +1,14 @@
 
 const RSS_FEEDS = [
-    'https://feeds.feedburner.com/TheHackersNews',
-    'https://grahamcluley.com/feed/',
-    'https://krebsonsecurity.com/feed/',
-    'https://securelist.com/feed/', // Kaspersky
-    'https://news.sophos.com/en-us/category/security-operations/feed/',
-    'https://news.sophos.com/en-us/category/threat-research/feed/',
-    'https://www.troyhunt.com/rss/', // Added missing Troy Hunt feed
-    'https://feeds.feedburner.com/eset/blog' // ESET WeLiveSecurity
+    https://feeds.feedburner.com/TheHackersNews
+    // 'https://feeds.feedburner.com/TheHackersNews',
+    // 'https://grahamcluley.com/feed/',
+    // 'https://krebsonsecurity.com/feed/',
+    // 'https://securelist.com/feed/',
+    // 'https://news.sophos.com/en-us/category/security-operations/feed/',
+    // 'https://news.sophos.com/en-us/category/threat-research/feed/',
+    // 'https://www.troyhunt.com/rss/', 
+    // 'https://feeds.feedburner.com/eset/blog' 
 ];
 
 const CORS_PROXY_URL = "https://api.allorigins.win/raw?url="; // Public CORS proxy
