@@ -23,25 +23,33 @@
 
 const GUSTAU_SHIELD_ARTICLES = [
     {
-        guid: "topic-1-guid", // REPLACE: Unique ID, e.g., "ai-in-phishing"
-        title: "REPLACE: Your First Article Title",
-        imageUrl: "https://placehold.co/100x75/00ffff/000000?text=Topic+1", // REPLACE
-        sourceName: "REPLACE: Source (e.g., GustauShield Analysis)",
-        pubDateStr: "2025-05-15T09:00:00Z", // REPLACE
-        author: "REPLACE: Author Name",
-        dashboardSummary: "REPLACE: A very short, catchy summary (1-2 sentences) for the dashboard display. Make it simple and give a hint of an example.",
-        mainContentHtml: `
-            <p>REPLACE: Start your full article content here. Use simple words. This is the first paragraph.</p>
-            <p>REPLACE: This is another paragraph. For example, if you are talking about AI in phishing, you could say: <em>"Imagine you get an email that looks like it's from your bank, asking you to update your password. An old phishing email might have bad grammar. But an AI-powered one? It could be perfect, even using information it found about you online to make it seem more real!"</em></p>
-            <h4>REPLACE: A Subheading for Key Points</h4>
-            <ul>
-                <li>REPLACE: First key point or example, explained simply.</li>
-                <li>REPLACE: Second key point or example.</li>
-                <li>REPLACE: Third key point.</li>
-            </ul>
-            <p>REPLACE: Concluding paragraph for the article.</p>
-        `
-    },
+    guid: "ai-future-cybersecurity",
+    title: "Artificial Intelligence and Cybersecurity: The Future is Now",
+    imageUrl: "https://cdn-ilbnkjl.nitrocdn.com/NxIxNclgHTTgNCkHcTHsiuRemZEqSxbC/assets/images/optimized/rev-a42e060/eccweb.s3.ap-south-1.amazonaws.com/wp-content/uploads/2023/03/26103842/Artificial-Intelligence-and-Cybersecurity-1.png",
+    sourceName: "EC-Council University",
+    pubDateStr: "2025-05-15T09:00:00Z",
+    author: "EC-Council University",
+    dashboardSummary: "AI is helping cybersecurity teams spot threats fast and fix security holes before hackers can use them.",
+    mainContentHtml: `
+        <p>Artificial intelligence (AI) is changing how we protect computer systems by using smart software to find and stop dangers.</p>
+        <p>AI already powers antivirus tools, watches for hackers with machine learning, and finds hidden threats quickly.</p>
+        <h4>Current Uses of AI in Cybersecurity</h4>
+        <ul>
+            <li>Threat Detection: AI scans data to spot attacks before they happen.</li>
+            <li>Vulnerability Management: It checks code to find and fix security holes.</li>
+            <li>Malware Analysis: AI studies bad software behavior to help teams respond fast.</li>
+            <li>User Authentication: It looks at typing and behavior to confirm identities.</li>
+            <li>Password Management: AI finds weak passwords and warns users to update them.</li>
+        </ul>
+        <h4>Challenges and Concerns</h4>
+        <ul>
+            <li>AI systems can be attacked and used to do harm if they’re not secure.</li>
+            <li>It can be hard to know why AI makes certain choices (lack of transparency).</li>
+            <li>AI can be biased if it learns from unfair or incomplete data.</li>
+        </ul>
+        <p>Looking ahead, AI may work with blockchain and connected devices (IoT) for stronger security. When used responsibly, AI helps protect data and networks better than ever.</p>
+    `
+},
     {
         guid: "topic-2-guid", // REPLACE
         title: "REPLACE: Your Second Article Title",
