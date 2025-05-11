@@ -10,24 +10,31 @@ export const ARTICLES = [
     author: "The Hacker News",
     dashboardSummary: "Ottercookie v4 can now detect virtual machines and evade them, making analysis much harder.",
     mainContentHtml: `
-      <p>Ottercookie v4 is a new type of browser malware that quietly steals information from real user computers.</p>
-      <p>Before it runs its harmful code, it first checks if it is inside a virtual machine (VM). VMs are like safe test computers—security researchers use tools such as VMware or VirtualBox to examine suspicious software.</p>
-      <p>For example, a sandbox analyst might open Ottercookie in a VM to watch its behavior. But if Ottercookie v4 sees VM processes or files such as “vmtools” or “vboxservice,” it stops or hides itself completely.</p>
-      <p>On a regular computer, it activates fully. It injects scripts into web pages you visit to capture data such as usernames, passwords, and cookies. Imagine visiting your bank website—Ottercookie can grab your login details when you type them.</p>
-      <p>It can also track mouse clicks and keystrokes, then send this data back to the attacker’s server without any visible sign.</p>
-      <p>To spot VMs, Ottercookie uses simple tests: it looks for software names, checks hidden files, and measures how fast certain commands run (VMs often respond more slowly).</p>
-      <p>Because of these evasion tricks, standard sandbox tests will never see the real attack. Security teams need real hardware or advanced analysis tools, like bare-metal scanners, to catch it.</p>
-      <p>Defenders can set alerts in endpoint protection to flag programs that read VM-related files repeatedly—an unusual pattern that points to Ottercookie v4.</p>
-      <p>They can also use memory forensics to look for injected scripts, even if the malware tries to hide its files on disk.</p>
-      <p>Overall, Ottercookie v4 raises the bar for stealthy browser attacks, forcing security teams to upgrade their testing environments and monitoring rules.</p>
-      <h4>Key Points</h4>
-      <ul>
-        <li>Checks for VM software names and files before activating.</li>
-        <li>Shuts down or hides itself when it runs inside a VM.</li>
-        <li>Injects scripts into web pages on real computers to steal data.</li>
-        <li>Captures keystrokes, clicks, and cookies without user notice.</li>
-        <li>Use bare-metal analysis and memory forensics to detect it.</li>
-      </ul>
+      <p>Ottercookie v4 is a new type of browser malware that quietly steals information from real user computers, representing an escalation in stealth and evasion capabilities.</p>
+
+<h2>VM Detection and Evasion Mechanisms</h2>
+<p>Before executing its primary payload, Ottercookie v4 meticulously checks if it is operating within a virtual machine (VM). VMs, such as VMware or VirtualBox, are commonly used by security researchers as sandboxed environments to safely analyze suspicious software. If Ottercookie v4 detects tell-tale signs of a VM—such as specific processes like <strong>“vmtools”</strong> or files like <strong>“vboxservice”</strong>—it will either terminate its execution or enter a dormant state to avoid analysis.</p>
+
+<h2>Operational Behavior on Real Systems</h2>
+<p>Conversely, on a regular, non-virtualized computer, the malware activates its full range of malicious functions. It employs script injection techniques targeting web pages the user visits. This allows it to capture sensitive data including <strong>usernames, passwords, and session cookies</strong>. For instance, if a user visits their online banking portal, Ottercookie can intercept and exfiltrate their login credentials as they are entered. Furthermore, it possesses capabilities to track mouse clicks and keystrokes, covertly sending this harvested information back to the attacker’s command-and-control server without any discernible indication to the user.</p>
+
+<h2>Detection Challenges and Attacker Advantages</h2>
+<p>Ottercookie identifies VMs through a series of simple yet effective tests: scanning for VM-specific software names, checking for the presence of hidden indicator files, and even measuring command execution times, as VMs often exhibit slightly slower responses. These built-in evasion tactics mean that <strong>standard automated sandbox analyses will likely fail to observe the malware's true malicious behavior</strong>. Consequently, security teams require physical hardware (bare-metal analysis environments) or more sophisticated dynamic analysis tools to effectively detect and study this threat.</p>
+
+<h2>Recommended Defense and Mitigation Strategies</h2>
+<p>To counter threats like Ottercookie v4, defenders can implement several strategies. Configuring endpoint detection and response (EDR) solutions to generate alerts for programs that repeatedly query VM-related files or registry keys can be an effective indicator. This unusual behavior is a strong fingerprint for such evasive malware. Additionally, <strong>memory forensics</strong> plays a crucial role in identifying injected scripts or other in-memory artifacts, even if the malware successfully hides its file components on the disk.</p>
+
+<h2>Conclusion: Raising the Bar for Browser Security</h2>
+<p>Overall, the emergence of Ottercookie v4 signifies a notable advancement in stealthy browser-based attacks. Its sophisticated VM detection and evasion capabilities compel security teams to upgrade their testing methodologies, analysis environments, and endpoint monitoring rules to stay ahead of this evolving threat landscape.</p>
+
+<h4>Key Points</h4>
+<ul>
+    <li>Checks for VM software names and files before activating.</li>
+    <li>Shuts down or hides itself when it runs inside a VM.</li>
+    <li>Injects scripts into web pages on real computers to steal data.</li>
+    <li>Captures keystrokes, clicks, and cookies without user notice.</li>
+    <li>Use bare-metal analysis and memory forensics to detect it.</li>
+</ul>
     `
     },
   
@@ -40,26 +47,47 @@ export const ARTICLES = [
     author: "EC-Council University",
     dashboardSummary: "AI helps cybersecurity teams spot threats fast and fix security holes before hackers can use them.",
     mainContentHtml: `
-      <p>On May 15, 2025, EC-Council University released this report after its annual CyberFuture Summit in Orlando, Florida, where industry experts gathered to discuss new defenses against cyber threats.</p>
-      <p>One highlight came from Dr. Maria Lopez of the U.S. Department of Homeland Security, who described a pilot project using AI to scan 100 million log entries per hour—catching 92% of attempted intrusions within seconds.</p>
-      <p>At the summit, a team from SecureTech demonstrated how their AI-driven firewall blocked zero-day exploits during a live hack test inside the conference hall.</p>
-      <p>A survey presented by EC-Council found that 68% of mid-sized businesses in North America plan to adopt AI-powered security tools by the end of 2025 to automate vulnerability management.</p>
-      <p>In Europe, regulators are already drafting guidelines for “explainable AI” in cybersecurity, mandating that any AI decision must be auditable by human analysts.</p>
-      <p>AI-based threat detection works by training on past attack data—like phishing emails and malware behavior—and then spotting new threats by comparison.</p>
-      <p>For example, one financial services firm in London used AI to detect an insider breach: the system noticed a payroll script running at 2 a.m., flagged it, and shut it down before salaries were stolen.</p>
-      <p>User authentication is also evolving—PasswordSafe, a startup from the summit, uses AI to measure typing rhythm and mouse movements, blocking logins that don’t match a user’s normal pattern.</p>
-      <p>However, EC-Council experts warned that AI tools can be “black boxes” if not properly monitored—so every model should be paired with a security engineer who checks its decisions.</p>
-      <p>Looking ahead, the University predicts AI will integrate with satellite IoT networks to secure remote infrastructure—like wind farms and shipping ports—by 2027.</p>
-      <h4>Key Points</h4>
-      <ul>
-        <li>Dr. Lopez’s pilot scanned 100M logs/hour, catching 92% of intrusions.</li>
-        <li>Live demo showed AI firewalls blocking zero-day exploits in Orlando.</li>
-        <li>68% of North American firms will adopt AI security by 2025’s end.</li>
-        <li>EU regulators require “explainable AI” for all security tools.</li>
-        <li>AI-driven authentication can spot unusual typing and mouse patterns.</li>
-      </ul>
+      <p>On May 15, 2025, EC-Council University shared a new report. This report came out after their big yearly meeting called the CyberFuture Summit, held in Orlando, Florida. At this meeting, experts in online safety gathered to talk about new ways to protect against online dangers and attacks.</p>
+
+<h2>AI in Action: Spotting Threats Faster</h2>
+<p>One exciting part of the summit was a talk by Dr. Maria Lopez, who works with the U.S. Department of Homeland Security. She described a special test project where Artificial Intelligence (AI) was used to check <strong>100 million computer records every hour</strong>. This smart system was able to catch 92% of attempts to break into computer systems, usually within just a few seconds!</p>
+<p>Also at the meeting, a team from a company called SecureTech showed everyone how their AI-powered "smart" firewall could stop <strong>brand-new, never-before-seen types of attacks</strong> (often called "zero-day exploits"). They proved it during a live hacking test right there in the conference hall.</p>
+
+<h2>Businesses and AI: A Growing Trend</h2>
+<p>EC-Council also presented a survey. It found that many medium-sized businesses in North America—about 68% of them—are planning to start using AI security tools by the end of 2025. They want to use these tools to automatically find and fix weaknesses in their computer systems before hackers can use them.</p>
+
+<h2>New Rules for AI in Europe</h2>
+<p>Over in Europe, lawmakers are already working on new rules for how AI should be used in cybersecurity. They want something called “explainable AI.” This means that if an AI system makes an important security decision, people must be able to understand how the AI made that choice and be able to review it. This helps make sure AI is used fairly and correctly.</p>
+
+<h2>How AI Learns to Fight Cyber Threats</h2>
+<p>AI security tools get smart by learning from information about old attacks. They study things like tricky scam emails (phishing) and harmful software (malware). Once the AI learns what these dangers look like, it can spot new, similar threats by comparing them to what it already knows. This helps find dangers much faster than people could on their own.</p>
+<p>For example, a bank in London used AI to discover a security problem caused by someone inside the company. The AI system noticed that a program for paying employees was running at 2 o'clock in the morning, which was very unusual. The AI flagged this, and the program was stopped <strong>before any money could be stolen</strong>.</p>
+
+<h2>Smarter Ways to Log In</h2>
+<p>Even the way we log into our accounts is getting smarter with AI. A new company at the summit, called PasswordSafe, showed how they use AI to check a person’s unique typing speed and rhythm, and even how they move their mouse. If someone tries to log in but their typing or mouse movements don't match the real user’s usual style, the AI can block the login attempt, keeping accounts safer.</p>
+
+<h2>Keeping an Eye on AI</h2>
+<p>However, experts from EC-Council gave an important warning. They said that if AI tools aren't watched closely, they can be like “black boxes”—meaning it’s hard to know exactly how they're making their decisions. To prevent problems, they said every AI security system should have a human security expert who checks its work and understands its choices.</p>
+
+<h2>The Future: AI Protecting Our World</h2>
+<p>Looking ahead, EC-Council University believes that by the year 2027, AI will be combined with networks of internet-connected devices (often called IoT) that use satellites. This will help protect important equipment and places that are far away or hard to reach, such as <strong>wind farms and busy shipping ports</strong>, from online attacks.</p>
+
+<h4>Key Points</h4>
+<ul>
+    <li>Dr. Lopez’s test project used AI to scan 100 million computer records per hour, catching 92% of break-in attempts quickly.</li>
+    <li>A live demo in Orlando showed smart AI firewalls stopping brand-new types of cyber attacks.</li>
+    <li>By the end of 2025, 68% of North American medium-sized businesses plan to use AI for security.</li>
+    <li>European rule-makers want "explainable AI" so that people can understand and check AI's security decisions.</li>
+    <li>AI can even help make logins safer by spotting unusual typing styles or mouse movements.</li>
+</ul>
     `
 },
+
+
+
+
+
+  // in modification
   {
     guid: "ai-vs-ai-driven-attacks",
     title: "AI vs AI: In the age of AI-driven attacks, only AI can keep up",
