@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GustauShield – Blog Post</title> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #0a0a1a; color: #eee; padding-top: 64px; /* For fixed nav */ }
+    nav { background: rgba(10,10,26,0.8); backdrop-filter: blur(8px); position: fixed; top: 0; width: 100%; z-index: 10; }
+    main { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+    #blog-image { width: 100%; max-height: 450px; /* Increased max-height slightly */ object-fit: cover; margin-bottom: 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0, 255, 255, 0.1); }
+    .meta { color: #aaa; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .prose-invert h2 { color: #00ffff; /* Example: Make h2 in content cyan */ margin-top: 1.5em; margin-bottom: 0.5em;}
+    .prose-invert ul { list-style-type: disc; margin-left: 1.25rem; } /* Ensure lists are styled */
+    .prose-invert a { color: #81d4fa; } /* Lighter blue for links in content */
+    .prose-invert a:hover { color: #00ffff; }
+    #matrix-canvas-detail { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -11; opacity: 0.25; /* Slightly different opacity */ }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-canvas-detail"></canvas> <nav class="py-3 px-5 border-b border-cyber-cyan/20">
+    <a href="blogs.html" class="text-cyber-cyan font-orbitron text-xl hover:text-white transition-colors">← All Blog Posts</a>
+  </nav>
+
+  <main class="content-card mt-8 mb-8 p-6 md:p-8"> {/* Added content-card styling from other pages */}
+    <h1 id="blog-title" class="text-3xl md:text-4xl font-orbitron mb-3 header-gradient"></h1>
+    <p id="blog-meta" class="meta"></p>
+    <img id="blog-image" src="" alt="Article image" style="display:none;" /> {/* Initially hide image */}
+    <div id="blog-content" class="prose prose-invert max-w-none text-gray-300 leading-relaxed"></div>
+  </main>
+
+  <footer class="text-center text-sm text-gray-500 py-6 border-t border-cyber-cyan/10">
+    GustauShield Insights • AI Cybersecurity Analysis
+  </footer>
+
+  <script type="module" src="js/blogs.js"></script>
+  <script type="module">
+    import { ARTICLES } from './js/blogs.js'; // Path relative to article-detail.html (if in root)
+
+    // It's good practice to also initialize matrix here if you want it on this page
+    if (typeof initRainbowMatrix === 'function') {
+        try { initRainbowMatrix('matrix-canvas-detail'); }
+        catch (e) { console.error("Matrix Init Error on detail page:", e); }
+    } else {
+        // If matrix.js is not loaded, you might want a fallback or ensure it's linked
+        // For now, we'll assume matrix.js will be linked if you want the background
+        console.warn("initRainbowMatrix function missing on detail page (expected in js/matrix.js)");
+    }
+
+
+    // 1. Get ?article=GUID from the URL
+    const params = new URLSearchParams(location.search);
+    const slug = params.get('article');
+
+    // 2. Find the article in the ARTICLES array
+    // Ensure ARTICLES is loaded, otherwise provide a default empty array or handle error
+    const articlesArray = typeof ARTICLES !== 'undefined' ? ARTICLES : [];
+    const article = articlesArray.find(a => a.guid === slug);
+
+    // 3. Render the article content into the HTML elements
+    if (article) {
+        document.getElementById('blog-title').textContent = article.title;
+        document.title = article.title + " | GustauShield Blog"; // Update page title
+        
+        let metaText = [];
+        if(article.sourceName) metaText.push(`From: ${article.sourceName}`);
+        if(article.pubDateStr) metaText.push(`Published: ${new Date(article.pubDateStr).toLocaleDateString()}`);
+        if(article.author) metaText.push(`By: ${article.author}`);
+        document.getElementById('blog-meta').textContent = metaText.join(' • ');
+
+        const imgElement = document.getElementById('blog-image');
+        if (article.imageUrl) {
+            imgElement.src = article.imageUrl.startsWith('http') ? article.imageUrl : './' + article.imageUrl; // Handle relative/absolute image paths
+            imgElement.alt = article.title;
+            imgElement.style.display = 'block'; // Show image element
+        } else {
+            imgElement.style.display = 'none'; // Keep image hidden if no URL
+        }
+        document.getElementById('blog-content').innerHTML = article.mainContentHtml;
+    } else {
+        document.getElementById('blog-title').textContent = 'Article Not Found';
+        document.getElementById('blog-meta').textContent = '';
+        document.getElementById('blog-image').style.display = 'none';
+        document.getElementById('blog-content').innerHTML = '<p>Sorry, the article you are looking for could not be found. It might have been moved, or the link is incorrect.</p><p><a href="blogs.html" class="text-cyber-cyan hover:underline">← Return to Blog Overview</a></p>';
+        document.title = "Article Not Found | GustauShield Blog";
+    }
+  </script>
+  <script src="js/matrix.js" defer></script>
+</body>
+</html>
