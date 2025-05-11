@@ -279,7 +279,7 @@ export const ARTICLES = [
   {
     guid: "red-pill-reality",
     title: "Red Pill Reality: Hackers as the Neo of Our Digital World",
-    imageUrl: "assetts/matrix.jpeg",
+    imageUrl: "assets/matrix.jpeg",
     sourceName: "GustauShield Analysis",
     pubDateStr: "2025-05-11T00:00:00Z",
     author: "GustauShield",
