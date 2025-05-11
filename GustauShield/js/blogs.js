@@ -277,7 +277,7 @@ export const ARTICLES = [
   {
     guid: "ai-zero-trust-remote-work",
     title: "AI, Zero Trust Support Remote Work Technologies",
-    imageUrl: "https://www.techtarget.com/rms/onlineImages/networking-build_a_zero_trust_network-f.png",
+    imageUrl: "assets/zero-attack.png",
     sourceName: "TechTarget",
     pubDateStr: "2021-08-11T00:00:00Z",
     author: "John Moore",
