@@ -1,14 +1,6 @@
 
 const RSS_FEEDS = [
-    'https://feeds.feedburner.com/TheHackersNews',
-    // 'https://feeds.feedburner.com/TheHackersNews',
-    // 'https://grahamcluley.com/feed/',
-    // 'https://krebsonsecurity.com/feed/',
-    // 'https://securelist.com/feed/',
-    // 'https://news.sophos.com/en-us/category/security-operations/feed/',
-    // 'https://news.sophos.com/en-us/category/threat-research/feed/',
-    // 'https://www.troyhunt.com/rss/', 
-    // 'https://feeds.feedburner.com/eset/blog' 
+    'https://feeds.feedburner.com/TheHackersNews'
 ];
 
 const CORS_PROXY_URL = "https://api.allorigins.win/raw?url="; // Public CORS proxy
