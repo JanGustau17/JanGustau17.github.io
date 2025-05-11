@@ -3,23 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GustauShield – Blog Post</title> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <title>GustauShield – Blog Post</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { font-family: 'Poppins', sans-serif; background: #0a0a1a; color: #eee; padding-top: 64px; /* For fixed nav */ }
-    nav { background: rgba(10,10,26,0.8); backdrop-filter: blur(8px); position: fixed; top: 0; width: 100%; z-index: 10; }
-    main { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
-    #blog-image { width: 100%; max-height: 450px; /* Increased max-height slightly */ object-fit: cover; margin-bottom: 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0, 255, 255, 0.1); }
-    .meta { color: #aaa; font-size: 0.9rem; margin-bottom: 1.5rem; }
-    .prose-invert h2 { color: #00ffff; /* Example: Make h2 in content cyan */ margin-top: 1.5em; margin-bottom: 0.5em;}
-    .prose-invert ul { list-style-type: disc; margin-left: 1.25rem; } /* Ensure lists are styled */
-    .prose-invert a { color: #81d4fa; } /* Lighter blue for links in content */
-    .prose-invert a:hover { color: #00ffff; }
-    #matrix-canvas-detail { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -11; opacity: 0.25; /* Slightly different opacity */ }
+    body { 
+        font-family: 'Poppins', sans-serif; 
+        background: #0a0a1a; 
+        color: #eee; 
+        padding-top: 64px; /* For fixed nav */ 
+    }
+    nav { 
+        background: rgba(10,10,26,0.8); 
+        backdrop-filter: blur(8px); 
+        position: fixed; 
+        top: 0; 
+        width: 100%; 
+        z-index: 10; 
+    }
+    main { 
+        max-width: 800px; 
+        margin: 0 auto; 
+        padding: 2rem 1rem; 
+    }
+    #blog-image { 
+        width: 100%; 
+        max-height: 450px; 
+        object-fit: cover; 
+        margin-bottom: 1.5rem; 
+        border-radius: 0.5rem; 
+        box-shadow: 0 4px 15px rgba(0, 255, 255, 0.1); 
+    }
+    .meta { 
+        color: #aaa; 
+        font-size: 0.9rem; 
+        margin-bottom: 1.5rem; 
+    }
+    #matrix-canvas-detail { 
+        position: fixed; 
+        top: 0; left: 0; 
+        width: 100%; height: 100%; 
+        z-index: -11; /* Ensure it's behind main content-card */
+        opacity: 0.25; 
+    }
+    .content-card { /* Added from your blogs.html for consistency */
+        background-color: rgba(25, 35, 45, 0.7); 
+        border: 1px solid rgba(0, 255, 255, 0.2); 
+        backdrop-filter: blur(8px); 
+        border-radius: 8px; 
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); 
+    }
+
+    /* --- Tailwind Prose Customizations --- */
+    .prose-invert {
+        color: #d1d5db; /* Lighter gray for main text for better contrast if #eee is too bright */
+    }
+    .prose-invert h1, .prose-invert h2, .prose-invert h3, .prose-invert h4 { /* Headings already styled by header-gradient or Tailwind */
+        /* Tailwind prose usually handles heading colors well with prose-invert */
+         color: #e5e7eb; /* Default prose-invert heading color, can be overridden */
+    }
+    .prose-invert h2 { /* Specific styling for H2s you might add in content */
+        font-family: 'Orbitron', sans-serif;
+        color: #00ffff; /* Cyber cyan for H2s */
+        margin-top: 2em;
+        margin-bottom: 0.75em;
+        padding-bottom: 0.25em;
+        border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+    }
+    .prose-invert h3 {
+        font-family: 'Orbitron', sans-serif;
+        color: #c084fc; /* A light purple for H3s */
+        margin-top: 1.75em;
+        margin-bottom: 0.6em;
+    }
+     .prose-invert h4 { /* Default styling for h4, like "Key Points" */
+        font-family: 'Orbitron', sans-serif;
+        color: #67e8f9; /* Lighter cyan for H4 */
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+    }
+    .prose-invert p {
+        line-height: 1.75; /* More spacing between lines in a paragraph */
+        margin-bottom: 1.25em; /* More space after each paragraph */
+    }
+    .prose-invert strong {
+        color: #f0f9ff; /* Slightly brighter white for strong text */
+    }
+    .prose-invert a {
+        color: #38bdf8; /* Brighter link color */
+        text-decoration: none; /* Remove underline by default */
+        transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+    .prose-invert a:hover {
+        color: #00ffff; /* Cyan on hover */
+        text-decoration: underline;
+        text-shadow: 0 0 4px rgba(0, 255, 255, 0.5);
+    }
+    .prose-invert ul {
+        list-style-type: none; /* Remove default bullets for custom styling if needed */
+        padding-left: 0.5em; /* Adjust padding if removing bullets */
+    }
+    .prose-invert ul > li {
+        padding-left: 1.25em; /* Space for custom bullet */
+        position: relative;
+        margin-bottom: 0.6em; /* Space between list items */
+    }
+    .prose-invert ul > li::before { /* Custom bullet style */
+        content: '»'; /* Or '•', '–', '✓' etc. */
+        color: #00ffff; /* Cyber cyan bullet */
+        position: absolute;
+        left: 0;
+        top: 0.05em; /* Adjust vertical alignment */
+        font-weight: bold;
+    }
+
+    /* Specific styling for "Key Points" sections */
+    .prose-invert h4:is(:contains("Key Points"), :contains("Key points")) + ul {
+        background-color: rgba(0, 119, 255, 0.08); /* Very subtle blue background */
+        border: 1px solid rgba(0, 119, 255, 0.2);
+        border-left-width: 4px;
+        border-left-color: #0077ff; /* Blue left border */
+        padding: 1em 1em 1em 0.5em; /* Top, Right, Bottom, Left */
+        border-radius: 0.375rem; /* Tailwind's rounded-md */
+        margin-top: 0.5em; /* Space above the box */
+    }
+     /* Remove custom bullet for Key Points list if you prefer default or just indented text */
+    .prose-invert h4:is(:contains("Key Points"), :contains("Key points")) + ul > li::before {
+        content: '✓'; /* Checkmark for key points */
+        color: #22d3ee; /* A vibrant cyan for key points */
+    }
+    .prose-invert blockquote {
+        border-left-color: #8a2be2; /* Purple for blockquote border */
+        color: #d1d5db; /* Text color for blockquote */
+        padding: 0.5em 1em;
+        background-color: rgba(138, 43, 226, 0.05);
+    }
+    .prose-invert hr {
+        border-color: rgba(0, 255, 255, 0.2); /* Cyan tint for horizontal rules */
+        margin-top: 2.5em;
+        margin-bottom: 2.5em;
+    }
+
   </style>
 </head>
 <body>
-  <canvas id="matrix-canvas-detail"></canvas> <nav class="py-3 px-5 border-b border-cyber-cyan/20">
+  <canvas id="matrix-canvas-detail"></canvas>
+
+  <nav class="py-3 px-5 border-b border-cyber-cyan/20">
     <a href="blogs.html" class="text-cyber-cyan font-orbitron text-xl hover:text-white transition-colors">← All Blog Posts</a>
   </nav>
 
@@ -36,32 +166,23 @@
 
   <script type="module" src="js/blogs.js"></script>
   <script type="module">
-    import { ARTICLES } from './js/blogs.js'; // Path relative to article-detail.html (if in root)
+    import { ARTICLES } from './js/blogs.js';
 
-    // It's good practice to also initialize matrix here if you want it on this page
     if (typeof initRainbowMatrix === 'function') {
         try { initRainbowMatrix('matrix-canvas-detail'); }
         catch (e) { console.error("Matrix Init Error on detail page:", e); }
     } else {
-        // If matrix.js is not loaded, you might want a fallback or ensure it's linked
-        // For now, we'll assume matrix.js will be linked if you want the background
         console.warn("initRainbowMatrix function missing on detail page (expected in js/matrix.js)");
     }
 
-
-    // 1. Get ?article=GUID from the URL
     const params = new URLSearchParams(location.search);
     const slug = params.get('article');
-
-    // 2. Find the article in the ARTICLES array
-    // Ensure ARTICLES is loaded, otherwise provide a default empty array or handle error
     const articlesArray = typeof ARTICLES !== 'undefined' ? ARTICLES : [];
     const article = articlesArray.find(a => a.guid === slug);
 
-    // 3. Render the article content into the HTML elements
     if (article) {
         document.getElementById('blog-title').textContent = article.title;
-        document.title = article.title + " | GustauShield Blog"; // Update page title
+        document.title = article.title + " | GustauShield Blog";
         
         let metaText = [];
         if(article.sourceName) metaText.push(`From: ${article.sourceName}`);
@@ -71,11 +192,21 @@
 
         const imgElement = document.getElementById('blog-image');
         if (article.imageUrl) {
-            imgElement.src = article.imageUrl.startsWith('http') ? article.imageUrl : './' + article.imageUrl; // Handle relative/absolute image paths
+            // Ensure relative paths for 'assets/matrix.jpeg' are handled correctly if blogs.html is in root
+            let imagePath = article.imageUrl;
+            if (imagePath === "assets/matrix.jpeg" && !imagePath.startsWith('./') && !imagePath.startsWith('../') && !imagePath.startsWith('http')) {
+                imagePath = './' + imagePath; 
+            } else if (imagePath.startsWith('http')) {
+                // it's an absolute URL, use as is
+            } else if (!imagePath.startsWith('./') && !imagePath.startsWith('../')) {
+                 imagePath = './' + imagePath; // Default to relative from current dir if not specified
+            }
+
+            imgElement.src = imagePath;
             imgElement.alt = article.title;
-            imgElement.style.display = 'block'; // Show image element
+            imgElement.style.display = 'block';
         } else {
-            imgElement.style.display = 'none'; // Keep image hidden if no URL
+            imgElement.style.display = 'none';
         }
         document.getElementById('blog-content').innerHTML = article.mainContentHtml;
     } else {
