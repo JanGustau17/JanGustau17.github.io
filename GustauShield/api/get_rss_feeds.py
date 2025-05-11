@@ -213,16 +213,3 @@ if __name__ == '__main__':
     # Run the Flask development server
     # Host '0.0.0.0' makes it accessible on your local network
     app.run(host='0.0.0.0', port=5001, debug=True)
-```
-**Key things about this Python script:**
-* **Dependencies:** You'll need Flask, Flask-CORS, and feedparser. Create a `requirements.txt` file in the same `api` directory (or your project root, depending on your deployment platform's preference) with:
-    ```txt
-    Flask>=2.0
-    Flask-CORS>=3.0
-    feedparser>=6.0
-    ```
-* **CORS:** `Flask-CORS` is included. For production, you should restrict `CORS(app, origins=["https://your-frontend-domain.com"])` to only allow requests from your website.
-* **Error Handling:** It includes basic error logging. In a serverless environment, these logs (from `app.logger`) will typically go to the platform's logging service (e.g., Vercel Logs, AWS CloudWatch).
-* **Data Structure:** It returns a JSON array where each item has fields like `guid`, `title`, `link`, `pubDateStr` (ISO 8601 format), `descriptionHtml` (this is the raw HTML content from the feed), `author`, `imageUrl`, and `sourceName`.
-* **Local Testing:** You can run this script locally (`python api/get_rss_feeds.py`) for testing. It will start a development server (e.g., on `http://localhost:5001/api/get_rss_feeds`).
-* **Deployment:** When deployed to a platform like Vercel, if this file is `api/get_rss_feeds.py`, it will typically be accessible at `https://your-site-name.vercel.app/api/get_rss_feed
