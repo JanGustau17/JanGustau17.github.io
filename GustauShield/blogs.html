@@ -180,5 +180,37 @@
         });
     </script>
 
+
+      <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[60] hidden" aria-labelledby="contactModalTitle" role="dialog" aria-modal="true">
+    <div class="content-card max-w-md w-full p-6 md:p-8 relative">
+        <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-cyber-cyan text-2xl leading-none" aria-label="Close contact form">&times;</button>
+        <h3 id="contactModalTitle" class="text-2xl font-semibold font-orbitron mb-6 text-center header-gradient">Send a Message</h3>
+        <form action="https://formsubmit.co/el/tamedu" method="POST">
+            <input type="hidden" name="_subject" value="Message from GustauShield Website!">
+            <input type="text" name="_honey" style="display:none">
+            <input type="hidden" name="_captcha" value="false">
+
+            <input type="hidden" name="_next" value="https://jangustau17.github.io/GustauShield/thank-you.html">
+
+            <div class="mb-4 text-left">
+                <label for="modal_name" class="block text-medium-gray mb-1 text-sm font-medium">Your Name:</label>
+                <input type="text" name="name" id="modal_name" required class="form-input w-full">
+            </div>
+            <div class="mb-4 text-left">
+                <label for="modal_email" class="block text-medium-gray mb-1 text-sm font-medium">Your Email:</label>
+                <input type="email" name="email" id="modal_email" required class="form-input w-full">
+            </div>
+            <div class="mb-6 text-left">
+                <label for="modal_message" class="block text-medium-gray mb-1 text-sm font-medium">Message:</label>
+                <textarea name="message" id="modal_message" rows="4" required class="form-input w-full"></textarea>
+            </div>
+            <button type="submit" class="cyber-button w-full">Send Message</button>
+        </form>
+    </div>
+</div>
+
+<button id="contact-fab" class="fixed bottom-6 right-6 bg-gradient-to-r from-cyber-cyan to-cyber-blue text-white p-4 rounded-full shadow-xl hover:scale-110 transition-transform duration-200 ease-in-out z-50" aria-label="Open contact form">
+    <i class="fas fa-envelope fa-lg"></i>
+</button>
 </body>
 </html>
