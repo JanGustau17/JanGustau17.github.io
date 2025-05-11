@@ -36,7 +36,7 @@
             backdrop-filter: blur(8px); 
             border-bottom: 1px solid rgba(0, 255, 255, 0.15); 
         }
-        nav a, nav button 
+        nav a, nav button { 
             transition: color 0.2s ease, text-shadow 0.2s ease; 
         }
         nav a:hover, nav button:hover { 
@@ -161,8 +161,8 @@
             <img src="https://media.licdn.com/dms/image/v2/D4E03AQGZysCpBjgh_A/profile-displayphoto-shrink_800_800/B4EZYKNIadGgAg-/0/1743927937077?e=1752710400&v=beta&t=LlOD1dEGmYWkIH-KLolxRWs096g6A3DkeecHxoq4mSg"
                  alt="Profile photo of Mukhammadali Yuldoshev"
                  class="w-36 h-36 md:w-40 md:h-40 rounded-full mx-auto mb-6 
-                        border-2 border-cyber-cyan shadow-lg object-cover" 
-                        style="box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), 0 0 25px rgba(0, 255, 255, 0.4);"
+                         border-2 border-cyber-cyan shadow-lg object-cover" 
+                         style="box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), 0 0 25px rgba(0, 255, 255, 0.4);"
                  onerror="this.style.display='none';" /> 
             
             <h2 class="text-2xl md:text-3xl font-semibold text-gray-100 font-orbitron mb-3 header-gradient">Mukhammadali Yuldoshev</h2>
@@ -204,7 +204,7 @@
         </section>
     </main>
 
-    <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">       
+    <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">      
         GustauShield Insights | English Project | AI in Cybersecurity Analysis
     </footer>
 
@@ -259,6 +259,57 @@
 <div id="fixed-visitor-counter" class="fixed bottom-4 left-4 bg-slate-800/70 backdrop-blur-sm text-xs text-medium-gray p-2 px-3 rounded-lg shadow-lg z-50">
     Site Visitors: <span id="visitor-count-value" class="font-orbitron text-cyber-cyan font-semibold">Loading...</span>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const namespace = 'gustau-shield-site'; // A unique namespace for your website's counters
+        const key = 'total-visits';         // A key for this specific site-wide counter
+        const countApiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+        const getValueApiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
+
+        const visitorCountElement = document.getElementById('visitor-count-value');
+
+        if (visitorCountElement) {
+            function updateDisplay(countValue) {
+                visitorCountElement.textContent = countValue ? countValue.toLocaleString() : 'N/A';
+            }
+
+            // Try to get the current count first
+            fetch(getValueApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && typeof data.value !== 'undefined') { // Check if data.value exists
+                        updateDisplay(data.value); // Display current count
+                    } else {
+                        updateDisplay(null); // Handle case where value might be missing
+                    }
+
+                    // Increment only if not visited in this session
+                    if (!sessionStorage.getItem(`visited-${namespace}-${key}`)) {
+                        fetch(countApiUrl) // This increments the counter
+                            .then(response => response.json())
+                            .then(hitData => {
+                                if (hitData && typeof hitData.value !== 'undefined') { // Check if hitData.value exists
+                                    updateDisplay(hitData.value); // Update display with new count
+                                }
+                                sessionStorage.setItem(`visited-${namespace}-${key}`, 'true');
+                            })
+                            .catch(error => {
+                                console.error('Error incrementing visitor counter:', error);
+                                // Optonal: You might want to leave the current display as is, or show N/A
+                                // updateDisplay(null); 
+                            });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching initial visitor counter value:', error);
+                    updateDisplay(null);
+                });
+        } else {
+            console.error("Visitor count element ('visitor-count-value') not found.");
+        }
+    });
+</script>
     
 </body>
 </html>
