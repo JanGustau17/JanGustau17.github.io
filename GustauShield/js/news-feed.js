@@ -1,6 +1,4 @@
-// File: js/news-feed.js
 
-// --- Constants ---
 const RSS_FEEDS_TO_FETCH = [ // Your list of RSS feed URLs
     'https://feeds.feedburner.com/TheHackersNews',
     'https://www.wired.com/feed/category/security/latest/rss',
