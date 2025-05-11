@@ -1,374 +1,207 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GustauShield - Blog & Articles</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        html { scroll-behavior: smooth; }
-        body { background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%); color: #cccccc; font-family: 'Poppins', sans-serif; min-height: 100vh; overflow-x: hidden; padding-top: 64px; /* Height of fixed navbar */ }
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        .header-gradient { background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
-        nav { background-color: rgba(10, 10, 26, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0, 255, 255, 0.15); }
-        nav a, nav button { transition: color 0.2s ease, text-shadow 0.2s ease; }
-        nav a:hover, nav button:hover { color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
-        nav a.active { color: #00ffff; font-weight: 600; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
-        .content-card { background-color: rgba(25, 35, 45, 0.8); border: 1px solid rgba(0, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: 8px; padding: 1.5rem; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.4; }
-        main, nav, footer { position: relative; z-index: 1; }
-        .article-meta { font-size: 0.8rem; color: #888888; margin-bottom: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
-        .article-image { max-width: 100%; height: auto; max-height: 350px; object-fit: cover; border-radius: 6px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        /* Styling for the main article display area */
-        #blog-main-content article { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(0, 255, 255, 0.1); }
-        #blog-main-content article:last-child { border-bottom: none; margin-bottom: 0; }
-        #blog-main-content h2 { font-size: 1.75rem; line-height: 1.3; }
-        #blog-main-content .summary-content p,
-        #blog-main-content .summary-content ul,
-        #blog-main-content .summary-content ol,
-        #blog-main-content .summary-content blockquote { margin-bottom: 1rem; line-height: 1.7; color: #e0e0e0; }
-        #blog-main-content .summary-content ul { list-style-type: disc; margin-left: 1.5rem; }
-        #blog-main-content .summary-content ol { list-style-type: decimal; margin-left: 1.5rem; }
-        #blog-main-content .summary-content a { color: #00ffff; text-decoration: underline; }
-        #blog-main-content .summary-content a:hover { color: #0077ff; }
-        #blog-main-content .summary-content img { max-width: 100%; height: auto; border-radius: 4px; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+// This is the JavaScript for blogs.html
+// It should be placed within a <script> tag at the bottom of your blogs.html,
+// or linked as an external file like js/blogs-logic.js
 
+/**
+ * Extracts plain text from an HTML string.
+ * @param {string} htmlString - The HTML string to process.
+ * @returns {string} The extracted plain text.
+ */
+function getTextFromHtml(htmlString) {
+    if (!htmlString) return '';
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlString;
+    return tempDiv.textContent || tempDiv.innerText || '';
+}
 
-        /* Styling for Suggestions List */
-        #blog-suggestions h3 { font-size: 1.25rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 0.5rem; }
-        #blog-suggestions ul li { border-bottom: 1px solid rgba(255, 255, 255, 0.07); padding: 0.75rem 0; }
-        #blog-suggestions ul li:last-child { border-bottom: none; }
-        #blog-suggestions a { display: block; color: #cccccc; font-weight: 500; font-size: 0.9rem; line-height: 1.4; transition: color 0.2s ease; }
-        #blog-suggestions a:hover { color: #00ffff; }
-        #blog-suggestions .suggestion-meta { font-size: 0.7rem; color: #888888; margin-top: 0.25rem; }
+/**
+ * Calculates estimated reading time in minutes from an HTML string.
+ * @param {string} htmlContent - The HTML content of the article.
+ * @returns {string} A string like "Approx. 5 min read".
+ */
+function calculateReadingTime(htmlContent) {
+    if (!htmlContent) return '';
+    const text = getTextFromHtml(htmlContent);
+    const wordsPerMinute = 200;
+    const words = text.split(/\s+/).filter(Boolean).length;
+    if (words === 0) return '';
+    const minutes = Math.ceil(words / wordsPerMinute);
+    return `Approx. ${minutes < 1 ? '1' : minutes} min read`;
+}
 
-        /* Custom scrollbar for suggestion list if it overflows */
-        #blog-suggestions-list {
-            max-height: 70vh; /* Adjust as needed */
-            overflow-y: auto;
-            padding-right: 8px; /* Space for scrollbar */
+/**
+ * Displays full article details in a specified container.
+ * @param {object} articleData - The article object.
+ * @param {HTMLElement} containerElement - The DOM element to append the article to.
+ */
+function displayFullArticleOnBlogPage(articleData, containerElement) {
+    if (!articleData || !containerElement) {
+        console.error("displayFullArticleOnBlogPage: Missing article data or container.");
+        return;
+    }
+
+    const readingTime = calculateReadingTime(articleData.mainContentHtml);
+    // The mainContentHtml is already HTML, so no need to format it further unless sanitization is required.
+    // For simplicity, we assume mainContentHtml is safe and well-formed.
+    const articleContent = articleData.mainContentHtml;
+
+    let displayDate = articleData.pubDateStr;
+    try {
+        displayDate = new Date(articleData.pubDateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch(e) {
+        displayDate = "Date Unknown";
+    }
+
+    const articleElement = document.createElement('article');
+    // Assuming .content-card is defined in your blogs.html CSS
+    articleElement.className = 'content-card'; 
+    articleElement.setAttribute('data-guid', articleData.guid);
+
+    articleElement.innerHTML = `
+        <div class="mb-4 border-b border-cyber-cyan/20 pb-4">
+            <h2 class="text-2xl md:text-3xl font-bold font-orbitron header-gradient mb-3 leading-tight">${articleData.title}</h2>
+            <div class="article-meta">
+                <span>
+                    Published by <strong class="text-gray-300">${articleData.sourceName}</strong>
+                    on <time datetime="${articleData.pubDateStr}" class="text-gray-300">${displayDate}</time>
+                </span>
+                ${readingTime ? `<span class="text-cyber-cyan font-semibold">${readingTime}</span>` : ''}
+            </div>
+            <div class="text-xs text-gray-400 mt-1">
+                By <span class="italic">${articleData.author}</span>
+            </div>
+        </div>
+
+        ${articleData.imageUrl ? `
+        <img src="${articleData.imageUrl.replace('100x75', '600x400')}" alt="Image for ${articleData.title}" class="article-image w-full md:w-2/3 lg:w-1/2 mx-auto my-6 rounded-lg shadow-xl" onerror="this.style.display='none';">
+        ` : ''}
+        <div class="summary-content text-gray-200 leading-relaxed space-y-4 clear-both text-base prose prose-invert max-w-none">
+            ${articleContent}
+        </div>
+
+        `;
+    containerElement.appendChild(articleElement);
+}
+
+/**
+ * Displays a list of suggestion links in the sidebar.
+ * @param {Array<object>} articlesArray - Array of article objects for suggestions.
+ * @param {HTMLElement} suggestionsAsideElement - The <aside> DOM element for suggestions.
+ */
+function displayBlogSuggestionsList(articlesArray, suggestionsAsideElement) {
+    if (!suggestionsAsideElement) {
+        console.error("displayBlogSuggestionsList: Suggestions aside element not found.");
+        return;
+    }
+    const listElement = suggestionsAsideElement.querySelector('ul#blog-suggestions-list');
+    if (!listElement) {
+         console.error("displayBlogSuggestionsList: Suggestions list UL (ul#blog-suggestions-list) not found.");
+         return;
+    }
+    listElement.innerHTML = ''; // Clear loading/previous
+
+    if (!articlesArray || articlesArray.length === 0) {
+        listElement.innerHTML = '<li class="text-gray-500 italic text-sm py-2">No other articles available.</li>';
+        return;
+    }
+
+    // No need to limit to 15 if we have only 7 or 9 other articles.
+    articlesArray.forEach(item => {
+        // const articleGuidEncoded = encodeURIComponent(item.guid); // Already in item.link
+        let displayDate = '';
+        try { displayDate = new Date(item.pubDateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } catch(e) {}
+        
+        // For suggestions, reading time might be too much detail, but can be added.
+        // const readingTime = calculateReadingTime(item.mainContentHtml); 
+
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <a href="${item.link}" title="${item.title}">
+                ${item.title.substring(0, 70)}${item.title.length > 70 ? '...' : ''}
+            </a>
+            <div class="suggestion-meta">
+                ${item.sourceName} ${displayDate ? `- ${displayDate}` : ''}
+            </div>
+        `;
+        listElement.appendChild(li);
+    });
+}
+
+// --- Main Logic for blogs.html ---
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Blogs Page (static data version) Initializing...");
+
+    if (typeof initRainbowMatrix === 'function') { // Assuming matrix.js is linked
+        try { initRainbowMatrix('matrix-canvas'); }
+        catch (error) { console.error("Error initializing Matrix background for blogs:", error); }
+    }
+
+    const mainContentContainer = document.getElementById('blog-main-content');
+    const suggestionsContainer = document.getElementById('blog-suggestions'); // This is the <aside>
+
+    if (!mainContentContainer || !suggestionsContainer) {
+        console.error("Blogs Page: Essential layout elements (blog-main-content or blog-suggestions) not found.");
+        if (mainContentContainer) mainContentContainer.innerHTML = "<p class='text-red-500 text-center py-10'>Error: Page layout structure missing.</p>";
+        return;
+    }
+
+    let allStaticArticles = [];
+    try {
+        const storedItemsJson = sessionStorage.getItem('allFetchedNewsItems');
+        if (storedItemsJson) {
+            allStaticArticles = JSON.parse(storedItemsJson);
+            // Ensure items are sorted by date (most recent first) if needed, though our static list is already ordered.
+            // allStaticArticles.sort((a, b) => new Date(b.pubDateStr) - new Date(a.pubDateStr));
         }
-        #blog-suggestions-list::-webkit-scrollbar { width: 6px; }
-        #blog-suggestions-list::-webkit-scrollbar-track { background: rgba(25, 35, 45, 0.3); border-radius: 10px;}
-        #blog-suggestions-list::-webkit-scrollbar-thumb { background-color: #0077ff; border-radius: 10px;}
-        #blog-suggestions-list::-webkit-scrollbar-thumb:hover { background-color: #00ffff; }
-        #blog-suggestions-list { scrollbar-width: thin; scrollbar-color: #0077ff rgba(25, 35, 45, 0.3); }
+    } catch (e) {
+        console.error("Blogs Page: Error retrieving/parsing articles from sessionStorage:", e);
+        mainContentContainer.innerHTML = "<p class='text-red-500 text-center py-10'>Error loading article data. Please ensure you've visited the Dashboard first or check sessionStorage.</p>";
+        const suggestionsListUl = suggestionsContainer.querySelector('ul#blog-suggestions-list');
+        if (suggestionsListUl) suggestionsListUl.innerHTML = '';
+        return;
+    }
 
-    </style>
-</head>
-<body class="font-poppins">
-    <canvas id="matrix-canvas"></canvas>
+    if (!allStaticArticles || allStaticArticles.length === 0) {
+        mainContentContainer.innerHTML = "<p class='text-gray-500 italic text-center py-10'>No articles found. Please visit the Dashboard to ensure article data is loaded.</p>";
+        const suggestionsListUl = suggestionsContainer.querySelector('ul#blog-suggestions-list');
+        if (suggestionsListUl) suggestionsListUl.innerHTML = '<li class="text-gray-500 italic text-sm py-2">No articles available.</li>';
+        return;
+    }
 
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
-        <div class="container mx-auto flex justify-between items-center px-4 py-3">
-            <a href="index.html" class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></a>
-            <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">☰</button>
-            <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
-                <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
-                <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
-                <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
-                <li><a href="blogs.html" class="active hover:text-cyber-cyan">Blogs</a></li>
-                <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
-            </ul>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-900/95 border-t border-cyber-cyan/20"> <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
-                <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
-                <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
-                <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
-                <li><a href="blogs.html" class="active hover:text-cyber-cyan">Blogs</a></li>
-                <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
-            </ul>
-        </div>
-    </nav>
+    const params = new URLSearchParams(window.location.search);
+    const articleGuidParam = params.get('article'); // GUID is expected from the link
 
-    <main class="container mx-auto px-4 py-8 mt-8"> <div class="grid lg:grid-cols-3 lg:gap-12">
+    mainContentContainer.innerHTML = ''; // Clear "Loading articles..."
 
-            <div id="blog-main-content" class="lg:col-span-2 space-y-12">
-                <p class="text-center text-gray-500 italic py-10">Loading articles...</p> </div>
+    if (articleGuidParam) {
+        // --- Display Single Article Mode ---
+        const targetArticle = allStaticArticles.find(item => item.guid === articleGuidParam);
 
-            <aside id="blog-suggestions" class="lg:col-span-1 mt-12 lg:mt-0">
-                <h3 class="font-orbitron text-cyber-cyan">More News</h3>
-                <ul id="blog-suggestions-list">
-                    <li class="text-gray-500 italic text-sm py-2">Loading suggestions...</li> </ul>
-            </aside>
-
-        </div>
-    </main>
-
-    <footer class="text-center py-6 border-t border-cyber-cyan/10 text-gray-500 text-sm mt-16"> GustauShield Insights | English Project | AI in Cybersecurity Analysis
-    </footer>
-
-    <script src="js/matrix.js" defer></script>
-    <script src="js/main.js" defer></script>
-    <script>
-        /**
-         * Extracts plain text from an HTML string.
-         * @param {string} htmlString - The HTML string to process.
-         * @returns {string} The extracted plain text.
-         */
-        function getTextFromHtml(htmlString) {
-            if (!htmlString) return '';
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = htmlString;
-            return tempDiv.textContent || tempDiv.innerText || '';
+        if (targetArticle) {
+            displayFullArticleOnBlogPage(targetArticle, mainContentContainer);
+            document.title = `${targetArticle.title.substring(0, 60)}... - GustauShield`;
+            const otherArticles = allStaticArticles.filter(item => item.guid !== articleGuidParam);
+            displayBlogSuggestionsList(otherArticles, suggestionsContainer);
+        } else {
+            mainContentContainer.innerHTML = `<p class='text-red-400 text-center py-10'>Error: The requested article (ID: ${articleGuidParam}) was not found.</p>`;
+            displayBlogSuggestionsList(allStaticArticles, suggestionsContainer); // Show all as suggestions
         }
+    } else {
+        // --- Display Blog Listing Mode (3 main, 7 suggestions) ---
+        document.title = "GustauShield - Blog & Articles";
 
-        /**
-         * Formats HTML description content for display.
-         * Performs basic sanitization (removes script/style tags and on... event handlers).
-         * @param {string} htmlContent - The raw HTML content from the feed item.
-         * @returns {string} Sanitized and somewhat formatted HTML.
-         */
-        function formatDescription(htmlContent) {
-            if (!htmlContent || typeof htmlContent !== 'string') return '<p>Content not available.</p>';
+        const ARTICLES_IN_MAIN_LISTING = 3;
+        const articlesForMainDisplay = allStaticArticles.slice(0, ARTICLES_IN_MAIN_LISTING);
+        const articlesForSuggestions = allStaticArticles.slice(ARTICLES_IN_MAIN_LISTING);
 
-            // Basic sanitization
-            const SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
-            const STYLE_REGEX = /<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi;
-            const ON_EVENT_REGEX = /\s*on\w+\s*=\s*("([^"]*)"|'([^']*)'|[^\s>]+)/gi; // Remove on... event handlers
-
-            let cleanHtml = htmlContent
-                .replace(SCRIPT_REGEX, "")
-                .replace(STYLE_REGEX, "")
-                .replace(ON_EVENT_REGEX, "");
-
-            // Attempt to ensure images within the content are responsive
-            // This is a simple approach; more complex scenarios might need more robust parsing
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = cleanHtml;
-            tempDiv.querySelectorAll('img').forEach(img => {
-                img.style.maxWidth = '100%';
-                img.style.height = 'auto';
-                img.classList.add('rounded-md', 'my-2'); // Add some default styling
+        if (articlesForMainDisplay.length > 0) {
+            articlesForMainDisplay.forEach(article => {
+                displayFullArticleOnBlogPage(article, mainContentContainer);
             });
-            cleanHtml = tempDiv.innerHTML;
-
-
-            // If the content is very simple (no block elements) and contains newlines, try to format.
-            // This is a heuristic. For truly robust HTML, it's best if the source feed provides well-formed HTML.
-            if (!cleanHtml.match(/<\/(p|div|ul|ol|h[1-6]|blockquote|table)\b/i) && cleanHtml.includes('\n')) {
-                 return `<p>${cleanHtml.replace(/\n\s*\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>`;
-            }
-            return cleanHtml; // Return the cleaned (and potentially image-adjusted) HTML
+        } else {
+            mainContentContainer.innerHTML = "<p class='text-gray-500 italic text-center py-10'>No articles available for the main listing.</p>";
         }
-
-
-        /**
-         * Calculates estimated reading time in minutes from an HTML string.
-         * @param {string} htmlContent - The HTML content of the article.
-         * @returns {string} A string like "Approx. 5 min read".
-         */
-        function calculateReadingTime(htmlContent) {
-            if (!htmlContent) return '';
-            const text = getTextFromHtml(htmlContent); // Extract plain text
-            const wordsPerMinute = 200; // Average reading speed (can be adjusted)
-            const words = text.split(/\s+/).filter(Boolean).length;
-            if (words === 0) return '';
-            const minutes = Math.ceil(words / wordsPerMinute);
-            return `Approx. ${minutes < 1 ? '1' : minutes} min read`;
-        }
-
-        /**
-         * Displays full article details in a specified container.
-         * @param {object} articleData - The article object.
-         * @param {HTMLElement} containerElement - The DOM element to append the article to.
-         */
-        function displayFullArticle(articleData, containerElement) {
-            if (!articleData || !containerElement) {
-                console.error("displayFullArticle: Missing article data or container element.");
-                return;
-            }
-
-            // Use descriptionHtml for the main content
-            const readingTime = calculateReadingTime(articleData.descriptionHtml);
-            const formattedDescription = formatDescription(articleData.descriptionHtml);
-            let displayDate = articleData.pubDateStr;
-            try {
-                displayDate = new Date(articleData.pubDateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            } catch(e) {
-                console.warn("Could not parse date for article:", articleData.title, articleData.pubDateStr);
-                displayDate = "Date Unknown"; // Fallback
-            }
-
-            const articleElement = document.createElement('article');
-            articleElement.className = 'content-card';
-            articleElement.setAttribute('data-guid', articleData.guid);
-
-            articleElement.innerHTML = `
-                <div class="mb-4 border-b border-cyber-cyan/20 pb-4">
-                    <h2 class="text-2xl md:text-3xl font-bold font-orbitron header-gradient mb-3 leading-tight">${articleData.title || "Untitled Article"}</h2>
-                    <div class="article-meta">
-                        <span>
-                            Published by <strong class="text-gray-300">${articleData.sourceName || 'Unknown Source'}</strong>
-                            on <time datetime="${articleData.pubDateStr}" class="text-gray-300">${displayDate}</time>
-                        </span>
-                        ${readingTime ? `<span class="text-cyber-cyan font-semibold">${readingTime}</span>` : ''}
-                    </div>
-                    <div class="text-xs text-gray-400 mt-1">
-                        By <span class="italic">${articleData.author || 'Author Unknown'}</span>
-                    </div>
-                </div>
-
-                ${articleData.imageUrl ? `
-                <img src="${articleData.imageUrl}" alt="${articleData.title || 'Article image'}" class="article-image float-none md:float-right w-full md:w-1/3 lg:w-1/4 ml-0 md:ml-6 mb-4 rounded-md shadow-lg" onerror="this.style.display='none'; this.parentElement.removeChild(this);">
-                ` : ''}
-
-                <div class="summary-content text-gray-200 leading-relaxed space-y-4 clear-both text-base prose prose-invert max-w-none">
-                    ${formattedDescription}
-                </div>
-
-                <div class="mt-8 pt-4 border-t border-cyber-cyan/20 text-right">
-                    <a href="${articleData.link || '#'}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 hover:underline text-sm font-medium ${!articleData.link || articleData.link === '#' ? 'opacity-50 pointer-events-none' : ''}">
-                        ${articleData.link && articleData.link !== '#' ? 'Read the full original article &rarr;' : 'Original link not available'}
-                    </a>
-                </div>
-            `;
-            containerElement.appendChild(articleElement);
-        }
-
-        /**
-         * Displays a list of suggestion links in the sidebar.
-         * @param {Array<object>} articlesArray - Array of article objects for suggestions.
-         * @param {HTMLElement} suggestionsAsideElement - The <aside> DOM element for suggestions.
-         */
-        function displaySuggestionsList(articlesArray, suggestionsAsideElement) {
-            if (!suggestionsAsideElement) {
-                console.error("displaySuggestionsList: Suggestions aside element not found.");
-                return;
-            }
-            const listElement = suggestionsAsideElement.querySelector('ul#blog-suggestions-list');
-            if (!listElement) {
-                 console.error("displaySuggestionsList: Suggestions list UL element (ul#blog-suggestions-list) not found within the aside container.");
-                 return;
-            }
-
-            listElement.innerHTML = ''; // Clear loading/previous
-
-            if (!articlesArray || articlesArray.length === 0) {
-                listElement.innerHTML = '<li class="text-gray-500 italic text-sm py-2">No other articles available.</li>';
-                return;
-            }
-
-            const Sugg_Limit = 15; // Max number of suggestions
-            const limitedArticles = articlesArray.slice(0, Sugg_Limit);
-
-            limitedArticles.forEach(item => {
-                const articleGuid = encodeURIComponent(item.guid);
-                let displayDate = '';
-                try { displayDate = new Date(item.pubDateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } catch(e) {}
-                const readingTime = calculateReadingTime(item.descriptionHtml); // Use descriptionHtml
-
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <a href="blogs.html?article=${articleGuid}" title="${item.title || 'Untitled Article'}">
-                        ${(item.title || 'Untitled Article').substring(0, 70)}${(item.title || '').length > 70 ? '...' : ''}
-                    </a>
-                    <div class="suggestion-meta">
-                        ${item.sourceName || 'Unknown Source'} ${displayDate ? `- ${displayDate}` : ''} ${readingTime ? `• ${readingTime}` : ''}
-                    </div>
-                `;
-                listElement.appendChild(li);
-            });
-            // console.log(`Displayed ${limitedArticles.length} suggestion items.`);
-        }
-
-
-        // --- Main Logic: Executed when the DOM is fully loaded ---
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("Blogs Page Initializing...");
-
-            // Initialize Matrix Background (if function exists)
-            if (typeof initRainbowMatrix === 'function') {
-                try { initRainbowMatrix('matrix-canvas'); }
-                catch (error) { console.error("Error initializing Matrix background for blogs:", error); }
-            } else { console.warn("Matrix background function (initRainbowMatrix) not found for blogs page.");}
-
-            // Get main DOM elements
-            const mainContentContainer = document.getElementById('blog-main-content');
-            const suggestionsContainer = document.getElementById('blog-suggestions'); // This is the <aside>
-
-            // Validate essential DOM elements
-            if (!mainContentContainer || !suggestionsContainer ) {
-                console.error("Essential layout elements not found (blog-main-content or blog-suggestions). Blogs page cannot render.");
-                if (mainContentContainer) mainContentContainer.innerHTML = "<p class='text-red-500 text-center py-10'>Error: Page layout structure missing. Cannot display articles.</p>";
-                return;
-            }
-
-            // Attempt to retrieve and parse news items from sessionStorage
-            let allNewsItems = [];
-            try {
-                const storedItemsJson = sessionStorage.getItem('allFetchedNewsItems');
-                if (storedItemsJson) {
-                    allNewsItems = JSON.parse(storedItemsJson);
-                    // Ensure items are sorted by date (most recent first)
-                    allNewsItems.sort((a, b) => new Date(b.pubDateStr) - new Date(a.pubDateStr));
-                }
-            } catch (e) {
-                console.error("Error retrieving/parsing news items from sessionStorage:", e);
-                mainContentContainer.innerHTML = "<p class='text-red-500 text-center py-10'>Error loading article data. Please visit the Dashboard first to populate the feed.</p>";
-                const suggestionsListUl = suggestionsContainer.querySelector('ul#blog-suggestions-list');
-                if (suggestionsListUl) suggestionsListUl.innerHTML = ''; // Clear suggestions loading message
-                return;
-            }
-
-            // Handle case where no news items are found
-            if (!allNewsItems || allNewsItems.length === 0) {
-                mainContentContainer.innerHTML = "<p class='text-gray-500 italic text-center py-10'>No articles found. Please visit the Dashboard to load the feed.</p>";
-                const suggestionsListUl = suggestionsContainer.querySelector('ul#blog-suggestions-list');
-                if (suggestionsListUl) suggestionsListUl.innerHTML = '<li class="text-gray-500 italic text-sm py-2">No articles available.</li>';
-                return;
-            }
-
-            // Determine mode: single article view or blog listing
-            const params = new URLSearchParams(window.location.search);
-            const articleGuidParam = params.get('article');
-
-            mainContentContainer.innerHTML = ''; // Clear "Loading articles..." message
-
-            if (articleGuidParam) {
-                // --- Mode: Display Single Article ---
-                // console.log("Attempting to display single article with GUID:", articleGuidParam);
-                const targetArticle = allNewsItems.find(item => item.guid === articleGuidParam);
-
-                if (targetArticle) {
-                    displayFullArticle(targetArticle, mainContentContainer);
-                    document.title = `${(targetArticle.title || "Article").substring(0, 60)}... - GustauShield`;
-
-                    // Populate suggestions with all *other* articles
-                    const otherArticles = allNewsItems.filter(item => item.guid !== articleGuidParam);
-                    displaySuggestionsList(otherArticles, suggestionsContainer);
-                } else {
-                    // Article specified in URL not found
-                    mainContentContainer.innerHTML = `<p class='text-red-400 text-center py-10'>Error: The requested article (ID: ${articleGuidParam}) could not be found. It might be outdated or the link incorrect.</p>`;
-                    // Show all articles as suggestions in this error case
-                    displaySuggestionsList(allNewsItems, suggestionsContainer);
-                }
-            } else {
-                // --- Mode: Display Blog Listing (e.g., Top N articles) ---
-                // console.log("Displaying blog listing (multiple articles).");
-                document.title = "GustauShield - Blog & Articles"; // Default title for listing view
-
-                const ARTICLES_PER_PAGE = 5; // Number of articles to show in the main list
-                const articlesToDisplayInMain = allNewsItems.slice(0, ARTICLES_PER_PAGE);
-                const remainingForSuggestions = allNewsItems.slice(ARTICLES_PER_PAGE);
-
-                if (articlesToDisplayInMain.length > 0) {
-                    articlesToDisplayInMain.forEach(article => {
-                        displayFullArticle(article, mainContentContainer);
-                    });
-                } else {
-                    // Should not happen if allNewsItems has items, but as a fallback
-                    mainContentContainer.innerHTML = "<p class='text-gray-500 italic text-center py-10'>No articles available to display in the main list.</p>";
-                }
-                // Display remaining articles (or all if fewer than ARTICLES_PER_PAGE) in suggestions
-                displaySuggestionsList(remainingForSuggestions.length > 0 ? remainingForSuggestions : allNewsItems, suggestionsContainer);
-            }
-            // console.log("Blogs Page initialization complete.");
-        });
-    </script>
-
-</body>
-</html>
+        displayBlogSuggestionsList(articlesForSuggestions, suggestionsContainer);
+    }
+    console.log("Blogs Page (static data version) initialization complete.");
+});
