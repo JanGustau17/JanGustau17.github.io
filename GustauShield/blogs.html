@@ -21,6 +21,25 @@
         main, nav, footer { position: relative; z-index: 1; }
         .featured-article-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin-top: 1rem; margin-bottom: 1rem; }
         .other-article-image { width: 100%; height: 180px; object-fit: cover; border-radius: 0.375rem; margin-bottom: 0.75rem; }
+
+
+        #contact-modal {
+    /* 'hidden' class in HTML handles initial state */
+    /* Tailwind classes 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[60]' do most of the work */
+}
+#contact-modal .content-card { /* Styles for the modal's content box are mostly handled by existing .content-card */
+    animation: fadeInModal 0.3s ease-out forwards;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Styles for Floating Action Button (FAB) */
+#contact-fab i { /* For icon sizing within the FAB */
+    display: block; 
+}
     </style>
 </head>
 <body class="font-poppins">
