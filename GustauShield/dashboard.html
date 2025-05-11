@@ -198,6 +198,32 @@
             </div>
         </section>
 
+---------
+        <div id="video-dashboard">
+  <h3>Featured AI + Cybersecurity Videos</h3>
+  <div class="video-grid">
+    <!-- This script can live at the bottom of your page -->
+    <script type="module">
+      import { DASHBOARD_VIDEOS } from "./js/dashboard.js";
+
+      const container = document.getElementById("video-dashboard");
+      DASHBOARD_VIDEOS.forEach(v => {
+        const card = document.createElement("div");
+        card.className = "video-card";
+        card.innerHTML = `
+          <a href="${v.videoUrl}" target="_blank">
+            <img src="${v.imageUrl}" alt="${v.title}" />
+          </a>
+          <h4><a href="${v.videoUrl}" target="_blank">${v.title}</a></h4>
+          <p class="dash-summary">${v.dashboardSummary}</p>
+          <p class="meta">${v.sourceName} • ${new Date(v.pubDateStr).toLocaleDateString()}</p>
+        `;
+        container.appendChild(card);
+      });
+    </script>
+  </div>
+</div>
+----------
         </main>
 
     <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
