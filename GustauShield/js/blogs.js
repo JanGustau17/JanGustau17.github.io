@@ -185,7 +185,7 @@ export const ARTICLES = [
   {
     guid: "ai-zero-trust-remote-work",
     title: "AI, Zero Trust Support Remote Work Technologies",
-    imageUrl: "https://youtu.be/aIBTatOtV8g", 
+    imageUrl: "https://www.techtarget.com/rms/onlineImages/networking-build_a_zero_trust_network-f.png", 
     sourceName: "TechTarget",
     pubDateStr: "2021-08-11T00:00:00Z",
     author: "John Moore",
@@ -282,7 +282,7 @@ export const ARTICLES = [
     imageUrl: "assets/matrix.jpeg",
     sourceName: "GustauShield Analysis",
     pubDateStr: "2025-05-11T00:00:00Z",
-    author: "GustauShield",
+    author: "Mukhammadali Yuldoshev",
     dashboardSummary: "Like Neo, ethical hackers take the red pill to see hidden systems and fight for digital freedom—here’s how you can join the revolution.",
     mainContentHtml: `
       <p>Remember the moment Neo first followed the white rabbit and cracked open a hidden reality? In today’s cyber world, many of us sense something is off, but only a few choose the red pill and see the code behind the scenes.</p>
