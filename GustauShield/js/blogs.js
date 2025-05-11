@@ -4,7 +4,7 @@ export const ARTICLES = [
   {
     guid: "ottercookie-v4",
     title: "Ottercookie v4 Adds VM Detection and Evasion",
-    imageUrl: "https://…/ottercookie-image.png",
+    imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhFnbBFETgOTBltmYR4p4Hz9Lu_2-lzDfvaza03-i3ZqF7I4tXdjUsdb-nkKPa0W5FP-rk4a9ZHiwXRuG50WHSnQp8nxDVCIgaHmo4hWO5Fay8eNutygWhbOC_TmvXplMUZ3hk7sb3mP6DxSnmgM3thiqzoSKoN-h4R_sY4Rp8Ohhc0Huiffzpaf6t8LUAq/s728-rw-e365/browser-malware.jpg",
     sourceName: "The Hacker News",
     pubDateStr: "2025-05-13T08:00:00Z",
     author: "The Hacker News",
