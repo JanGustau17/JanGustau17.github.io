@@ -1,60 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GustauShield – Blog</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { font-family: 'Poppins', sans-serif; background: #0a0a1a; color: #eee; padding-top: 64px; }
-    nav { background: rgba(10,10,26,0.8); backdrop-filter: blur(8px); position: fixed; top: 0; width: 100%; z-index: 10; }
-    main { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
-    #blog-image { width: 100%; max-height: 400px; object-fit: cover; margin-bottom: 1rem; }
-    .meta { color: #999; font-size: 0.9rem; margin-bottom: 1.5rem; }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GustauShield - Blog Insights</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 80%); color: #cccccc; font-family: 'Poppins', sans-serif; min-height: 100vh; overflow-x: hidden; padding-top: 64px; /* For fixed navbar */ }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .header-gradient { background: linear-gradient(to right, #00ffff, #0077ff, #8a2be2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .neon-text-cyan { color: #ffffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.8), 0 0 15px rgba(0, 255, 255, 0.7); }
+        nav { background-color: rgba(10, 10, 26, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0, 255, 255, 0.15); }
+        nav a.active { color: #00ffff; font-weight: 600; }
+        .content-card { background-color: rgba(25, 35, 45, 0.7); border: 1px solid rgba(0, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: 8px; padding: 1.5rem; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
+        .article-link { display: inline-block; margin-top: 0.75rem; color: #00ffff; text-decoration: none; font-weight: 600; }
+        .article-link:hover { text-decoration: underline; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; opacity: 0.35; }
+        main, nav, footer { position: relative; z-index: 1; }
+        .featured-article-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin-top: 1rem; margin-bottom: 1rem; }
+        .other-article-image { width: 100%; height: 180px; object-fit: cover; border-radius: 0.375rem; margin-bottom: 0.75rem; }
+    </style>
 </head>
-<body>
-  <nav class="py-3 px-5">
-    <a href="index.html" class="text-cyber-cyan font-orbitron text-xl">← Home</a>
-  </nav>
+<body class="font-poppins">
 
-  <main>
-    <h1 id="blog-title" class="text-3xl font-orbitron mb-2"></h1>
-    <p id="blog-meta" class="meta"></p>
-    <img id="blog-image" src="" alt="" />
-    <div id="blog-content" class="prose prose-invert"></div>
-  </main>
+    <canvas id="matrix-canvas"></canvas>
 
-  <footer class="text-center text-sm text-gray-500 py-6">
-    GustauShield Insights • AI Cybersecurity Analysis
-  </footer>
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
+        <div class="container mx-auto flex justify-between items-center px-4 py-3">
+            <a href="index.html" class="text-xl font-bold font-orbitron text-cyber-cyan">GustauShield <span class="text-xs font-poppins text-medium-gray opacity-70"> Insights</span></a>
+            <button id="menu-btn" class="md:hidden text-light-gray focus:outline-none text-2xl">☰</button>
+            <ul id="nav-links-desktop" class="hidden md:flex space-x-6 text-sm font-medium items-center">
+                <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
+                <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
+                <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li>
+                <li><a href="blogs.html" class="active hover:text-cyber-cyan">Blogs</a></li> {/* This page is now active */}
+                <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li>
+            </ul>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
+            <ul id="nav-links-mobile" class="flex flex-col items-center py-4 space-y-3 text-sm">
+                <li><a href="index.html" class="hover:text-cyber-cyan block py-1">Home</a></li>
+                <li><a href="dashboard.html" class="hover:text-cyber-cyan block py-1">Dashboard</a></li>
+                <li><a href="simulations.html" class="hover:text-cyber-cyan block py-1">Simulations</a></li>
+                <li><a href="blogs.html" class="active hover:text-cyber-cyan block py-1">Blogs</a></li> {/* Active */}
+                <li><a href="about.html" class="hover:text-cyber-cyan block py-1">About</a></li>
+            </ul>
+        </div>
+    </nav>
 
-  <!-- Your articles data -->
-  <script type="module" src="js/blogs.js"></script>
-  <!-- This script finds the right article and injects it -->
-  <script type="module">
-    import { ARTICLES } from './js/blogs.js';
+    <main class="container mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold neon-text-cyan font-orbitron mb-10 text-center">Blog Insights</h1>
 
-    // 1. Get ?article=GUID
-    const params = new URLSearchParams(location.search);
-    const slug = params.get('article');
+        <section id="featured-article-section" class="mb-12 md:mb-16">
+            </section>
 
-    // 2. Find it
-    const article = ARTICLES.find(a => a.guid === slug) || {};
+        <section id="other-articles-section">
+            <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-8 text-center header-gradient">More Reads</h2>
+            <div id="other-articles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                </div>
+        </section>
+    </main>
 
-    // 3. Render
-    document.getElementById('blog-title').textContent = article.title || 'Article not found';
-    document.getElementById('blog-meta').textContent = 
-      article.sourceName 
-      ? `${article.sourceName} • ${new Date(article.pubDateStr).toLocaleDateString()} • by ${article.author}` 
-      : '';
-    if (article.imageUrl) {
-      const img = document.getElementById('blog-image');
-      img.src = article.imageUrl;
-      img.alt = article.title;
-    }
-    document.getElementById('blog-content').innerHTML = article.mainContentHtml || '<p>Sorry, no content to display.</p>';
-  </script>
+    <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
+        GustauShield Insights | English Project | AI in Cybersecurity Analysis
+    </footer>
+
+    <script src="js/matrix.js" defer></script>
+    <script src="js/main.js" defer></script> {/* For mobile nav and other global interactions if any */}
+    
+    <script type="module" src="js/blogs.js"></script>
+    
+    <script type="module">
+        import { ARTICLES } from './js/blogs.js';
+
+        const FEATURED_ARTICLE_GUID = "red-pill-reality"; // Your "matrix article"
+
+        function renderFeaturedArticle(article) {
+            const section = document.getElementById('featured-article-section');
+            if (!article || !section) {
+                section.innerHTML = '<p class="text-center text-lg">Featured article not found.</p>';
+                return;
+            }
+
+            // Create a summary: first few paragraphs or a character limit
+            let summaryHtml = '';
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = article.mainContentHtml;
+            const paragraphs = tempDiv.querySelectorAll('p');
+            let charCount = 0;
+            const charLimit = 600; // Adjust as needed for summary length
+
+            for (let i = 0; i < paragraphs.length && charCount < charLimit; i++) {
+                summaryHtml += paragraphs[i].outerHTML;
+                charCount += paragraphs[i].textContent.length;
+                if (i < 2 && charCount < charLimit) summaryHtml += ' '; // Add space between first few paragraphs
+            }
+            if (charCount >= charLimit || paragraphs.length > 3) {
+                 summaryHtml += '...';
+            }
+
+
+            section.innerHTML = `
+                <article class="content-card p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold font-orbitron text-cyber-cyan mb-3">${article.title}</h2>
+                    <p class="text-sm text-gray-400 mb-2">
+                        By ${article.author} on ${new Date(article.pubDateStr).toLocaleDateString()}
+                        ${article.sourceName ? `• From ${article.sourceName}` : ''}
+                    </p>
+                    ${article.imageUrl ? `<img src="${article.imageUrl.startsWith('http') ? article.imageUrl : './' + article.imageUrl}" alt="${article.title}" class="my-4 rounded-lg shadow-lg w-full max-h-96 object-cover">` : ''}
+                    <div class="prose prose-invert max-w-none text-gray-300 leading-relaxed featured-article-content">
+                        ${summaryHtml}
+                    </div>
+                    <a href="article-detail.html?article=${article.guid}" class="article-link">Read Full Article →</a>
+                </article>
+            `;
+        }
+
+        function renderOtherArticles(articles) {
+            const grid = document.getElementById('other-articles-grid');
+            if (!articles.length || !grid) {
+                grid.innerHTML = '<p class="text-center text-lg col-span-full">No other articles available.</p>';
+                return;
+            }
+            grid.innerHTML = ''; // Clear previous content
+
+            articles.forEach(article => {
+                const articleCard = document.createElement('div');
+                articleCard.className = 'content-card flex flex-col justify-between'; // Added flex for layout
+                
+                let summary = article.dashboardSummary || '';
+                if (!summary && article.mainContentHtml) {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = article.mainContentHtml;
+                    const firstP = tempDiv.querySelector('p');
+                    if (firstP) {
+                        summary = firstP.textContent.substring(0, 120) + (firstP.textContent.length > 120 ? '...' : '');
+                    }
+                }
+
+
+                articleCard.innerHTML = `
+                    <div>
+                        ${article.imageUrl ? `<img src="${article.imageUrl.startsWith('http') ? article.imageUrl : './' + article.imageUrl}" alt="${article.title}" class="other-article-image">` : '<div class="other-article-image bg-gray-700 flex items-center justify-center text-gray-500">No Image</div>'}
+                        <h3 class="text-xl font-semibold font-orbitron text-light-gray hover:text-cyber-cyan mb-2">${article.title}</h3>
+                        <p class="text-xs text-gray-400 mb-2">
+                            ${new Date(article.pubDateStr).toLocaleDateString()} ${article.sourceName ? `• ${article.sourceName}` : ''}
+                        </p>
+                        <p class="text-sm text-gray-300 mb-3 leading-relaxed">${summary}</p>
+                    </div>
+                    <a href="article-detail.html?article=${article.guid}" class="article-link self-start">Read More →</a>
+                `;
+                grid.appendChild(articleCard);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof ARTICLES === 'undefined' || !ARTICLES) {
+                console.error("ARTICLES data not found. Check js/blogs.js import.");
+                document.getElementById('featured-article-section').innerHTML = '<p class="text-center text-red-500">Error: Article data could not be loaded.</p>';
+                document.getElementById('other-articles-grid').innerHTML = '';
+                return;
+            }
+
+            const featuredArticle = ARTICLES.find(a => a.guid === FEATURED_ARTICLE_GUID);
+            const otherArticles = ARTICLES.filter(a => a.guid !== FEATURED_ARTICLE_GUID);
+
+            renderFeaturedArticle(featuredArticle);
+            renderOtherArticles(otherArticles);
+
+            // Initialize Matrix Background
+            if (typeof initRainbowMatrix === 'function') {
+                try { initRainbowMatrix('matrix-canvas'); }
+                catch (e) { console.error("Matrix Init Error:", e); }
+            } else { console.warn("initRainbowMatrix function missing (expected in js/matrix.js)"); }
+
+            // Mobile nav is handled by main.js (make sure main.js is loaded and initialized)
+        });
+    </script>
+
 </body>
 </html>
