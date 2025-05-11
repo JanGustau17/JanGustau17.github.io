@@ -1,6 +1,6 @@
 
 const RSS_FEEDS = [
-    https://feeds.feedburner.com/TheHackersNews
+    'https://feeds.feedburner.com/TheHackersNews',
     // 'https://feeds.feedburner.com/TheHackersNews',
     // 'https://grahamcluley.com/feed/',
     // 'https://krebsonsecurity.com/feed/',
