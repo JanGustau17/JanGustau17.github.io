@@ -51,22 +51,34 @@ const GUSTAU_SHIELD_ARTICLES = [
     `
 },
     {
-        guid: "topic-2-guid", // REPLACE
-        title: "REPLACE: Your Second Article Title",
-        imageUrl: "https://placehold.co/100x75/0077ff/ffffff?text=Topic+2", // REPLACE
-        sourceName: "REPLACE: Source",
-        pubDateStr: "2025-05-14T10:00:00Z", // REPLACE
-        author: "REPLACE: Author Name",
-        dashboardSummary: "REPLACE: Short summary for topic 2. Explain a concept simply and give an example.",
-        mainContentHtml: `
-            <p>REPLACE: Full content for article 2. Remember to use simple words and provide clear examples.</p>
-            <p><strong>Example:</strong> Let's say this article is about malware. <em>"Malware is like a computer cold. It's bad software that can make your computer sick, steal your information, or even lock your files until you pay money (that's called ransomware!). An example is a virus you might get from a bad email attachment."</em></p>
-            <ul>
-                <li>REPLACE: Detail 1.</li>
-                <li>REPLACE: Detail 2.</li>
-            </ul>
-        `
-    },
+    guid: "ai-vs-ai-driven-attacks",
+    title: "AI vs AI: In the age of AI-driven attacks, only AI can keep up",
+    imageUrl: "https://unsplash.com/photos/gVQLAbGVB6Q", // Igor Omilaev via Unsplash
+    sourceName: "Security Magazine",
+    pubDateStr: "2024-12-23T00:00:00Z",
+    author: "Jeff Reed",
+    dashboardSummary: "Attackers now use AI to scale highly convincing attacks, so defenders must match them with AI-driven defenses guided by human expertise.",
+    mainContentHtml: `
+        <p>Cybersecurity constantly evolves because attackers are using AI to innovate their methods.</p>
+        <p>Legacy security tools often struggle to keep up with the speed and scale of AI-driven threats.</p>
+        <p>Last year, GenAI was mostly for consumers, but now big companies like Microsoft, Google, and Meta have integrated it into enterprise software.</p>
+        <p>Attackers use AI to craft flawless phishing emails, mimic user behavior, and bypass multi-factor authentication.</p>
+        <p>As attackers automate their campaigns, security teams must also automate defenses using AI to detect unusual patterns across cloud, network, and endpoints.</p>
+        <p>AI-driven defense tools can triage alerts, correlate signals, and prioritize real threats for SOC analysts.</p>
+        <p>With AI assistance, defenders can investigate, isolate, and contain attacks at machine speed.</p>
+        <p>However, AI systems need expert human oversight to manage biases and ensure models use the right techniques.</p>
+        <p>Choosing the correct AI method for each security task is crucial for efficient threat detection and response.</p>
+        <p>By combining human expertise with AI power, organizations can protect themselves in the age of AI versus AI.</p>
+        <h4>Key Takeaways</h4>
+        <ul>
+            <li>AI enables attackers to scale highly convincing attacks like phishing.</li>
+            <li>Defenders need AI to match the speed and complexity of AI-driven threats.</li>
+            <li>AI tools help SOC teams triage, correlate, and prioritize real threats.</li>
+            <li>Human oversight is essential to guide AI and prevent bias.</li>
+            <li>Select the right AI technique for each security task.</li>
+        </ul>
+    `
+},
     {
         guid: "topic-3-guid", // REPLACE
         title: "REPLACE: Your Third Article Title",
