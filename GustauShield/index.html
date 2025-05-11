@@ -181,11 +181,11 @@
             if (cipherSpan) {
                 const phrases = [
                     { lang: 'en', text: "Don't Get Pwned, Get Informed" },
-                    { lang: 'ja', text: "情報を守れ、知識を得よ" },          // Protect info, gain knowledge
-                    { lang: 'ar', text: "لا تُخترق، كن على علم" },          // Don't be breached, be informed
-                    { lang: 'zh', text: "获取信息，免遭入侵" },            // Get information, avoid intrusion
+                    { lang: 'ja', text: "情報を守れ、知識を得よ" },        // Protect info, gain knowledge
+                    { lang: 'ar', text: "لا تُخترق، كن على علم" },         // Don't be breached, be informed
+                    { lang: 'zh', text: "获取信息，免遭入侵" },          // Get information, avoid intrusion
                     { lang: 'ru', text: "Будь в курсе, не будь взломан" }, // Be aware, don't be hacked
-                    { lang: 'es', text: "Infórmate, Evita el hackeo" },    // Get informed, Avoid hacking
+                    { lang: 'es', text: "Infórmate, Evita el hackeo" },   // Get informed, Avoid hacking
                     { lang: 'fr', text: "Informez-vous, Évitez le piratage" } // Get informed, Avoid hacking
                 ];
                 let currentPhraseIndex = 0;
@@ -237,7 +237,7 @@
     <script src="https://cdn.jsdelivr.net/npm/taos@1.0.3/dist/taos.min.js" defer></script> 
 
 
-      <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[60] hidden" aria-labelledby="contactModalTitle" role="dialog" aria-modal="true">
+    <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[60] hidden" aria-labelledby="contactModalTitle" role="dialog" aria-modal="true">
     <div class="content-card max-w-md w-full p-6 md:p-8 relative">
         <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-cyber-cyan text-2xl leading-none" aria-label="Close contact form">&times;</button>
         <h3 id="contactModalTitle" class="text-2xl font-semibold font-orbitron mb-6 text-center header-gradient">Send a Message</h3>
@@ -269,8 +269,57 @@
     <i class="fas fa-envelope fa-lg"></i>
 </button>
 
-    <div id="fixed-visitor-counter" class="fixed bottom-4 left-4 bg-slate-800/70 backdrop-blur-sm text-xs text-medium-gray p-2 px-3 rounded-lg shadow-lg z-50">
+<div id="fixed-visitor-counter" class="fixed bottom-4 left-4 bg-slate-800/70 backdrop-blur-sm text-xs text-medium-gray p-2 px-3 rounded-lg shadow-lg z-50">
     Site Visitors: <span id="visitor-count-value" class="font-orbitron text-cyber-cyan font-semibold">Loading...</span>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const namespace = 'gustau-shield-site'; // A unique namespace for your website's counters
+        const key = 'total-visits';         // A key for this specific site-wide counter
+        const countApiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+        const getValueApiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
+
+        const visitorCountElement = document.getElementById('visitor-count-value');
+
+        if (visitorCountElement) {
+            function updateDisplay(countValue) {
+                visitorCountElement.textContent = countValue ? countValue.toLocaleString() : 'N/A';
+            }
+
+            // Try to get the current count first
+            fetch(getValueApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && typeof data.value !== 'undefined') {
+                        updateDisplay(data.value); 
+                    } else {
+                        updateDisplay(null); 
+                    }
+
+                    // Increment only if not visited in this session
+                    if (!sessionStorage.getItem(`visited-${namespace}-${key}`)) {
+                        fetch(countApiUrl) 
+                            .then(response => response.json())
+                            .then(hitData => {
+                                if (hitData && typeof hitData.value !== 'undefined') {
+                                    updateDisplay(hitData.value); 
+                                }
+                                sessionStorage.setItem(`visited-${namespace}-${key}`, 'true');
+                            })
+                            .catch(error => {
+                                console.error('Error incrementing visitor counter:', error);
+                            });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching initial visitor counter value:', error);
+                    updateDisplay(null);
+                });
+        } else {
+            console.error("Visitor count element ('visitor-count-value') not found.");
+        }
+    });
+</script>
 </body>
 </html>
