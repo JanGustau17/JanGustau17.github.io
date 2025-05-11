@@ -113,6 +113,24 @@
             100% { clip-path: inset(40% 0 45% 0); transform: translate(-1px, 0px); }
         }
         /* --- END DYNAMIC GLITCH TEXT STYLES --- */
+
+        #contact-modal {
+    /* 'hidden' class in HTML handles initial state */
+    /* Tailwind classes 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[60]' do most of the work */
+}
+#contact-modal .content-card { /* Styles for the modal's content box are mostly handled by existing .content-card */
+    animation: fadeInModal 0.3s ease-out forwards;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Styles for Floating Action Button (FAB) */
+#contact-fab i { /* For icon sizing within the FAB */
+    display: block; 
+}
     </style>
 </head>
 <body class="font-poppins">
