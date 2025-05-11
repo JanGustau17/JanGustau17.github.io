@@ -25,21 +25,14 @@
         main, nav, footer { position: relative; z-index: 1; }
         section { padding: 3rem 1rem; }
         .chart-container { position: relative; height: 320px; width: 100%; margin-top: 1rem; } 
-        .news-snippet { border-left: 3px solid #0077ff; padding-left: 1rem; margin-bottom: 0.75rem; }
-        .news-snippet time { font-size: 0.75rem; color: #888888; display: block; margin-bottom: 0.15rem; }
-     
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(25, 35, 45, 0.3); border-radius: 10px;}
-        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #0077ff; border-radius: 10px;}
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: #00ffff; }
-        .custom-scrollbar { scrollbar-width: thin; scrollbar-color: #0077ff rgba(25, 35, 45, 0.3); }
+        /* Removed .news-snippet styles as they are no longer needed */
+        /* Removed .custom-scrollbar styles as they are no longer needed without the feed */
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 <body class="font-poppins">
 
     <canvas id="matrix-canvas"></canvas>
-
 
     
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
@@ -55,19 +48,18 @@
             </ul>
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-dark-bg/95 border-t border-cyber-cyan/20">
-            <ul id="nav-links" class="hidden md:flex space-x-6 text-sm font-medium items-center">
-                <li><a href="index.html" class="hover:text-cyber-cyan">Home</a></li>
-                <li><a href="dashboard.html" class="hover:text-cyber-cyan">Dashboard</a></li>
-                <li><a href="simulations.html" class="hover:text-cyber-cyan">Simulations</a></li> 
-                <li><a href="blogs.html" class="hover:text-cyber-cyan">Blogs</a></li> 
-                <li><a href="about.html" class="hover:text-cyber-cyan">About</a></li> 
+            <ul class="flex flex-col items-center py-4 space-y-3 text-sm">
+                <li><a href="index.html" class="hover:text-cyber-cyan block py-1">Home</a></li>
+                <li><a href="dashboard.html" class="hover:text-cyber-cyan block py-1">Dashboard</a></li>
+                <li><a href="simulations.html" class="hover:text-cyber-cyan block py-1">Simulations</a></li> 
+                <li><a href="blogs.html" class="hover:text-cyber-cyan block py-1">Blogs</a></li> 
+                <li><a href="about.html" class="hover:text-cyber-cyan block py-1">About</a></li> 
             </ul>
         </div>
     </nav>
 
-
     <main class="container mx-auto px-4 py-8">
-         <h1 class="text-3xl md:text-4xl font-bold neon-text-cyan font-orbitron mb-10 text-center">The AI Cybersecurity Landscape</h1>
+        <h1 class="text-3xl md:text-4xl font-bold neon-text-cyan font-orbitron mb-10 text-center">The AI Cybersecurity Landscape</h1>
 
         <section id="ai-defenses" class="mb-12 md:mb-20">
             <h2 class="text-3xl md:text-4xl font-semibold font-orbitron mb-10 text-center header-gradient">AI: The Proactive Defender</h2>
@@ -92,26 +84,25 @@
                 </div>
             </div>
 
-
-             <div class="grid md:grid-cols-2 gap-8 items-stretch">
-                 <div class="content-card flex-1 p-6 md:order-last"> 
-                     <h3 class="text-xl md:text-2xl font-semibold text-cyber-cyan mb-3 glitch" data-text="⚡ Automated Response & Prediction">⚡ Automated Response & Prediction</h3>
-                     <p class="text-base md:text-lg text-light-gray mb-4 leading-relaxed">AI doesn't just detect—it acts. It shuts down infected devices or blocks threats in real time, before damage spreads.</p>
-                     <ul class="space-y-2 text-base md:text-lg list-disc list-inside text-light-gray marker:text-cyber-cyan">
-                         <li>🚨 Responds instantly to stop live attacks.</li>
-                         <li>📊 Predicts future threats by analyzing behavior.</li>
-                         <li>🔁 Learns from new attacks to get smarter over time.</li>
-                     </ul>
-                     <p class="text-base md:text-lg text-light-gray mt-4 leading-relaxed">This gives teams a head start—often before humans even notice.</p>
-                 </div>
-                 <div class="w-full md:order-first">
+            <div class="grid md:grid-cols-2 gap-8 items-stretch">
+                <div class="content-card flex-1 p-6 md:order-last"> 
+                    <h3 class="text-xl md:text-2xl font-semibold text-cyber-cyan mb-3 glitch" data-text="⚡ Automated Response & Prediction">⚡ Automated Response & Prediction</h3>
+                    <p class="text-base md:text-lg text-light-gray mb-4 leading-relaxed">AI doesn't just detect—it acts. It shuts down infected devices or blocks threats in real time, before damage spreads.</p>
+                    <ul class="space-y-2 text-base md:text-lg list-disc list-inside text-light-gray marker:text-cyber-cyan">
+                        <li>🚨 Responds instantly to stop live attacks.</li>
+                        <li>📊 Predicts future threats by analyzing behavior.</li>
+                        <li>🔁 Learns from new attacks to get smarter over time.</li>
+                    </ul>
+                    <p class="text-base md:text-lg text-light-gray mt-4 leading-relaxed">This gives teams a head start—often before humans even notice.</p>
+                </div>
+                <div class="w-full md:order-first">
     
-                     <div class="glitch-image-wrapper rounded-xl overflow-hidden h-full min-h-[300px]" style="--glitch-image-url: url('assets/robot.jpeg');">
-                          <img src="assets/robot.jpeg" alt="AI automatically patching a vulnerability" class="w-full h-full object-cover shadow-xl" />
-                          {/* Or placeholder: <div class="img-placeholder w-full h-full">Image: Automated Patching</div> */}
-                     </div>
-                 </div>
-             </div>
+                    <div class="glitch-image-wrapper rounded-xl overflow-hidden h-full min-h-[300px]" style="--glitch-image-url: url('assets/robot.jpeg');">
+                        <img src="assets/robot.jpeg" alt="AI automatically patching a vulnerability" class="w-full h-full object-cover shadow-xl" />
+                        {/* Or placeholder: <div class="img-placeholder w-full h-full">Image: Automated Patching</div> */}
+                    </div>
+                </div>
+            </div>
 
             <div class="mt-12 flex flex-wrap justify-center items-center gap-4 text-light-gray text-sm animate-pulse">
                 <div class="bg-cyber-blue/10 border border-cyber-cyan p-3 rounded-lg shadow-md w-[120px] text-center">📥<br>Data In</div>
@@ -128,50 +119,50 @@
             <h2 class="text-3xl md:text-4xl font-semibold font-orbitron mb-10 text-center header-gradient">AI: The Attacker's New Weapon</h2>
             
             <div class="grid md:grid-cols-2 gap-8 mb-8 items-stretch">
-                 <div class="w-full">
-                     <div class="glitch-image-wrapper rounded-xl overflow-hidden h-full min-h-[300px]" style="--glitch-image-url: url('assets/man_mask.jpeg');">
+                <div class="w-full">
+                    <div class="glitch-image-wrapper rounded-xl overflow-hidden h-full min-h-[300px]" style="--glitch-image-url: url('assets/man_mask.jpeg');">
                         <img src="assets/man_mask.jpeg" alt="Deepfake face merging illustration" class="w-full h-full object-cover shadow-xl" />
                         {/* Or placeholder: <div class="img-placeholder w-full h-full">Image: Deepfake Generation</div> */}
-                     </div>
-                 </div>
-                 <div class="content-card flex-1 p-6">
-                     <h3 class="text-xl md:text-2xl font-semibold text-cyber-purple mb-3 glitch" data-text="🎭 Hyper-Realistic Scams">🎭 Hyper-Realistic Scams</h3>
-                     <p class="text-base md:text-lg text-light-gray mb-4 leading-relaxed">
+                    </div>
+                </div>
+                <div class="content-card flex-1 p-6">
+                    <h3 class="text-xl md:text-2xl font-semibold text-cyber-purple mb-3 glitch" data-text="🎭 Hyper-Realistic Scams">🎭 Hyper-Realistic Scams</h3>
+                    <p class="text-base md:text-lg text-light-gray mb-4 leading-relaxed">
                         AI can fake things really well. Hackers now use AI to write perfect scam emails that look like they came from your boss or bank. They can even use deepfake tools to copy someone’s voice or face and trick people into sending money or clicking bad links.
-                     </p>
-                     <p class="text-base md:text-lg text-light-gray leading-relaxed">
-                         <strong>Example:</strong> A fake video call from your CEO asking for a wire transfer—real voice, real face, but totally fake.
-                     </p>
-                     <ul class="mt-4 space-y-2 text-base md:text-lg list-disc list-inside text-light-gray marker:text-cyber-purple">
-                         <li>📧 Personalized scam emails made using AI + stolen data.</li>
-                         <li>🎹 Fake voices used in phone call scams ("vishing").</li>
-                         <li>🎥 Deepfake videos used for high-stakes impersonation.</li>
-                     </ul>
-                 </div>
+                    </p>
+                    <p class="text-base md:text-lg text-light-gray leading-relaxed">
+                        <strong>Example:</strong> A fake video call from your CEO asking for a wire transfer—real voice, real face, but totally fake.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-base md:text-lg list-disc list-inside text-light-gray marker:text-cyber-purple">
+                        <li>📧 Personalized scam emails made using AI + stolen data.</li>
+                        <li>🎹 Fake voices used in phone call scams ("vishing").</li>
+                        <li>🎥 Deepfake videos used for high-stakes impersonation.</li>
+                    </ul>
+                </div>
             </div>
 
-             <div class="grid md:grid-cols-2 gap-8 items-stretch">
-                  <div class="content-card flex-1 p-6 md:order-last">
-                      <h3 class="text-xl md:text-2xl font-semibold text-cyber-purple mb-3 glitch" data-text="🤖 Automation & Evasion">🤖 Automation & Evasion</h3>
-                      <p class="text-base md:text-lg text-light-gray mb-4 leading-relaxed">
-                         AI significantly lowers the bar for launching complex attacks. Tools can automate vulnerability scanning, password guessing, and even malware creation. AI can also help malware adapt its behaviour ("polymorphic code") to evade detection by antivirus software, making threats stealthier and more persistent.
-                      </p>
-                      <p class="text-base md:text-lg text-light-gray leading-relaxed">
-                         <strong>Example:</strong> A virus that updates itself every hour so antivirus tools never recognize it.
-                      </p>
-                      <ul class="mt-4 space-y-2 text-base md:text-lg list-disc list-inside text-light-gray marker:text-cyber-purple">
-                         <li>🔍 Finds software bugs and weaknesses fast.</li>
-                         <li>🔓 Breaks passwords using AI-powered guessing tools.</li>
-                         <li>🦠 Malware that evolves to avoid detection.</li>
-                      </ul>
-                  </div>
-                  <div class="w-full md:order-first">
-                      <div class="glitch-image-wrapper rounded-xl overflow-hidden h-full min-h-[300px]" style="--glitch-image-url: url('assets/robot_mask.jpeg');">
-                         <img src="assets/robot_mask.jpeg" alt="Code morphing to evade detection" class="w-full h-full object-cover shadow-xl" />
-                         {/* Or placeholder: <div class="img-placeholder w-full h-full">Image: Polymorphic Code</div> */}
-                      </div>
-                  </div>
-             </div>
+            <div class="grid md:grid-cols-2 gap-8 items-stretch">
+                <div class="content-card flex-1 p-6 md:order-last">
+                    <h3 class="text-xl md:text-2xl font-semibold text-cyber-purple mb-3 glitch" data-text="🤖 Automation & Evasion">🤖 Automation & Evasion</h3>
+                    <p class="text-base md:text-lg text-light-gray mb-4 leading-relaxed">
+                        AI significantly lowers the bar for launching complex attacks. Tools can automate vulnerability scanning, password guessing, and even malware creation. AI can also help malware adapt its behaviour ("polymorphic code") to evade detection by antivirus software, making threats stealthier and more persistent.
+                    </p>
+                    <p class="text-base md:text-lg text-light-gray leading-relaxed">
+                        <strong>Example:</strong> A virus that updates itself every hour so antivirus tools never recognize it.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-base md:text-lg list-disc list-inside text-light-gray marker:text-cyber-purple">
+                        <li>🔍 Finds software bugs and weaknesses fast.</li>
+                        <li>🔓 Breaks passwords using AI-powered guessing tools.</li>
+                        <li>🦠 Malware that evolves to avoid detection.</li>
+                    </ul>
+                </div>
+                <div class="w-full md:order-first">
+                    <div class="glitch-image-wrapper rounded-xl overflow-hidden h-full min-h-[300px]" style="--glitch-image-url: url('assets/robot_mask.jpeg');">
+                        <img src="assets/robot_mask.jpeg" alt="Code morphing to evade detection" class="w-full h-full object-cover shadow-xl" />
+                        {/* Or placeholder: <div class="img-placeholder w-full h-full">Image: Polymorphic Code</div> */}
+                    </div>
+                </div>
+            </div>
 
             <div class="mt-12 flex flex-wrap justify-center items-center gap-4 text-light-gray text-sm animate-pulse">
                 <div class="bg-cyber-purple/10 border border-cyber-purple p-3 rounded-lg shadow-md w-[120px] text-center">🔎<br>Recon / Scrape</div>
@@ -184,11 +175,7 @@
             </div>
         </section>
 
-
         
-        <!--Stats & Charts Section -->
-        <!--This section now only contains the charts -->
-    
         <section id="stats-charts" class="mb-12">
             <h2 class="text-2xl md:text-3xl font-semibold font-orbitron mb-8 text-center header-gradient">Stats & Trends</h2>
             <div class="content-card">
@@ -211,24 +198,7 @@
             </div>
         </section>
 
-
-        <!-- Intel Feed Section (New Dedicated Section) -->
- 
-        <section id="intel-feed-section" class="mb-12">
-            <div class="content-card max-w-4xl mx-auto flex flex-col">
-                <div class="flex justify-between items-center mb-3 flex-shrink-0">
-                    <h3 class="text-xl font-semibold text-cyber-cyan font-orbitron glitch" data-text="Live Intel Feed">Live Intel Feed</h3>
-                    <div id="intel-feed-countdown" class="text-xs text-medium-gray">
-                        Next update in: <span class="font-orbitron">00:00</span>
-                    </div>
-                </div>
-                
-                <div id="intel-feed-list" class="space-y-1 overflow-y-auto pr-2 flex-grow custom-scrollbar" style="min-height: 18rem; max-height: 24rem;">
-                    <p class="text-sm text-medium-gray italic p-4 text-center">Fetching live feed...</p>
-                </div>
-            </div>
-        </section>
-    </main>
+        </main>
 
     <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
         GustauShield Insights | English Project | AI in Cybersecurity Analysis
@@ -236,7 +206,6 @@
 
     <script src="js/matrix.js" defer></script>
     <script src="js/charts.js" defer></script>
-    <script src="js/news-feed.js" defer></script>
     <script src="js/main.js" defer></script>
 
     <script>
@@ -253,16 +222,16 @@
                 catch(error) { console.error("Error initializing dashboard charts:", error); }
             } else { console.warn("Optional: initDashboardCharts function not found."); }
             
-            // Initialize News Feed (from news-feed.js)
-            if (typeof initNewsFeed === 'function') {
-                try {
-                    initNewsFeed();
-                } catch (error) {
-                    console.error("Error initializing News Feed:", error);
-                }
-            } else {
-                console.error("Initialization Error: initNewsFeed function not found. Check js/news-feed.js.");
-            }
+            // Initialize News Feed (from news-feed.js) - REMOVED
+            // if (typeof initNewsFeed === 'function') {
+            //     try {
+            //         initNewsFeed();
+            //     } catch (error) {
+            //         console.error("Error initializing News Feed:", error);
+            //     }
+            // } else {
+            //     console.error("Initialization Error: initNewsFeed function not found. Check js/news-feed.js.");
+            // }
 
             console.log("Dashboard initialization complete.");
         });
