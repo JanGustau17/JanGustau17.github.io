@@ -198,32 +198,50 @@
             </div>
         </section>
 
----------
-        <div id="video-dashboard">
-  <h3>Featured AI + Cybersecurity Videos</h3>
-  <div class="video-grid">
-    <!-- This script can live at the bottom of your page -->
-    <script type="module">
-      import { DASHBOARD_VIDEOS } from "./js/dashboard.js";
+        <section id="video-dashboard" class="mb-16">
+  <h2 class="text-2xl md:text-3xl font-orbitron text-center neon-text-cyan mb-8">
+    Featured AI + Cybersecurity Videos
+  </h2>
 
-      const container = document.getElementById("video-dashboard");
-      DASHBOARD_VIDEOS.forEach(v => {
-        const card = document.createElement("div");
-        card.className = "video-card";
-        card.innerHTML = `
-          <a href="${v.videoUrl}" target="_blank">
-            <img src="${v.imageUrl}" alt="${v.title}" />
-          </a>
-          <h4><a href="${v.videoUrl}" target="_blank">${v.title}</a></h4>
-          <p class="dash-summary">${v.dashboardSummary}</p>
-          <p class="meta">${v.sourceName} • ${new Date(v.pubDateStr).toLocaleDateString()}</p>
-        `;
-        container.appendChild(card);
-      });
-    </script>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Video 1 -->
+    <div class="content-card p-4">
+      <h3 class="font-semibold text-lg mb-2">AI vs AI: In the Age of AI-Driven Attacks</h3>
+      <p class="text-sm text-medium-gray mb-4">
+        Attackers now use AI to automate highly convincing attacks—so defenders must match them with AI-driven tooling guided by human insight.
+      </p>
+      <div class="w-full">
+        <iframe
+          class="w-full h-[300px] md:h-[400px] rounded-lg shadow-lg"
+          src="https://www.youtube.com/embed/S3QNDSax2IA?rel=0&controls=1&modestbranding=1"
+          title="AI vs AI: In the age of AI-driven attacks, only AI can keep up"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
+    <!-- Video 2 -->
+    <div class="content-card p-4">
+      <h3 class="font-semibold text-lg mb-2">AI & Cyber Threat Hunting Deep-Dive</h3>
+      <p class="text-sm text-medium-gray mb-4">
+        A deep dive into AI’s role in modern threat hunting and automated incident response—see how ML models spot anomalies at scale.
+      </p>
+      <div class="w-full">
+        <iframe
+          class="w-full h-[300px] md:h-[400px] rounded-lg shadow-lg"
+          src="https://www.youtube.com/embed/OJxRruHrSow?start=266&rel=0&controls=1&modestbranding=1"
+          title="How AI Transforms the Cybersecurity Landscape"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
   </div>
-</div>
-----------
+</section>
+        
         </main>
 
     <footer class="text-center py-6 border-t border-cyber-cyan/10 text-medium-gray text-sm mt-12">
@@ -248,17 +266,7 @@
                 catch(error) { console.error("Error initializing dashboard charts:", error); }
             } else { console.warn("Optional: initDashboardCharts function not found."); }
             
-            // Initialize News Feed (from news-feed.js) - REMOVED
-            // if (typeof initNewsFeed === 'function') {
-            //     try {
-            //         initNewsFeed();
-            //     } catch (error) {
-            //         console.error("Error initializing News Feed:", error);
-            //     }
-            // } else {
-            //     console.error("Initialization Error: initNewsFeed function not found. Check js/news-feed.js.");
-            // }
-
+            
             console.log("Dashboard initialization complete.");
         });
     </script>
