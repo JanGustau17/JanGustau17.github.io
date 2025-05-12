@@ -262,54 +262,52 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const namespace = 'gustau-shield-site'; // A unique namespace for your website's counters
-        const key = 'total-visits';         // A key for this specific site-wide counter
-        const countApiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
-        const getValueApiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
+        // Define a unique identifier for your site's total visits counter.
+        // This can be any unique string. Using a URL-like structure is common.
+        const siteIdentifier = 'https://gustau-shield-site.com/total-visits';
+        const encodedSiteIdentifier = encodeURIComponent(siteIdentifier); // Important to encode it
+
+        const hitCounterApiUrl = `https://hits.seeyoufarm.com/api/count/incr/json?url=${encodedSiteIdentifier}`;
 
         const visitorCountElement = document.getElementById('visitor-count-value');
 
         if (visitorCountElement) {
             function updateDisplay(countValue) {
-                visitorCountElement.textContent = countValue ? countValue.toLocaleString() : 'N/A';
+                if (countValue !== null && typeof countValue !== 'undefined') {
+                    visitorCountElement.textContent = countValue.toLocaleString();
+                } else {
+                    visitorCountElement.textContent = 'N/A';
+                }
             }
 
-            // Try to get the current count first
-            fetch(getValueApiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && typeof data.value !== 'undefined') { // Check if data.value exists
-                        updateDisplay(data.value); // Display current count
-                    } else {
-                        updateDisplay(null); // Handle case where value might be missing
+            // Fetch the count. This URL increments and then returns the new count.
+            fetch(hitCounterApiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
                     }
-
-                    // Increment only if not visited in this session
-                    if (!sessionStorage.getItem(`visited-${namespace}-${key}`)) {
-                        fetch(countApiUrl) // This increments the counter
-                            .then(response => response.json())
-                            .then(hitData => {
-                                if (hitData && typeof hitData.value !== 'undefined') { // Check if hitData.value exists
-                                    updateDisplay(hitData.value); // Update display with new count
-                                }
-                                sessionStorage.setItem(`visited-${namespace}-${key}`, 'true');
-                            })
-                            .catch(error => {
-                                console.error('Error incrementing visitor counter:', error);
-                                // Optonal: You might want to leave the current display as is, or show N/A
-                                // updateDisplay(null); 
-                            });
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && typeof data.value !== 'undefined') {
+                        updateDisplay(data.value);
+                    } else {
+                        // If 'value' is not in the data, the response might be unexpected
+                        console.error('Unexpected data format from hit counter API:', data);
+                        updateDisplay(null);
                     }
                 })
                 .catch(error => {
-                    console.error('Error fetching initial visitor counter value:', error);
+                    console.error('Error fetching visitor counter:', error);
                     updateDisplay(null);
+                    // You could also add a message to the user here if desired
+                    // visitorCountElement.textContent = 'Counter unavailable';
                 });
         } else {
             console.error("Visitor count element ('visitor-count-value') not found.");
         }
     });
 </script>
-    
+
 </body>
 </html>
