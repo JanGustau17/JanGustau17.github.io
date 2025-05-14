@@ -41,7 +41,7 @@ export const ARTICLES = [
   {
     guid: "ai-future-cybersecurity",
     title: "Artificial Intelligence and Cybersecurity: The Future is Now",
-    imageUrl: "assets/ai_now.png.wepb",
+    imageUrl: "assets/ai_now.jpg",
     sourceName: "EC-Council University",
     pubDateStr: "2025-05-15T09:00:00Z",
     author: "EC-Council University",
