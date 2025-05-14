@@ -41,7 +41,7 @@ export const ARTICLES = [
   {
     guid: "ai-future-cybersecurity",
     title: "Artificial Intelligence and Cybersecurity: The Future is Now",
-    imageUrl: "https://cdn-ilbnkjl.nitrocdn.com/NxIxNclgHTTgNCkHcTHsiuRemZEqSxbC/assets/images/optimized/rev-a42e060/eccweb.s3.ap-south-1.amazonaws.com/wp-content/uploads/2020/08/26104046/Umang-Handa-1.jpg",
+    imageUrl: "assets/ai_now.png.wepb",
     sourceName: "EC-Council University",
     pubDateStr: "2025-05-15T09:00:00Z",
     author: "EC-Council University",
